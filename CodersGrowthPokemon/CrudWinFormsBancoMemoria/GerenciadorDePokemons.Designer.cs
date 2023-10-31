@@ -38,9 +38,12 @@
             // 
             // pokemonDataGriedView
             // 
+            pokemonDataGriedView.AllowUserToAddRows = false;
+            pokemonDataGriedView.AllowUserToDeleteRows = false;
             pokemonDataGriedView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             pokemonDataGriedView.Location = new Point(37, 96);
             pokemonDataGriedView.Name = "pokemonDataGriedView";
+            pokemonDataGriedView.ReadOnly = true;
             pokemonDataGriedView.RowHeadersWidth = 51;
             pokemonDataGriedView.RowTemplate.Height = 29;
             pokemonDataGriedView.Size = new Size(1261, 565);
