@@ -1,6 +1,6 @@
 ﻿namespace CrudWinFormsBancoMemoria
 {
-    partial class GerenciadorDePokemons
+    partial class Form1
     {
         /// <summary>
         ///  Required designer variable.
@@ -42,7 +42,6 @@
             pokemonDataGriedView.AllowUserToDeleteRows = false;
             pokemonDataGriedView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             pokemonDataGriedView.Location = new Point(37, 96);
-            pokemonDataGriedView.MultiSelect = false;
             pokemonDataGriedView.Name = "pokemonDataGriedView";
             pokemonDataGriedView.ReadOnly = true;
             pokemonDataGriedView.RowHeadersWidth = 51;
@@ -68,7 +67,6 @@
             btnCriar.TabIndex = 2;
             btnCriar.Text = "Criar";
             btnCriar.UseVisualStyleBackColor = true;
-            btnCriar.Click += btnCriar_Click;
             // 
             // btnEditar
             // 
@@ -88,7 +86,7 @@
             btnApagar.Text = "Apagar";
             btnApagar.UseVisualStyleBackColor = true;
             // 
-            // GerenciadorDePokemons
+            // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -98,9 +96,9 @@
             Controls.Add(btnCriar);
             Controls.Add(label1);
             Controls.Add(pokemonDataGriedView);
-            Name = "GerenciadorDePokemons";
-            Text = "Gerenciador de Pokemons";
-            Load += GerenciadorDePokemons_Load;
+            Name = "Form1";
+            Text = "Form1";
+            Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)pokemonDataGriedView).EndInit();
             ResumeLayout(false);
             PerformLayout();
