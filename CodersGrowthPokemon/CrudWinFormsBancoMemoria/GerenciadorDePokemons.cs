@@ -4,7 +4,11 @@ namespace CrudWinFormsBancoMemoria
 {
     public partial class Form1 : Form
     {
-        private List<Pokemon> listaPokemons = new List<Pokemon>();
+        private List<Pokemon> listaPokemons = new List<Pokemon>() { 
+            new Pokemon {Id = 1, Nome = "Charmander", Apelido = "Tobias", Nivel = 12, DataDeCaptura = DateTime.Now, Altura = 0.60m, Shiny = true, TipoPrincipal = TipoPokemon.Fogo, TipoSecundario = null},
+            new Pokemon {Id = 2, Nome = "Mewtwo", Apelido = "Tiringa", Nivel = 70, DataDeCaptura = DateTime.Now, Altura = 2.0m, Shiny = false, TipoPrincipal = TipoPokemon.Psiquico, TipoSecundario = null},
+            new Pokemon {Id = 3, Nome = "Zubat", Apelido = "Dracula", Nivel = 7, DataDeCaptura = DateTime.Now, Altura = 0.80m, Shiny = false, TipoPrincipal = TipoPokemon.Veneno, TipoSecundario = TipoPokemon.Voador},
+        };
 
         public Form1()
         {
@@ -13,23 +17,16 @@ namespace CrudWinFormsBancoMemoria
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Setup_DataGriedView();
-
+            Criacao_DataGriedView();
         }
 
-        private void Setup_DataGriedView()
+        private void Criacao_DataGriedView()
         {
-            pokemonDataGriedView.ColumnCount = 8;
-            pokemonDataGriedView.Columns[0].Name = "Id";
-            pokemonDataGriedView.Columns[1].Name = "Nome";
-            pokemonDataGriedView.Columns[2].Name = "Apelido";
-            pokemonDataGriedView.Columns[3].Name = "Nível";
-            pokemonDataGriedView.Columns[4].Name = "Data de Captura";
-            pokemonDataGriedView.Columns[5].Name = "Tipo Principal";
-            pokemonDataGriedView.Columns[6].Name = "Tipo Secundário";
-            pokemonDataGriedView.Columns[7].Name = "Altura";
+            var dados = from pokemon in listaPokemons
+                        select new { pokemon.Id, pokemon.Nome, pokemon.Apelido, pokemon.Nivel, pokemon.DataDeCaptura, pokemon.Altura, pokemon.Shiny, pokemon.TipoPrincipal, pokemon.TipoSecundario };
+            
+            pokemonDataGriedView.DataSource = dados.ToList();
         }
-
 
     }
 }

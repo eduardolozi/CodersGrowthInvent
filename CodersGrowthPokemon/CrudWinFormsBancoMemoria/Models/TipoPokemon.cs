@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CrudWinFormsBancoMemoria.Models
+﻿namespace CrudWinFormsBancoMemoria.Models
 {
     public enum TipoPokemon
     {
-        Água,
+        Agua,
         Fogo,
         Planta,
-        Elétrico,
+        Eletrico,
         Gelo,
         Lutador,
-        Psíquico,
+        Psiquico,
         Terra,
         Voador,
         Veneno,
@@ -22,7 +16,7 @@ namespace CrudWinFormsBancoMemoria.Models
         Inseto,
         Fantasma,
         Noturno,
-        Aço,
-        Dragão
+        Aco,
+        Dragao
     }
 }
