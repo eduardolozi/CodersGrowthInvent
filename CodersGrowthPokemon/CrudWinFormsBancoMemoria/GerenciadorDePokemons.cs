@@ -22,10 +22,10 @@ namespace CrudWinFormsBancoMemoria
 
         private void Criacao_DataGriedView()
         {
-            var dados = from pokemon in listaPokemons
-                        select new { pokemon.Id, pokemon.Nome, pokemon.Apelido, pokemon.Nivel, pokemon.DataDeCaptura, pokemon.Altura, pokemon.Shiny, pokemon.TipoPrincipal, pokemon.TipoSecundario };
+            //var dados = from pokemon in listaPokemons
+            //            select new { pokemon.Id, pokemon.Nome, pokemon.Apelido, pokemon.Nivel, pokemon.DataDeCaptura, pokemon.Altura, pokemon.Shiny, pokemon.TipoPrincipal, pokemon.TipoSecundario };
             
-            pokemonDataGriedView.DataSource = dados.ToList();
+            pokemonDataGriedView.DataSource = listaPokemons;
         }
 
     }
