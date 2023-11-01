@@ -22,6 +22,7 @@ namespace CrudWinFormsBancoMemoria
 
         private void Criacao_DataGriedView()
         {
+            pokemonDataGriedView.DataSource = null;
             pokemonDataGriedView.DataSource = listaPokemons;
         }
 
