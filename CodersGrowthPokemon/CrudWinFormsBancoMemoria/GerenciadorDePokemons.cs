@@ -52,5 +52,6 @@ namespace CrudWinFormsBancoMemoria
             pokemonDataGriedView.DataSource = listaPokemons;
         }
 
+       
     }
 }
