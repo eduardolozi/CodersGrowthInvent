@@ -45,10 +45,10 @@ namespace CrudWinFormsBancoMemoria
             listaPokemons.Add(novoPokemon);
             refresh_dataGridView();
         }
-         
+
         public void refresh_dataGridView()
         {
-            pokemonDataGriedView.DataSource = null;
+            pokemonDataGriedView.DataSource = typeof(List<Pokemon>);
             pokemonDataGriedView.DataSource = listaPokemons;
         }
 
