@@ -8,23 +8,23 @@ namespace CrudWinFormsBancoMemoria.Models
 {
     public class Pokemon
     {
-        private int Id { get; set; }
+        public int Id { get; set; }
 
-        private string Nome { get; set; }
+        public string Nome { get; set; }
 
-        private string Apelido { get; set; }
+        public string Apelido { get; set; }
 
-        private int Nivel { get; set; }
+        public int Nivel { get; set; }
 
-        private decimal Altura { get; set; }
+        public decimal Altura { get; set; }
 
-        private Boolean Shiny { get; set; }
+        public Boolean Shiny { get; set; }
 
-        private DateTime DataDeCaptura { get; set; }
+        public DateTime DataDeCaptura { get; set; }
 
-        private TipoPokemon TipoPrincipal { get; set; }
+        public TipoPokemon TipoPrincipal { get; set; }
 
-        private TipoPokemon? TipoSecundario { get; set; }
+        public TipoPokemon? TipoSecundario { get; set; }
         
     }
 }
