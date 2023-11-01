@@ -143,9 +143,9 @@
             label6.AutoSize = true;
             label6.Location = new Point(33, 540);
             label6.Name = "label6";
-            label6.Size = new Size(100, 20);
+            label6.Size = new Size(117, 20);
             label6.TabIndex = 12;
-            label6.Text = "Tipo Principal";
+            label6.Text = "Tipo Secundário";
             // 
             // cboTipoSecundario
             // 
@@ -195,7 +195,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(478, 712);
+            ClientSize = new Size(493, 712);
             Controls.Add(btnCancelar);
             Controls.Add(btnAdicionar);
             Controls.Add(label7);

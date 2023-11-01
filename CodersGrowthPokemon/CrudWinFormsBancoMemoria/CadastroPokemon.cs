@@ -62,33 +62,32 @@ namespace CrudWinFormsBancoMemoria
             cboTipoSecundario.Items.Add(TipoPokemon.Noturno);
             cboTipoSecundario.Items.Add(TipoPokemon.Rocha);
             cboTipoSecundario.Items.Add(TipoPokemon.Voador);
-
         }
 
 
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.DialogResult = DialogResult.Cancel;
         }
 
-        private void btnAdicionar_Click(object sender, EventArgs e)
-        {
-            SalvarInputsNoObjeto();
-            botaoAdicionarFoiClicado = 1;
-            this.Close();
-        }
-
-        private void SalvarInputsNoObjeto()
+        public void btnAdicionar_Click(object sender, EventArgs e)
         {
             novoPokemon.Nome = txtNome.Text;
             novoPokemon.Apelido = txtApelido.Text;
             novoPokemon.Nivel = Convert.ToInt32(txtNivel.Text);
             novoPokemon.Altura = Convert.ToDecimal(txtAltura.Text);
             novoPokemon.DataDeCaptura = dtpCaptura.Value;
+
             novoPokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(cboTipoPrincipal.Text);
-            novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(cboTipoSecundario.Text);
+            if (cboTipoSecundario.Text == "--Selecionar--") {
+                novoPokemon.TipoSecundario = null;
+            } else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(cboTipoSecundario.Text);
+
             novoPokemon.Shiny = cbShiny.Checked;
+
+            this.DialogResult = DialogResult.OK;
         }
+
     }
 }
