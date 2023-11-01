@@ -29,21 +29,22 @@
         private void InitializeComponent()
         {
             label1 = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
+            txtNome = new TextBox();
+            txtApelido = new TextBox();
             label2 = new Label();
-            textBox3 = new TextBox();
+            txtNivel = new TextBox();
             label3 = new Label();
-            textBox4 = new TextBox();
+            txtAltura = new TextBox();
             label4 = new Label();
-            checkBox1 = new CheckBox();
+            cbShiny = new CheckBox();
             cboTipoPrincipal = new ComboBox();
             label5 = new Label();
             label6 = new Label();
             cboTipoSecundario = new ComboBox();
-            dateTimePicker1 = new DateTimePicker();
+            dtpCaptura = new DateTimePicker();
             label7 = new Label();
-            button1 = new Button();
+            btnAdicionar = new Button();
+            btnCancelar = new Button();
             SuspendLayout();
             // 
             // label1
@@ -55,19 +56,19 @@
             label1.TabIndex = 0;
             label1.Text = "Nome";
             // 
-            // textBox1
+            // txtNome
             // 
-            textBox1.Location = new Point(33, 77);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(210, 27);
-            textBox1.TabIndex = 1;
+            txtNome.Location = new Point(33, 77);
+            txtNome.Name = "txtNome";
+            txtNome.Size = new Size(231, 27);
+            txtNome.TabIndex = 1;
             // 
-            // textBox2
+            // txtApelido
             // 
-            textBox2.Location = new Point(33, 150);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(210, 27);
-            textBox2.TabIndex = 3;
+            txtApelido.Location = new Point(33, 150);
+            txtApelido.Name = "txtApelido";
+            txtApelido.Size = new Size(231, 27);
+            txtApelido.TabIndex = 3;
             // 
             // label2
             // 
@@ -78,12 +79,12 @@
             label2.TabIndex = 2;
             label2.Text = "Apelido";
             // 
-            // textBox3
+            // txtNivel
             // 
-            textBox3.Location = new Point(33, 233);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(210, 27);
-            textBox3.TabIndex = 5;
+            txtNivel.Location = new Point(33, 233);
+            txtNivel.Name = "txtNivel";
+            txtNivel.Size = new Size(231, 27);
+            txtNivel.TabIndex = 5;
             // 
             // label3
             // 
@@ -94,12 +95,12 @@
             label3.TabIndex = 4;
             label3.Text = "Nível";
             // 
-            // textBox4
+            // txtAltura
             // 
-            textBox4.Location = new Point(33, 314);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(210, 27);
-            textBox4.TabIndex = 7;
+            txtAltura.Location = new Point(33, 314);
+            txtAltura.Name = "txtAltura";
+            txtAltura.Size = new Size(231, 27);
+            txtAltura.TabIndex = 7;
             // 
             // label4
             // 
@@ -110,22 +111,22 @@
             label4.TabIndex = 6;
             label4.Text = "Altura";
             // 
-            // checkBox1
+            // cbShiny
             // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(33, 621);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(66, 24);
-            checkBox1.TabIndex = 8;
-            checkBox1.Text = "Shiny";
-            checkBox1.UseVisualStyleBackColor = true;
+            cbShiny.AutoSize = true;
+            cbShiny.Location = new Point(33, 621);
+            cbShiny.Name = "cbShiny";
+            cbShiny.Size = new Size(66, 24);
+            cbShiny.TabIndex = 8;
+            cbShiny.Text = "Shiny";
+            cbShiny.UseVisualStyleBackColor = true;
             // 
             // cboTipoPrincipal
             // 
             cboTipoPrincipal.FormattingEnabled = true;
             cboTipoPrincipal.Location = new Point(33, 482);
             cboTipoPrincipal.Name = "cboTipoPrincipal";
-            cboTipoPrincipal.Size = new Size(210, 28);
+            cboTipoPrincipal.Size = new Size(231, 28);
             cboTipoPrincipal.TabIndex = 9;
             // 
             // label5
@@ -151,15 +152,15 @@
             cboTipoSecundario.FormattingEnabled = true;
             cboTipoSecundario.Location = new Point(33, 563);
             cboTipoSecundario.Name = "cboTipoSecundario";
-            cboTipoSecundario.Size = new Size(210, 28);
+            cboTipoSecundario.Size = new Size(231, 28);
             cboTipoSecundario.TabIndex = 11;
             // 
-            // dateTimePicker1
+            // dtpCaptura
             // 
-            dateTimePicker1.Location = new Point(33, 400);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(210, 27);
-            dateTimePicker1.TabIndex = 13;
+            dtpCaptura.Location = new Point(33, 400);
+            dtpCaptura.Name = "dtpCaptura";
+            dtpCaptura.Size = new Size(231, 27);
+            dtpCaptura.TabIndex = 13;
             // 
             // label7
             // 
@@ -170,36 +171,47 @@
             label7.TabIndex = 14;
             label7.Text = "Data de captura";
             // 
-            // button1
+            // btnAdicionar
             // 
-            button1.Location = new Point(372, 665);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 35);
-            button1.TabIndex = 15;
-            button1.Text = "Cadastrar";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            btnAdicionar.Location = new Point(33, 665);
+            btnAdicionar.Name = "btnAdicionar";
+            btnAdicionar.Size = new Size(170, 35);
+            btnAdicionar.TabIndex = 15;
+            btnAdicionar.Text = "Adicionar Pokemon";
+            btnAdicionar.UseVisualStyleBackColor = true;
+            btnAdicionar.Click += btnAdicionar_Click;
+            // 
+            // btnCancelar
+            // 
+            btnCancelar.Location = new Point(362, 665);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(104, 35);
+            btnCancelar.TabIndex = 16;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // CadastroPokemon
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(478, 712);
-            Controls.Add(button1);
+            Controls.Add(btnCancelar);
+            Controls.Add(btnAdicionar);
             Controls.Add(label7);
-            Controls.Add(dateTimePicker1);
+            Controls.Add(dtpCaptura);
             Controls.Add(label6);
             Controls.Add(cboTipoSecundario);
             Controls.Add(label5);
             Controls.Add(cboTipoPrincipal);
-            Controls.Add(checkBox1);
-            Controls.Add(textBox4);
+            Controls.Add(cbShiny);
+            Controls.Add(txtAltura);
             Controls.Add(label4);
-            Controls.Add(textBox3);
+            Controls.Add(txtNivel);
             Controls.Add(label3);
-            Controls.Add(textBox2);
+            Controls.Add(txtApelido);
             Controls.Add(label2);
-            Controls.Add(textBox1);
+            Controls.Add(txtNome);
             Controls.Add(label1);
             Name = "CadastroPokemon";
             Text = "Cadastro de Pokemon";
@@ -211,20 +223,21 @@
         #endregion
 
         private Label label1;
-        private TextBox textBox1;
-        private TextBox textBox2;
+        private TextBox txtNome;
+        private TextBox txtApelido;
         private Label label2;
-        private TextBox textBox3;
+        private TextBox txtNivel;
         private Label label3;
-        private TextBox textBox4;
+        private TextBox txtAltura;
         private Label label4;
-        private CheckBox checkBox1;
+        private CheckBox cbShiny;
         private ComboBox cboTipoPrincipal;
         private Label label5;
         private Label label6;
         private ComboBox cboTipoSecundario;
-        private DateTimePicker dateTimePicker1;
+        private DateTimePicker dtpCaptura;
         private Label label7;
-        private Button button1;
+        private Button btnAdicionar;
+        private Button btnCancelar;
     }
 }

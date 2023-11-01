@@ -13,6 +13,8 @@ namespace CrudWinFormsBancoMemoria
 {
     public partial class CadastroPokemon : Form
     {
+        public Pokemon? novoPokemon = new Pokemon();
+        public byte botaoAdicionarFoiClicado = 0;
         public CadastroPokemon()
         {
             InitializeComponent();
@@ -20,9 +22,11 @@ namespace CrudWinFormsBancoMemoria
 
         private void CadastroPokemon_Load(object sender, EventArgs e)
         {
-            dateTimePicker1.Format = DateTimePickerFormat.Custom;
-            dateTimePicker1.CustomFormat = "ddd dd MMM YYYY";
+            dtpCaptura.Format = DateTimePickerFormat.Custom;
+            dtpCaptura.CustomFormat = "dd/MM/yyyy";
 
+            cboTipoPrincipal.Items.Insert(0, "--Selecionar--");
+            cboTipoPrincipal.SelectedIndex = 0;
             cboTipoPrincipal.Items.Add(TipoPokemon.Terra);
             cboTipoPrincipal.Items.Add(TipoPokemon.Agua);
             cboTipoPrincipal.Items.Add(TipoPokemon.Veneno);
@@ -39,7 +43,9 @@ namespace CrudWinFormsBancoMemoria
             cboTipoPrincipal.Items.Add(TipoPokemon.Noturno);
             cboTipoPrincipal.Items.Add(TipoPokemon.Rocha);
             cboTipoPrincipal.Items.Add(TipoPokemon.Voador);
-            
+
+            cboTipoSecundario.Items.Insert(0, "--Selecionar--");
+            cboTipoSecundario.SelectedIndex = 0;
             cboTipoSecundario.Items.Add(TipoPokemon.Terra);
             cboTipoSecundario.Items.Add(TipoPokemon.Agua);
             cboTipoSecundario.Items.Add(TipoPokemon.Veneno);
@@ -59,9 +65,30 @@ namespace CrudWinFormsBancoMemoria
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
 
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnAdicionar_Click(object sender, EventArgs e)
+        {
+            SalvarInputsNoObjeto();
+            botaoAdicionarFoiClicado = 1;
+            this.Close();
+        }
+
+        private void SalvarInputsNoObjeto()
+        {
+            novoPokemon.Nome = txtNome.Text;
+            novoPokemon.Apelido = txtApelido.Text;
+            novoPokemon.Nivel = Convert.ToInt32(txtNivel.Text);
+            novoPokemon.Altura = Convert.ToDecimal(txtAltura.Text);
+            novoPokemon.DataDeCaptura = dtpCaptura.Value;
+            novoPokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(cboTipoPrincipal.Text);
+            novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(cboTipoSecundario.Text);
+            novoPokemon.Shiny = cbShiny.Checked;
         }
     }
 }

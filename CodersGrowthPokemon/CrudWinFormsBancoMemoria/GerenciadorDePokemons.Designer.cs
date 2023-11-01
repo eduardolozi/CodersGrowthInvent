@@ -1,6 +1,6 @@
 ﻿namespace CrudWinFormsBancoMemoria
 {
-    partial class Form1
+    partial class GerenciadorDePokemons
     {
         /// <summary>
         ///  Required designer variable.
@@ -67,6 +67,7 @@
             btnCriar.TabIndex = 2;
             btnCriar.Text = "Criar";
             btnCriar.UseVisualStyleBackColor = true;
+            btnCriar.Click += btnCriar_Click;
             // 
             // btnEditar
             // 
@@ -98,7 +99,7 @@
             Controls.Add(pokemonDataGriedView);
             Name = "Form1";
             Text = "Form1";
-            Load += Form1_Load;
+            Load += GerenciadorDePokemons_Load;
             ((System.ComponentModel.ISupportInitialize)pokemonDataGriedView).EndInit();
             ResumeLayout(false);
             PerformLayout();
