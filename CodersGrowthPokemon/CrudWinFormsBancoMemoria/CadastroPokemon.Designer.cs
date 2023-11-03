@@ -43,8 +43,8 @@
             cboTipoSecundario = new ComboBox();
             dtpCaptura = new DateTimePicker();
             label7 = new Label();
-            btnAdicionar = new Button();
-            btnCancelar = new Button();
+            botaoAdicionar = new Button();
+            botaoCancelar = new Button();
             SuspendLayout();
             // 
             // label1
@@ -171,33 +171,33 @@
             label7.TabIndex = 14;
             label7.Text = "Data de captura";
             // 
-            // btnAdicionar
+            // botaoAdicionar
             // 
-            btnAdicionar.Location = new Point(33, 665);
-            btnAdicionar.Name = "btnAdicionar";
-            btnAdicionar.Size = new Size(170, 35);
-            btnAdicionar.TabIndex = 15;
-            btnAdicionar.Text = "Adicionar Pokemon";
-            btnAdicionar.UseVisualStyleBackColor = true;
-            btnAdicionar.Click += btnAdicionar_Click;
+            botaoAdicionar.Location = new Point(33, 665);
+            botaoAdicionar.Name = "botaoAdicionar";
+            botaoAdicionar.Size = new Size(170, 35);
+            botaoAdicionar.TabIndex = 15;
+            botaoAdicionar.Text = "Adicionar Pokemon";
+            botaoAdicionar.UseVisualStyleBackColor = true;
+            botaoAdicionar.Click += aoClicarBotaoAdicionar;
             // 
-            // btnCancelar
+            // botaoCancelar
             // 
-            btnCancelar.Location = new Point(362, 665);
-            btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(104, 35);
-            btnCancelar.TabIndex = 16;
-            btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
-            btnCancelar.Click += btnCancelar_Click;
+            botaoCancelar.Location = new Point(362, 665);
+            botaoCancelar.Name = "botaoCancelar";
+            botaoCancelar.Size = new Size(104, 35);
+            botaoCancelar.TabIndex = 16;
+            botaoCancelar.Text = "Cancelar";
+            botaoCancelar.UseVisualStyleBackColor = true;
+            botaoCancelar.Click += aoClicarBotaoCancelar;
             // 
             // CadastroPokemon
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(493, 712);
-            Controls.Add(btnCancelar);
-            Controls.Add(btnAdicionar);
+            Controls.Add(botaoCancelar);
+            Controls.Add(botaoAdicionar);
             Controls.Add(label7);
             Controls.Add(dtpCaptura);
             Controls.Add(label6);
@@ -237,7 +237,7 @@
         private ComboBox cboTipoSecundario;
         private DateTimePicker dtpCaptura;
         private Label label7;
-        private Button btnAdicionar;
-        private Button btnCancelar;
+        private Button botaoAdicionar;
+        private Button botaoCancelar;
     }
 }
