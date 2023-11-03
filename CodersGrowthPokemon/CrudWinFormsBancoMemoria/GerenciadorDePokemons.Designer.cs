@@ -104,7 +104,7 @@
             Controls.Add(label1);
             Controls.Add(pokemonDataGriedView);
             Name = "GerenciadorDePokemons";
-            Text = "Form1";
+            Text = "Gerenciamento de Pokemons";
             ((System.ComponentModel.ISupportInitialize)pokemonDataGriedView).EndInit();
             ResumeLayout(false);
             PerformLayout();

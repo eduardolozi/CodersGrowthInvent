@@ -28,7 +28,7 @@ namespace CrudWinFormsBancoMemoria
 
         private void SalvarPokemonCadastradoNaLista(Pokemon novoPokemon)
         {
-            novoPokemon.Id = listaPokemons.Count;
+            novoPokemon.Id = listaPokemons.Count + 1;
             novoPokemon.DataDeCaptura = Convert.ToDateTime(novoPokemon.DataDeCaptura.ToShortDateString());
             listaPokemons.Add(novoPokemon);
             AtualizandoDataGridView();

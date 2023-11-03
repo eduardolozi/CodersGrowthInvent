@@ -71,20 +71,23 @@ namespace CrudWinFormsBancoMemoria
                 novoPokemon.DataDeCaptura = dtpCaptura.Value;
                 dataErrorProvider.SetError(dtpCaptura, "");
 
+                ValidacaoCadastro.ValidarTipoPrincipal(cboTipoPrincipal, cboTipoPrincipalErrorProvider);
                 novoPokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(cboTipoPrincipal.Text);
+                cboTipoPrincipalErrorProvider.SetError(cboTipoPrincipal, "");
+
+                ValidacaoCadastro.ValidarTipoSecundario(novoPokemon.TipoPrincipal, cboTipoSecundario, cboTipoSecundarioErrorProvider);
                 if (cboTipoSecundario.Text == "--Selecionar--")
                 {
                     novoPokemon.TipoSecundario = null;
                 }
                 else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(cboTipoSecundario.Text);
+                cboTipoSecundarioErrorProvider.SetError(cboTipoSecundario, "");
 
                 novoPokemon.Shiny = cbShiny.Checked;
 
-
-
                 this.DialogResult = DialogResult.OK;
             }
-            catch (Exception ex) when (ex is NomeInvalidoException || ex is ApelidoInvalidoException || ex is NivelInvalidoException || ex is AlturaInvalidaException || ex is DataInvalidaException)
+            catch (Exception ex) when (ex is NomeInvalidoException || ex is ApelidoInvalidoException || ex is NivelInvalidoException || ex is AlturaInvalidaException || ex is DataInvalidaException || ex is TipoInvalidoException)
             {
                 MessageBox.Show(ex.Message);
             }

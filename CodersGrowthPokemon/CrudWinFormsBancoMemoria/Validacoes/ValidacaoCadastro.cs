@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrudWinFormsBancoMemoria.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -63,6 +64,24 @@ namespace CrudWinFormsBancoMemoria.Validacoes
             {
                 dataErrorProvider.SetError(dataCaptura, $"Data Mínima: 27/02/1996 e Data Máxima: {DateTime.Now.ToShortDateString()}");
                 throw new DataInvalidaException(dataCaptura.Value);
+            }
+        }
+
+        public static void ValidarTipoPrincipal(ComboBox cboTipoPrincipal,  ErrorProvider cboTipoPrincipalErrorProvider)
+        {
+            if(cboTipoPrincipal.Text == "--Selecionar--")
+            {
+                cboTipoPrincipalErrorProvider.SetError(cboTipoPrincipal, "Tipo inválido");
+                throw new TipoInvalidoException(cboTipoPrincipal.Text);
+            }
+        }
+
+        public static void ValidarTipoSecundario(TipoPokemon tipoPrimario, ComboBox cboTipoSecundario, ErrorProvider cboTipoSecundarioErrorProvider)
+        {
+            if(tipoPrimario.Equals(Enum.Parse<TipoPokemon>(cboTipoSecundario.Text)))
+            {
+                cboTipoSecundarioErrorProvider.SetError(cboTipoSecundario, "Tipo inválido");
+                throw new TipoInvalidoException(cboTipoSecundario.Text);
             }
         }
     }
