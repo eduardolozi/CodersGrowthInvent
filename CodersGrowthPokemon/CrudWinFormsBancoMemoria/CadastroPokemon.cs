@@ -1,4 +1,5 @@
 ﻿using CrudWinFormsBancoMemoria.Models;
+using CrudWinFormsBancoMemoria.Validacoes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -46,22 +47,82 @@ namespace CrudWinFormsBancoMemoria
 
         public void aoClicarBotaoAdicionar(object sender, EventArgs e)
         {
-            novoPokemon.Nome = txtNome.Text;
-            novoPokemon.Apelido = txtApelido.Text;
-            novoPokemon.Nivel = Convert.ToInt32(txtNivel.Text);
-            novoPokemon.Altura = Convert.ToDecimal(txtAltura.Text);
-            novoPokemon.DataDeCaptura = dtpCaptura.Value;
-
-            novoPokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(cboTipoPrincipal.Text);
-            if (cboTipoSecundario.Text == "--Selecionar--")
+            try
             {
-                novoPokemon.TipoSecundario = null;
+                ValidacaoCadastro.ValidarNome(txtNome, nomeErrorProvider);
+                novoPokemon.Nome = txtNome.Text;
+                nomeErrorProvider.SetError(txtNome, "");
+
+                ValidacaoCadastro.ValidarApelido(txtApelido, apelidoErrorProvider);
+                novoPokemon.Apelido = txtApelido.Text;
+                apelidoErrorProvider.SetError(txtApelido, "");
+
+                ValidacaoCadastro.ValidarNivel(txtNivel, nivelErrorProvider);
+                novoPokemon.Nivel = Convert.ToInt32(txtNivel.Text);
+                nivelErrorProvider.SetError(txtNivel, "");
+
+                ValidacaoCadastro.ValidarAltura(txtAltura, alturaErrorProvider);
+                novoPokemon.Altura = Convert.ToDecimal(txtAltura.Text);
+                alturaErrorProvider.SetError(txtAltura, "");
+
+                novoPokemon.DataDeCaptura = dtpCaptura.Value;
+                dataErrorProvider.SetError(dtpCaptura, "");
+
+                novoPokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(cboTipoPrincipal.Text);
+                if (cboTipoSecundario.Text == "--Selecionar--")
+                {
+                    novoPokemon.TipoSecundario = null;
+                }
+                else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(cboTipoSecundario.Text);
+
+                novoPokemon.Shiny = cbShiny.Checked;
+
+                this.DialogResult = DialogResult.OK;
             }
-            else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(cboTipoSecundario.Text);
-
-            novoPokemon.Shiny = cbShiny.Checked;
-
-            this.DialogResult = DialogResult.OK;
+            catch (Exception ex) when (ex is NomeInvalidoException || ex is ApelidoInvalidoException || ex is NivelInvalidoException || ex is AlturaInvalidaException)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
+
+        private void AoApertarTeclaNoTxtNome(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void AoApertarTeclaNoTxtApelido(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar) && !char.IsNumber(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void AoApertarTeclaNoTxtNivel(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void AoApertarTeclaNoTxtAltura(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.' && e.KeyChar != ','))
+            {
+                e.Handled = true;
+            }
+
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        
     }
+
 }

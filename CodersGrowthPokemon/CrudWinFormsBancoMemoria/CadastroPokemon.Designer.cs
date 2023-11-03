@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             label1 = new Label();
             txtNome = new TextBox();
             txtApelido = new TextBox();
@@ -45,6 +46,16 @@
             label7 = new Label();
             botaoAdicionar = new Button();
             botaoCancelar = new Button();
+            nomeErrorProvider = new ErrorProvider(components);
+            apelidoErrorProvider = new ErrorProvider(components);
+            nivelErrorProvider = new ErrorProvider(components);
+            alturaErrorProvider = new ErrorProvider(components);
+            dataErrorProvider = new ErrorProvider(components);
+            ((System.ComponentModel.ISupportInitialize)nomeErrorProvider).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)apelidoErrorProvider).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nivelErrorProvider).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)alturaErrorProvider).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataErrorProvider).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -58,17 +69,23 @@
             // 
             // txtNome
             // 
+            txtNome.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             txtNome.Location = new Point(33, 77);
+            txtNome.MaxLength = 11;
             txtNome.Name = "txtNome";
             txtNome.Size = new Size(231, 27);
             txtNome.TabIndex = 1;
+            txtNome.KeyPress += AoApertarTeclaNoTxtNome;
             // 
             // txtApelido
             // 
+            txtApelido.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             txtApelido.Location = new Point(33, 150);
+            txtApelido.MaxLength = 20;
             txtApelido.Name = "txtApelido";
             txtApelido.Size = new Size(231, 27);
             txtApelido.TabIndex = 3;
+            txtApelido.KeyPress += AoApertarTeclaNoTxtApelido;
             // 
             // label2
             // 
@@ -81,10 +98,13 @@
             // 
             // txtNivel
             // 
+            txtNivel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             txtNivel.Location = new Point(33, 233);
+            txtNivel.MaxLength = 3;
             txtNivel.Name = "txtNivel";
             txtNivel.Size = new Size(231, 27);
             txtNivel.TabIndex = 5;
+            txtNivel.KeyPress += AoApertarTeclaNoTxtNivel;
             // 
             // label3
             // 
@@ -97,10 +117,13 @@
             // 
             // txtAltura
             // 
+            txtAltura.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             txtAltura.Location = new Point(33, 314);
+            txtAltura.MaxLength = 4;
             txtAltura.Name = "txtAltura";
             txtAltura.Size = new Size(231, 27);
             txtAltura.TabIndex = 7;
+            txtAltura.KeyPress += AoApertarTeclaNoTxtAltura;
             // 
             // label4
             // 
@@ -123,6 +146,7 @@
             // 
             // cboTipoPrincipal
             // 
+            cboTipoPrincipal.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             cboTipoPrincipal.FormattingEnabled = true;
             cboTipoPrincipal.Location = new Point(33, 482);
             cboTipoPrincipal.Name = "cboTipoPrincipal";
@@ -149,6 +173,7 @@
             // 
             // cboTipoSecundario
             // 
+            cboTipoSecundario.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             cboTipoSecundario.FormattingEnabled = true;
             cboTipoSecundario.Location = new Point(33, 563);
             cboTipoSecundario.Name = "cboTipoSecundario";
@@ -157,6 +182,7 @@
             // 
             // dtpCaptura
             // 
+            dtpCaptura.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dtpCaptura.Location = new Point(33, 400);
             dtpCaptura.Name = "dtpCaptura";
             dtpCaptura.Size = new Size(231, 27);
@@ -173,6 +199,7 @@
             // 
             // botaoAdicionar
             // 
+            botaoAdicionar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             botaoAdicionar.Location = new Point(33, 665);
             botaoAdicionar.Name = "botaoAdicionar";
             botaoAdicionar.Size = new Size(170, 35);
@@ -183,6 +210,7 @@
             // 
             // botaoCancelar
             // 
+            botaoCancelar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             botaoCancelar.Location = new Point(362, 665);
             botaoCancelar.Name = "botaoCancelar";
             botaoCancelar.Size = new Size(104, 35);
@@ -190,6 +218,26 @@
             botaoCancelar.Text = "Cancelar";
             botaoCancelar.UseVisualStyleBackColor = true;
             botaoCancelar.Click += aoClicarBotaoCancelar;
+            // 
+            // nomeErrorProvider
+            // 
+            nomeErrorProvider.ContainerControl = this;
+            // 
+            // apelidoErrorProvider
+            // 
+            apelidoErrorProvider.ContainerControl = this;
+            // 
+            // nivelErrorProvider
+            // 
+            nivelErrorProvider.ContainerControl = this;
+            // 
+            // alturaErrorProvider
+            // 
+            alturaErrorProvider.ContainerControl = this;
+            // 
+            // dataErrorProvider
+            // 
+            dataErrorProvider.ContainerControl = this;
             // 
             // CadastroPokemon
             // 
@@ -216,6 +264,11 @@
             Name = "CadastroPokemon";
             Text = "Cadastro de Pokemon";
             Load += CadastroPokemon_Load;
+            ((System.ComponentModel.ISupportInitialize)nomeErrorProvider).EndInit();
+            ((System.ComponentModel.ISupportInitialize)apelidoErrorProvider).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nivelErrorProvider).EndInit();
+            ((System.ComponentModel.ISupportInitialize)alturaErrorProvider).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataErrorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -239,5 +292,10 @@
         private Label label7;
         private Button botaoAdicionar;
         private Button botaoCancelar;
+        private ErrorProvider nomeErrorProvider;
+        private ErrorProvider apelidoErrorProvider;
+        private ErrorProvider nivelErrorProvider;
+        private ErrorProvider alturaErrorProvider;
+        private ErrorProvider dataErrorProvider;
     }
 }

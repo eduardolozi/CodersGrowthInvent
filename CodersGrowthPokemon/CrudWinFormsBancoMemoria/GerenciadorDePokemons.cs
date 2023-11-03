@@ -28,7 +28,7 @@ namespace CrudWinFormsBancoMemoria
             pokemonDataGriedView.DataSource = listaPokemons;
         }
 
-        private void btnCriar_Click(object sender, EventArgs e)
+        private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
         {
             var formCadastro = new CadastroPokemon();
             formCadastro.ShowDialog();
@@ -43,15 +43,15 @@ namespace CrudWinFormsBancoMemoria
         {
             novoPokemon.Id = listaPokemons.Count + 1;
             listaPokemons.Add(novoPokemon);
-            refresh_dataGridView();
+            AtualizandoDataGridView();
         }
 
-        public void refresh_dataGridView()
+        public void AtualizandoDataGridView()
         {
             pokemonDataGriedView.DataSource = typeof(List<Pokemon>);
             pokemonDataGriedView.DataSource = listaPokemons;
         }
 
-       
+
     }
 }

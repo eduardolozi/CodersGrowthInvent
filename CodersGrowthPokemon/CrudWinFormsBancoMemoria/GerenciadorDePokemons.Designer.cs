@@ -40,6 +40,8 @@
             // 
             pokemonDataGriedView.AllowUserToAddRows = false;
             pokemonDataGriedView.AllowUserToDeleteRows = false;
+            pokemonDataGriedView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pokemonDataGriedView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             pokemonDataGriedView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             pokemonDataGriedView.Location = new Point(37, 96);
             pokemonDataGriedView.Name = "pokemonDataGriedView";
@@ -51,6 +53,7 @@
             // 
             // label1
             // 
+            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point);
             label1.Location = new Point(502, 25);
@@ -61,16 +64,18 @@
             // 
             // btnCriar
             // 
+            btnCriar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCriar.Location = new Point(982, 667);
             btnCriar.Name = "btnCriar";
             btnCriar.Size = new Size(94, 29);
             btnCriar.TabIndex = 2;
             btnCriar.Text = "Criar";
             btnCriar.UseVisualStyleBackColor = true;
-            btnCriar.Click += btnCriar_Click;
+            btnCriar.Click += AoClicarNoBotaoAdicionar;
             // 
             // btnEditar
             // 
+            btnEditar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnEditar.Location = new Point(1095, 667);
             btnEditar.Name = "btnEditar";
             btnEditar.Size = new Size(94, 29);
@@ -80,6 +85,7 @@
             // 
             // btnApagar
             // 
+            btnApagar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnApagar.Location = new Point(1204, 667);
             btnApagar.Name = "btnApagar";
             btnApagar.Size = new Size(94, 29);
@@ -87,7 +93,7 @@
             btnApagar.Text = "Apagar";
             btnApagar.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // GerenciadorDePokemons
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -97,7 +103,7 @@
             Controls.Add(btnCriar);
             Controls.Add(label1);
             Controls.Add(pokemonDataGriedView);
-            Name = "Form1";
+            Name = "GerenciadorDePokemons";
             Text = "Form1";
             Load += GerenciadorDePokemons_Load;
             ((System.ComponentModel.ISupportInitialize)pokemonDataGriedView).EndInit();
