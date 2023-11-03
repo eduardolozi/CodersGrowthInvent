@@ -1,4 +1,7 @@
 using CrudWinFormsBancoMemoria.Models;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace CrudWinFormsBancoMemoria
 {
@@ -22,6 +25,30 @@ namespace CrudWinFormsBancoMemoria
 
         private void Criacao_DataGriedView()
         {
+            pokemonDataGriedView.DataSource = listaPokemons;
+        }
+
+        private void btnCriar_Click(object sender, EventArgs e)
+        {
+            var formCadastro = new CadastroPokemon();
+            formCadastro.ShowDialog();
+            if (formCadastro.DialogResult == DialogResult.OK)
+            {
+                SalvarPokemonCadastradoNaLista(formCadastro.novoPokemon);
+                formCadastro.Dispose();
+            }
+        }
+
+        private void SalvarPokemonCadastradoNaLista(Pokemon novoPokemon)
+        {
+            novoPokemon.Id = listaPokemons.Count + 1;
+            listaPokemons.Add(novoPokemon);
+            refresh_dataGridView();
+        }
+
+        public void refresh_dataGridView()
+        {
+            pokemonDataGriedView.DataSource = typeof(List<Pokemon>);
             pokemonDataGriedView.DataSource = listaPokemons;
         }
 
