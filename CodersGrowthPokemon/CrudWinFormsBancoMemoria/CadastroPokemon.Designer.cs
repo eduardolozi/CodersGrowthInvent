@@ -51,11 +51,15 @@
             nivelErrorProvider = new ErrorProvider(components);
             alturaErrorProvider = new ErrorProvider(components);
             dataErrorProvider = new ErrorProvider(components);
+            fotoPokemon = new PictureBox();
+            botaoImagem = new Button();
+            txtFoto = new TextBox();
             ((System.ComponentModel.ISupportInitialize)nomeErrorProvider).BeginInit();
             ((System.ComponentModel.ISupportInitialize)apelidoErrorProvider).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nivelErrorProvider).BeginInit();
             ((System.ComponentModel.ISupportInitialize)alturaErrorProvider).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataErrorProvider).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)fotoPokemon).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -73,7 +77,7 @@
             txtNome.Location = new Point(33, 77);
             txtNome.MaxLength = 11;
             txtNome.Name = "txtNome";
-            txtNome.Size = new Size(231, 27);
+            txtNome.Size = new Size(322, 27);
             txtNome.TabIndex = 1;
             txtNome.KeyPress += AoApertarTeclaNoTxtNome;
             // 
@@ -83,7 +87,7 @@
             txtApelido.Location = new Point(33, 150);
             txtApelido.MaxLength = 20;
             txtApelido.Name = "txtApelido";
-            txtApelido.Size = new Size(231, 27);
+            txtApelido.Size = new Size(322, 27);
             txtApelido.TabIndex = 3;
             txtApelido.KeyPress += AoApertarTeclaNoTxtApelido;
             // 
@@ -102,7 +106,7 @@
             txtNivel.Location = new Point(33, 233);
             txtNivel.MaxLength = 3;
             txtNivel.Name = "txtNivel";
-            txtNivel.Size = new Size(231, 27);
+            txtNivel.Size = new Size(322, 27);
             txtNivel.TabIndex = 5;
             txtNivel.KeyPress += AoApertarTeclaNoTxtNivel;
             // 
@@ -121,7 +125,7 @@
             txtAltura.Location = new Point(33, 314);
             txtAltura.MaxLength = 4;
             txtAltura.Name = "txtAltura";
-            txtAltura.Size = new Size(231, 27);
+            txtAltura.Size = new Size(322, 27);
             txtAltura.TabIndex = 7;
             txtAltura.KeyPress += AoApertarTeclaNoTxtAltura;
             // 
@@ -150,7 +154,7 @@
             cboTipoPrincipal.FormattingEnabled = true;
             cboTipoPrincipal.Location = new Point(33, 482);
             cboTipoPrincipal.Name = "cboTipoPrincipal";
-            cboTipoPrincipal.Size = new Size(231, 28);
+            cboTipoPrincipal.Size = new Size(322, 28);
             cboTipoPrincipal.TabIndex = 9;
             // 
             // label5
@@ -177,7 +181,7 @@
             cboTipoSecundario.FormattingEnabled = true;
             cboTipoSecundario.Location = new Point(33, 563);
             cboTipoSecundario.Name = "cboTipoSecundario";
-            cboTipoSecundario.Size = new Size(231, 28);
+            cboTipoSecundario.Size = new Size(322, 28);
             cboTipoSecundario.TabIndex = 11;
             // 
             // dtpCaptura
@@ -185,7 +189,7 @@
             dtpCaptura.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dtpCaptura.Location = new Point(33, 400);
             dtpCaptura.Name = "dtpCaptura";
-            dtpCaptura.Size = new Size(231, 27);
+            dtpCaptura.Size = new Size(322, 27);
             dtpCaptura.TabIndex = 13;
             // 
             // label7
@@ -211,7 +215,7 @@
             // botaoCancelar
             // 
             botaoCancelar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            botaoCancelar.Location = new Point(362, 665);
+            botaoCancelar.Location = new Point(770, 665);
             botaoCancelar.Name = "botaoCancelar";
             botaoCancelar.Size = new Size(104, 35);
             botaoCancelar.TabIndex = 16;
@@ -239,11 +243,42 @@
             // 
             dataErrorProvider.ContainerControl = this;
             // 
+            // fotoPokemon
+            // 
+            fotoPokemon.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            fotoPokemon.Location = new Point(411, 54);
+            fotoPokemon.Name = "fotoPokemon";
+            fotoPokemon.Size = new Size(478, 372);
+            fotoPokemon.TabIndex = 17;
+            fotoPokemon.TabStop = false;
+            // 
+            // botaoImagem
+            // 
+            botaoImagem.Anchor = AnchorStyles.Right;
+            botaoImagem.Location = new Point(411, 467);
+            botaoImagem.Name = "botaoImagem";
+            botaoImagem.Size = new Size(145, 29);
+            botaoImagem.TabIndex = 18;
+            botaoImagem.Text = "Buscar imagem";
+            botaoImagem.UseVisualStyleBackColor = true;
+            botaoImagem.Click += AoClicarNoBotaoBuscarImagem;
+            // 
+            // txtFoto
+            // 
+            txtFoto.Anchor = AnchorStyles.Right;
+            txtFoto.Location = new Point(411, 434);
+            txtFoto.Name = "txtFoto";
+            txtFoto.Size = new Size(378, 27);
+            txtFoto.TabIndex = 19;
+            // 
             // CadastroPokemon
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(493, 712);
+            ClientSize = new Size(901, 712);
+            Controls.Add(txtFoto);
+            Controls.Add(botaoImagem);
+            Controls.Add(fotoPokemon);
             Controls.Add(botaoCancelar);
             Controls.Add(botaoAdicionar);
             Controls.Add(label7);
@@ -269,6 +304,7 @@
             ((System.ComponentModel.ISupportInitialize)nivelErrorProvider).EndInit();
             ((System.ComponentModel.ISupportInitialize)alturaErrorProvider).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataErrorProvider).EndInit();
+            ((System.ComponentModel.ISupportInitialize)fotoPokemon).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -297,5 +333,8 @@
         private ErrorProvider nivelErrorProvider;
         private ErrorProvider alturaErrorProvider;
         private ErrorProvider dataErrorProvider;
+        private PictureBox fotoPokemon;
+        private Button botaoImagem;
+        private TextBox txtFoto;
     }
 }

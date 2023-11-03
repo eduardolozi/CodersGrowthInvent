@@ -42,7 +42,7 @@ namespace CrudWinFormsBancoMemoria.Validacoes
 
         public static void ValidarAltura(TextBox txtAltura, ErrorProvider alturaErrorProvider) 
         {
-            string padrao = @"^[0-9]([.,][0-9]{1,3})?$";
+            string padrao = @"^[0-9]([.][0-9]{1,3})?$";
             if (!Regex.IsMatch(txtAltura.Text, padrao))
             {
                 alturaErrorProvider.SetError(txtAltura, "Altura inválida (MAX: 7.000m / MIN: 0.100). Evite usar caracteres");

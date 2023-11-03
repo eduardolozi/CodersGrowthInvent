@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,7 +64,7 @@ namespace CrudWinFormsBancoMemoria
                 nivelErrorProvider.SetError(txtNivel, "");
 
                 ValidacaoCadastro.ValidarAltura(txtAltura, alturaErrorProvider);
-                novoPokemon.Altura = Convert.ToDecimal(txtAltura.Text);
+                novoPokemon.Altura = Convert.ToDecimal(txtAltura.Text, new CultureInfo("en-US"));
                 alturaErrorProvider.SetError(txtAltura, "");
 
                 novoPokemon.DataDeCaptura = dtpCaptura.Value;
@@ -76,6 +78,8 @@ namespace CrudWinFormsBancoMemoria
                 else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(cboTipoSecundario.Text);
 
                 novoPokemon.Shiny = cbShiny.Checked;
+
+
 
                 this.DialogResult = DialogResult.OK;
             }
@@ -111,7 +115,7 @@ namespace CrudWinFormsBancoMemoria
 
         private void AoApertarTeclaNoTxtAltura(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.' && e.KeyChar != ','))
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
             {
                 e.Handled = true;
             }
@@ -122,7 +126,18 @@ namespace CrudWinFormsBancoMemoria
             }
         }
 
-        
+        private void AoClicarNoBotaoBuscarImagem(object sender, EventArgs e)
+        {
+
+            OpenFileDialog arquivo = new OpenFileDialog();
+            arquivo.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*";
+            if (arquivo.ShowDialog() == DialogResult.OK)
+            {
+                txtFoto.Text = arquivo.FileName;
+                fotoPokemon.Image = Image.FromFile(txtFoto.Text);
+            }
+
+        }
     }
 
 }
