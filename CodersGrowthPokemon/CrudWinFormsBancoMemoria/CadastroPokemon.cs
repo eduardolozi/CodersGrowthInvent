@@ -39,8 +39,6 @@ namespace CrudWinFormsBancoMemoria
             }
         }
 
-
-
         private void aoClicarBotaoCancelar(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
@@ -65,6 +63,5 @@ namespace CrudWinFormsBancoMemoria
 
             this.DialogResult = DialogResult.OK;
         }
-
     }
 }
