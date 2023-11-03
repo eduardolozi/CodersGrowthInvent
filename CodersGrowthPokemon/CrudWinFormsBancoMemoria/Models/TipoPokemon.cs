@@ -17,6 +17,7 @@
         Fantasma,
         Noturno,
         Aco,
-        Dragao
+        Dragao, 
+        Normal
     }
 }

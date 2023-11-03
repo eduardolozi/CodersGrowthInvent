@@ -249,6 +249,7 @@
             fotoPokemon.Location = new Point(411, 54);
             fotoPokemon.Name = "fotoPokemon";
             fotoPokemon.Size = new Size(478, 372);
+            fotoPokemon.SizeMode = PictureBoxSizeMode.StretchImage;
             fotoPokemon.TabIndex = 17;
             fotoPokemon.TabStop = false;
             // 
@@ -266,9 +267,9 @@
             // txtFoto
             // 
             txtFoto.Anchor = AnchorStyles.Right;
-            txtFoto.Location = new Point(411, 434);
+            txtFoto.Location = new Point(411, 432);
             txtFoto.Name = "txtFoto";
-            txtFoto.Size = new Size(378, 27);
+            txtFoto.Size = new Size(478, 27);
             txtFoto.TabIndex = 19;
             // 
             // CadastroPokemon

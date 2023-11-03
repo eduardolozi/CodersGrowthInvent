@@ -67,6 +67,7 @@ namespace CrudWinFormsBancoMemoria
                 novoPokemon.Altura = Convert.ToDecimal(txtAltura.Text, new CultureInfo("en-US"));
                 alturaErrorProvider.SetError(txtAltura, "");
 
+                ValidacaoCadastro.ValidarDataDeCaptura(dtpCaptura, dataErrorProvider);
                 novoPokemon.DataDeCaptura = dtpCaptura.Value;
                 dataErrorProvider.SetError(dtpCaptura, "");
 
@@ -83,7 +84,7 @@ namespace CrudWinFormsBancoMemoria
 
                 this.DialogResult = DialogResult.OK;
             }
-            catch (Exception ex) when (ex is NomeInvalidoException || ex is ApelidoInvalidoException || ex is NivelInvalidoException || ex is AlturaInvalidaException)
+            catch (Exception ex) when (ex is NomeInvalidoException || ex is ApelidoInvalidoException || ex is NivelInvalidoException || ex is AlturaInvalidaException || ex is DataInvalidaException)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -128,7 +129,6 @@ namespace CrudWinFormsBancoMemoria
 
         private void AoClicarNoBotaoBuscarImagem(object sender, EventArgs e)
         {
-
             OpenFileDialog arquivo = new OpenFileDialog();
             arquivo.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*";
             if (arquivo.ShowDialog() == DialogResult.OK)

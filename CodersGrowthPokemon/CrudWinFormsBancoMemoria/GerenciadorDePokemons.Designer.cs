@@ -105,7 +105,6 @@
             Controls.Add(pokemonDataGriedView);
             Name = "GerenciadorDePokemons";
             Text = "Form1";
-            Load += GerenciadorDePokemons_Load;
             ((System.ComponentModel.ISupportInitialize)pokemonDataGriedView).EndInit();
             ResumeLayout(false);
             PerformLayout();

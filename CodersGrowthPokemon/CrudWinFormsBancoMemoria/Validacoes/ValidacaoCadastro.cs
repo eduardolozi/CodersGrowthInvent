@@ -55,5 +55,15 @@ namespace CrudWinFormsBancoMemoria.Validacoes
                 throw new AlturaInvalidaException(txtAltura.Text);
             }
         }
+
+        public static void ValidarDataDeCaptura(DateTimePicker dataCaptura, ErrorProvider dataErrorProvider)
+        {
+            DateTime dataLancamento = new DateTime(1996, 2, 27);
+            if(dataCaptura.Value > DateTime.Now || dataCaptura.Value < dataLancamento)
+            {
+                dataErrorProvider.SetError(dataCaptura, $"Data Mínima: 27/02/1996 e Data Máxima: {DateTime.Now.ToShortDateString()}");
+                throw new DataInvalidaException(dataCaptura.Value);
+            }
+        }
     }
 }
