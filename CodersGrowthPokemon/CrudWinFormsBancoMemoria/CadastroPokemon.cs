@@ -138,11 +138,19 @@ namespace CrudWinFormsBancoMemoria
             arquivo.Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG|All files (*.*)|*.*";
             if (arquivo.ShowDialog() == DialogResult.OK)
             {
-                txtFoto.Text = arquivo.FileName;
-                fotoPokemon.Image = Image.FromFile(txtFoto.Text);
-                byte[] bytes =  File.ReadAllBytes(txtFoto.Text);
-                string fotoEmBase64 = Convert.ToBase64String(bytes);
-                novoPokemon.Foto = fotoEmBase64;
+                try
+                {
+                    txtFoto.Text = arquivo.FileName;
+                    fotoPokemon.Image = Image.FromFile(txtFoto.Text);
+                    byte[] bytes = File.ReadAllBytes(txtFoto.Text);
+                    string fotoEmBase64 = Convert.ToBase64String(bytes);
+                    ValidacaoCadastro.ValidarImagem(botaoImagem, bytes, fotoErrorProvider);
+                    novoPokemon.Foto = fotoEmBase64;
+                    fotoErrorProvider.SetError(botaoImagem, "");
+                } catch(ImagemInvalidaException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
     }

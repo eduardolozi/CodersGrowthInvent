@@ -1,6 +1,8 @@
 ﻿using CrudWinFormsBancoMemoria.Models;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -92,6 +94,20 @@ namespace CrudWinFormsBancoMemoria.Validacoes
             {
                 cbShinyErrorProvider.SetError(cbShiny, "Erro: CheckBox nulo.");
                 throw new("Erro: Checkbox nulo.");
+            }
+        }
+
+        public static void ValidarImagem(Button botaoImagem, byte[] bytes, ErrorProvider fotoErrorProvider)
+        {
+            var bmp = Encoding.ASCII.GetBytes("BM");     
+            var gif = Encoding.ASCII.GetBytes("GIF");    
+            var png = new byte[] { 137, 80, 78, 71 };   
+            var jpeg = new byte[] { 255, 216, 255, 224 };
+
+            if (!bmp.SequenceEqual(bytes.Take(bmp.Length)) && !gif.SequenceEqual(bytes.Take(gif.Length)) && !png.SequenceEqual(bytes.Take(png.Length)) && !jpeg.SequenceEqual(bytes.Take(jpeg.Length)))
+            {
+                fotoErrorProvider.SetError(botaoImagem, "Extensão do arquivo inválida.");
+                throw new ImagemInvalidaException("Extensão do arquivo inválida.");
             }
         }
     }
