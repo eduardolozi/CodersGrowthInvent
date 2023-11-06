@@ -12,6 +12,7 @@ namespace CrudWinFormsBancoMemoria
         public GerenciadorDePokemons()
         {
             InitializeComponent();
+
             pokemonDataGriedView.DataSource = null;
         }
 
@@ -39,15 +40,17 @@ namespace CrudWinFormsBancoMemoria
         {
             pokemonDataGriedView.DataSource = typeof(List<Pokemon>);
             pokemonDataGriedView.DataSource = listaPokemons;
+
         }
 
-        private void pokemonDataGriedView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void AoClicarDuasVezesNaCelulaDeFotoExibeAFoto(object sender, DataGridViewCellEventArgs e)
         {
             var cell = this.pokemonDataGriedView.CurrentCell.Value.ToString();
             if (pokemonDataGriedView.CurrentCell.ColumnIndex == 9)
             {
                 byte[] imagemEmBytes = Convert.FromBase64String(cell);
-                using(var ms = new MemoryStream(imagemEmBytes, 0, imagemEmBytes.Length)) {
+                using (var ms = new MemoryStream(imagemEmBytes, 0, imagemEmBytes.Length))
+                {
                     Image foto = Image.FromStream(ms, true);
                     var formImagem = new FormImagem();
                     formImagem.Show();
@@ -56,6 +59,12 @@ namespace CrudWinFormsBancoMemoria
             }
         }
 
-
+        private void pokemonDataGriedView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.Value != null && e.ColumnIndex == 9)
+            {
+                e.Value = "Clique para ver";
+            }
+        }
     }
 }

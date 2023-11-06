@@ -28,12 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GerenciadorDePokemons));
             pokemonDataGriedView = new DataGridView();
+            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            nomeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            apelidoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            nivelDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            alturaDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            shinyDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
+            dataDeCapturaDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            tipoPrincipalDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            tipoSecundarioDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            fotoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            pokemonBindingSource = new BindingSource(components);
             label1 = new Label();
             btnCriar = new Button();
             btnEditar = new Button();
             btnApagar = new Button();
             ((System.ComponentModel.ISupportInitialize)pokemonDataGriedView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pokemonBindingSource).BeginInit();
             SuspendLayout();
             // 
             // pokemonDataGriedView
@@ -41,8 +55,11 @@
             pokemonDataGriedView.AllowUserToAddRows = false;
             pokemonDataGriedView.AllowUserToDeleteRows = false;
             pokemonDataGriedView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pokemonDataGriedView.AutoGenerateColumns = false;
             pokemonDataGriedView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             pokemonDataGriedView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            pokemonDataGriedView.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nomeDataGridViewTextBoxColumn, apelidoDataGridViewTextBoxColumn, nivelDataGridViewTextBoxColumn, alturaDataGridViewTextBoxColumn, shinyDataGridViewCheckBoxColumn, dataDeCapturaDataGridViewTextBoxColumn, tipoPrincipalDataGridViewTextBoxColumn, tipoSecundarioDataGridViewTextBoxColumn, fotoDataGridViewTextBoxColumn });
+            pokemonDataGriedView.DataSource = pokemonBindingSource;
             pokemonDataGriedView.Location = new Point(37, 96);
             pokemonDataGriedView.Name = "pokemonDataGriedView";
             pokemonDataGriedView.ReadOnly = true;
@@ -50,7 +67,92 @@
             pokemonDataGriedView.RowTemplate.Height = 29;
             pokemonDataGriedView.Size = new Size(1261, 565);
             pokemonDataGriedView.TabIndex = 0;
-            pokemonDataGriedView.CellDoubleClick += pokemonDataGriedView_CellDoubleClick;
+            pokemonDataGriedView.CellDoubleClick += AoClicarDuasVezesNaCelulaDeFotoExibeAFoto;
+            pokemonDataGriedView.CellFormatting += pokemonDataGriedView_CellFormatting;
+            // 
+            // idDataGridViewTextBoxColumn
+            // 
+            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
+            idDataGridViewTextBoxColumn.HeaderText = "Id";
+            idDataGridViewTextBoxColumn.MinimumWidth = 6;
+            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            idDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // nomeDataGridViewTextBoxColumn
+            // 
+            nomeDataGridViewTextBoxColumn.DataPropertyName = "Nome";
+            nomeDataGridViewTextBoxColumn.HeaderText = "Nome";
+            nomeDataGridViewTextBoxColumn.MinimumWidth = 6;
+            nomeDataGridViewTextBoxColumn.Name = "nomeDataGridViewTextBoxColumn";
+            nomeDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // apelidoDataGridViewTextBoxColumn
+            // 
+            apelidoDataGridViewTextBoxColumn.DataPropertyName = "Apelido";
+            apelidoDataGridViewTextBoxColumn.HeaderText = "Apelido";
+            apelidoDataGridViewTextBoxColumn.MinimumWidth = 6;
+            apelidoDataGridViewTextBoxColumn.Name = "apelidoDataGridViewTextBoxColumn";
+            apelidoDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // nivelDataGridViewTextBoxColumn
+            // 
+            nivelDataGridViewTextBoxColumn.DataPropertyName = "Nivel";
+            nivelDataGridViewTextBoxColumn.HeaderText = "Nível";
+            nivelDataGridViewTextBoxColumn.MinimumWidth = 6;
+            nivelDataGridViewTextBoxColumn.Name = "nivelDataGridViewTextBoxColumn";
+            nivelDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // alturaDataGridViewTextBoxColumn
+            // 
+            alturaDataGridViewTextBoxColumn.DataPropertyName = "Altura";
+            alturaDataGridViewTextBoxColumn.HeaderText = "Altura";
+            alturaDataGridViewTextBoxColumn.MinimumWidth = 6;
+            alturaDataGridViewTextBoxColumn.Name = "alturaDataGridViewTextBoxColumn";
+            alturaDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // shinyDataGridViewCheckBoxColumn
+            // 
+            shinyDataGridViewCheckBoxColumn.DataPropertyName = "Shiny";
+            shinyDataGridViewCheckBoxColumn.HeaderText = "Shiny";
+            shinyDataGridViewCheckBoxColumn.MinimumWidth = 6;
+            shinyDataGridViewCheckBoxColumn.Name = "shinyDataGridViewCheckBoxColumn";
+            shinyDataGridViewCheckBoxColumn.ReadOnly = true;
+            // 
+            // dataDeCapturaDataGridViewTextBoxColumn
+            // 
+            dataDeCapturaDataGridViewTextBoxColumn.DataPropertyName = "DataDeCaptura";
+            dataDeCapturaDataGridViewTextBoxColumn.HeaderText = "Data de Captura";
+            dataDeCapturaDataGridViewTextBoxColumn.MinimumWidth = 6;
+            dataDeCapturaDataGridViewTextBoxColumn.Name = "dataDeCapturaDataGridViewTextBoxColumn";
+            dataDeCapturaDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // tipoPrincipalDataGridViewTextBoxColumn
+            // 
+            tipoPrincipalDataGridViewTextBoxColumn.DataPropertyName = "TipoPrincipal";
+            tipoPrincipalDataGridViewTextBoxColumn.HeaderText = "Tipo Principal";
+            tipoPrincipalDataGridViewTextBoxColumn.MinimumWidth = 6;
+            tipoPrincipalDataGridViewTextBoxColumn.Name = "tipoPrincipalDataGridViewTextBoxColumn";
+            tipoPrincipalDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // tipoSecundarioDataGridViewTextBoxColumn
+            // 
+            tipoSecundarioDataGridViewTextBoxColumn.DataPropertyName = "TipoSecundario";
+            tipoSecundarioDataGridViewTextBoxColumn.HeaderText = "Tipo Secundário";
+            tipoSecundarioDataGridViewTextBoxColumn.MinimumWidth = 6;
+            tipoSecundarioDataGridViewTextBoxColumn.Name = "tipoSecundarioDataGridViewTextBoxColumn";
+            tipoSecundarioDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // fotoDataGridViewTextBoxColumn
+            // 
+            fotoDataGridViewTextBoxColumn.DataPropertyName = "Foto";
+            fotoDataGridViewTextBoxColumn.HeaderText = "Foto";
+            fotoDataGridViewTextBoxColumn.MinimumWidth = 6;
+            fotoDataGridViewTextBoxColumn.Name = "fotoDataGridViewTextBoxColumn";
+            fotoDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // pokemonBindingSource
+            // 
+            pokemonBindingSource.DataSource = typeof(Models.Pokemon);
             // 
             // label1
             // 
@@ -104,9 +206,11 @@
             Controls.Add(btnCriar);
             Controls.Add(label1);
             Controls.Add(pokemonDataGriedView);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "GerenciadorDePokemons";
             Text = "Gerenciamento de Pokemons";
             ((System.ComponentModel.ISupportInitialize)pokemonDataGriedView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pokemonBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -118,5 +222,16 @@
         private Button btnCriar;
         private Button btnEditar;
         private Button btnApagar;
+        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn nomeDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn apelidoDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn nivelDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn alturaDataGridViewTextBoxColumn;
+        private DataGridViewCheckBoxColumn shinyDataGridViewCheckBoxColumn;
+        private DataGridViewTextBoxColumn dataDeCapturaDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn tipoPrincipalDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn tipoSecundarioDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn fotoDataGridViewTextBoxColumn;
+        private BindingSource pokemonBindingSource;
     }
 }

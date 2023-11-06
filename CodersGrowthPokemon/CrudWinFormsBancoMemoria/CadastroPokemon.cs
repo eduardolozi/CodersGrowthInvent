@@ -135,7 +135,7 @@ namespace CrudWinFormsBancoMemoria
         private void AoClicarNoBotaoBuscarImagem(object sender, EventArgs e)
         {
             OpenFileDialog arquivo = new OpenFileDialog();
-            arquivo.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*";
+            arquivo.Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG|All files (*.*)|*.*";
             if (arquivo.ShowDialog() == DialogResult.OK)
             {
                 txtFoto.Text = arquivo.FileName;
