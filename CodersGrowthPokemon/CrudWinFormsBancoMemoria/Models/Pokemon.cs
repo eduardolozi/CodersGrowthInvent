@@ -26,7 +26,7 @@ namespace CrudWinFormsBancoMemoria.Models
 
         public TipoPokemon? TipoSecundario { get; set; }
 
-        public Image? Foto { get; set; }
+        public string? Foto { get; set; }
         
     }
 }

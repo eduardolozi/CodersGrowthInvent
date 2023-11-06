@@ -50,6 +50,7 @@
             pokemonDataGriedView.RowTemplate.Height = 29;
             pokemonDataGriedView.Size = new Size(1261, 565);
             pokemonDataGriedView.TabIndex = 0;
+            pokemonDataGriedView.CellDoubleClick += pokemonDataGriedView_CellDoubleClick;
             // 
             // label1
             // 

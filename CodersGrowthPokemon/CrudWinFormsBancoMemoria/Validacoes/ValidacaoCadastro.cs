@@ -78,10 +78,20 @@ namespace CrudWinFormsBancoMemoria.Validacoes
 
         public static void ValidarTipoSecundario(TipoPokemon tipoPrimario, ComboBox cboTipoSecundario, ErrorProvider cboTipoSecundarioErrorProvider)
         {
-            if(tipoPrimario.Equals(Enum.Parse<TipoPokemon>(cboTipoSecundario.Text)))
+            if (cboTipoSecundario.Text == "--Selecionar--") return;
+            if (tipoPrimario.Equals(Enum.Parse<TipoPokemon>(cboTipoSecundario.Text)))
             {
                 cboTipoSecundarioErrorProvider.SetError(cboTipoSecundario, "Tipo inválido");
                 throw new TipoInvalidoException(cboTipoSecundario.Text);
+            }
+        }
+
+        public static void ValidarShiny(CheckBox cbShiny, ErrorProvider cbShinyErrorProvider) 
+        {
+            if(cbShiny == null)
+            {
+                cbShinyErrorProvider.SetError(cbShiny, "Erro: CheckBox nulo.");
+                throw new("Erro: Checkbox nulo.");
             }
         }
     }

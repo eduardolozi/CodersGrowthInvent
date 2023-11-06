@@ -83,11 +83,13 @@ namespace CrudWinFormsBancoMemoria
                 else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(cboTipoSecundario.Text);
                 cboTipoSecundarioErrorProvider.SetError(cboTipoSecundario, "");
 
+                ValidacaoCadastro.ValidarShiny(cbShiny, cbShinyErrorProvider);
                 novoPokemon.Shiny = cbShiny.Checked;
+                cbShinyErrorProvider.SetError(cbShiny, "");
 
                 this.DialogResult = DialogResult.OK;
             }
-            catch (Exception ex) when (ex is NomeInvalidoException || ex is ApelidoInvalidoException || ex is NivelInvalidoException || ex is AlturaInvalidaException || ex is DataInvalidaException || ex is TipoInvalidoException)
+            catch (Exception ex) when (ex is NomeInvalidoException || ex is ApelidoInvalidoException || ex is NivelInvalidoException || ex is AlturaInvalidaException || ex is DataInvalidaException || ex is TipoInvalidoException || ex is ShinyInvalidoException)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -138,8 +140,10 @@ namespace CrudWinFormsBancoMemoria
             {
                 txtFoto.Text = arquivo.FileName;
                 fotoPokemon.Image = Image.FromFile(txtFoto.Text);
+                byte[] bytes =  File.ReadAllBytes(txtFoto.Text);
+                string fotoEmBase64 = Convert.ToBase64String(bytes);
+                novoPokemon.Foto = fotoEmBase64;
             }
-
         }
     }
 

@@ -56,6 +56,8 @@
             txtFoto = new TextBox();
             cboTipoPrincipalErrorProvider = new ErrorProvider(components);
             cboTipoSecundarioErrorProvider = new ErrorProvider(components);
+            cbShinyErrorProvider = new ErrorProvider(components);
+            fotoErrorProvider = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)nomeErrorProvider).BeginInit();
             ((System.ComponentModel.ISupportInitialize)apelidoErrorProvider).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nivelErrorProvider).BeginInit();
@@ -64,6 +66,8 @@
             ((System.ComponentModel.ISupportInitialize)fotoPokemon).BeginInit();
             ((System.ComponentModel.ISupportInitialize)cboTipoPrincipalErrorProvider).BeginInit();
             ((System.ComponentModel.ISupportInitialize)cboTipoSecundarioErrorProvider).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbShinyErrorProvider).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)fotoErrorProvider).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -284,6 +288,14 @@
             // 
             cboTipoSecundarioErrorProvider.ContainerControl = this;
             // 
+            // cbShinyErrorProvider
+            // 
+            cbShinyErrorProvider.ContainerControl = this;
+            // 
+            // fotoErrorProvider
+            // 
+            fotoErrorProvider.ContainerControl = this;
+            // 
             // CadastroPokemon
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -320,6 +332,8 @@
             ((System.ComponentModel.ISupportInitialize)fotoPokemon).EndInit();
             ((System.ComponentModel.ISupportInitialize)cboTipoPrincipalErrorProvider).EndInit();
             ((System.ComponentModel.ISupportInitialize)cboTipoSecundarioErrorProvider).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbShinyErrorProvider).EndInit();
+            ((System.ComponentModel.ISupportInitialize)fotoErrorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -353,5 +367,7 @@
         private TextBox txtFoto;
         private ErrorProvider cboTipoPrincipalErrorProvider;
         private ErrorProvider cboTipoSecundarioErrorProvider;
+        private ErrorProvider cbShinyErrorProvider;
+        private ErrorProvider fotoErrorProvider;
     }
 }
