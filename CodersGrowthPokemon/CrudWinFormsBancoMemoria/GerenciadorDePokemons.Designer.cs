@@ -67,8 +67,8 @@
             pokemonDataGriedView.RowTemplate.Height = 29;
             pokemonDataGriedView.Size = new Size(1261, 565);
             pokemonDataGriedView.TabIndex = 0;
-            pokemonDataGriedView.CellDoubleClick += AoClicarDuasVezesNaCelulaDeFotoExibeAFoto;
-            pokemonDataGriedView.CellFormatting += pokemonDataGriedView_CellFormatting;
+            pokemonDataGriedView.CellDoubleClick += AoClicarDuasVezesNaCelulaDeFoto;
+            pokemonDataGriedView.CellFormatting += FormatandoAsCedulasDeFoto;
             // 
             // idDataGridViewTextBoxColumn
             // 

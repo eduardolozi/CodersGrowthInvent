@@ -37,37 +37,21 @@
             label3 = new Label();
             txtAltura = new TextBox();
             label4 = new Label();
-            cbShiny = new CheckBox();
-            cboTipoPrincipal = new ComboBox();
+            checkBoxShiny = new CheckBox();
+            comboBoxTipoPrincipal = new ComboBox();
             label5 = new Label();
             label6 = new Label();
-            cboTipoSecundario = new ComboBox();
-            dtpCaptura = new DateTimePicker();
+            comboBoxTipoSecundario = new ComboBox();
+            dataPickerCaptura = new DateTimePicker();
             label7 = new Label();
             botaoAdicionar = new Button();
             botaoCancelar = new Button();
-            nomeErrorProvider = new ErrorProvider(components);
-            apelidoErrorProvider = new ErrorProvider(components);
-            nivelErrorProvider = new ErrorProvider(components);
-            alturaErrorProvider = new ErrorProvider(components);
-            dataErrorProvider = new ErrorProvider(components);
             fotoPokemon = new PictureBox();
             botaoImagem = new Button();
             txtFoto = new TextBox();
-            cboTipoPrincipalErrorProvider = new ErrorProvider(components);
-            cboTipoSecundarioErrorProvider = new ErrorProvider(components);
-            cbShinyErrorProvider = new ErrorProvider(components);
-            fotoErrorProvider = new ErrorProvider(components);
-            ((System.ComponentModel.ISupportInitialize)nomeErrorProvider).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)apelidoErrorProvider).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)nivelErrorProvider).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)alturaErrorProvider).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataErrorProvider).BeginInit();
+            erroNoCampo = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)fotoPokemon).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)cboTipoPrincipalErrorProvider).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)cboTipoSecundarioErrorProvider).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)cbShinyErrorProvider).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)fotoErrorProvider).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)erroNoCampo).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -146,24 +130,24 @@
             label4.TabIndex = 6;
             label4.Text = "Altura";
             // 
-            // cbShiny
+            // checkBoxShiny
             // 
-            cbShiny.AutoSize = true;
-            cbShiny.Location = new Point(33, 621);
-            cbShiny.Name = "cbShiny";
-            cbShiny.Size = new Size(66, 24);
-            cbShiny.TabIndex = 8;
-            cbShiny.Text = "Shiny";
-            cbShiny.UseVisualStyleBackColor = true;
+            checkBoxShiny.AutoSize = true;
+            checkBoxShiny.Location = new Point(33, 621);
+            checkBoxShiny.Name = "checkBoxShiny";
+            checkBoxShiny.Size = new Size(66, 24);
+            checkBoxShiny.TabIndex = 8;
+            checkBoxShiny.Text = "Shiny";
+            checkBoxShiny.UseVisualStyleBackColor = true;
             // 
-            // cboTipoPrincipal
+            // comboBoxTipoPrincipal
             // 
-            cboTipoPrincipal.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            cboTipoPrincipal.FormattingEnabled = true;
-            cboTipoPrincipal.Location = new Point(33, 482);
-            cboTipoPrincipal.Name = "cboTipoPrincipal";
-            cboTipoPrincipal.Size = new Size(322, 28);
-            cboTipoPrincipal.TabIndex = 9;
+            comboBoxTipoPrincipal.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            comboBoxTipoPrincipal.FormattingEnabled = true;
+            comboBoxTipoPrincipal.Location = new Point(33, 482);
+            comboBoxTipoPrincipal.Name = "comboBoxTipoPrincipal";
+            comboBoxTipoPrincipal.Size = new Size(322, 28);
+            comboBoxTipoPrincipal.TabIndex = 9;
             // 
             // label5
             // 
@@ -183,22 +167,22 @@
             label6.TabIndex = 12;
             label6.Text = "Tipo Secundário";
             // 
-            // cboTipoSecundario
+            // comboBoxTipoSecundario
             // 
-            cboTipoSecundario.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            cboTipoSecundario.FormattingEnabled = true;
-            cboTipoSecundario.Location = new Point(33, 563);
-            cboTipoSecundario.Name = "cboTipoSecundario";
-            cboTipoSecundario.Size = new Size(322, 28);
-            cboTipoSecundario.TabIndex = 11;
+            comboBoxTipoSecundario.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            comboBoxTipoSecundario.FormattingEnabled = true;
+            comboBoxTipoSecundario.Location = new Point(33, 563);
+            comboBoxTipoSecundario.Name = "comboBoxTipoSecundario";
+            comboBoxTipoSecundario.Size = new Size(322, 28);
+            comboBoxTipoSecundario.TabIndex = 11;
             // 
-            // dtpCaptura
+            // dataPickerCaptura
             // 
-            dtpCaptura.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dtpCaptura.Location = new Point(33, 400);
-            dtpCaptura.Name = "dtpCaptura";
-            dtpCaptura.Size = new Size(322, 27);
-            dtpCaptura.TabIndex = 13;
+            dataPickerCaptura.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataPickerCaptura.Location = new Point(33, 400);
+            dataPickerCaptura.Name = "dataPickerCaptura";
+            dataPickerCaptura.Size = new Size(322, 27);
+            dataPickerCaptura.TabIndex = 13;
             // 
             // label7
             // 
@@ -218,7 +202,7 @@
             botaoAdicionar.TabIndex = 15;
             botaoAdicionar.Text = "Adicionar Pokemon";
             botaoAdicionar.UseVisualStyleBackColor = true;
-            botaoAdicionar.Click += aoClicarBotaoAdicionar;
+            botaoAdicionar.Click += AoClicarBotaoAdicionar;
             // 
             // botaoCancelar
             // 
@@ -229,27 +213,7 @@
             botaoCancelar.TabIndex = 16;
             botaoCancelar.Text = "Cancelar";
             botaoCancelar.UseVisualStyleBackColor = true;
-            botaoCancelar.Click += aoClicarBotaoCancelar;
-            // 
-            // nomeErrorProvider
-            // 
-            nomeErrorProvider.ContainerControl = this;
-            // 
-            // apelidoErrorProvider
-            // 
-            apelidoErrorProvider.ContainerControl = this;
-            // 
-            // nivelErrorProvider
-            // 
-            nivelErrorProvider.ContainerControl = this;
-            // 
-            // alturaErrorProvider
-            // 
-            alturaErrorProvider.ContainerControl = this;
-            // 
-            // dataErrorProvider
-            // 
-            dataErrorProvider.ContainerControl = this;
+            botaoCancelar.Click += AoClicarBotaoCancelar;
             // 
             // fotoPokemon
             // 
@@ -280,21 +244,9 @@
             txtFoto.Size = new Size(478, 27);
             txtFoto.TabIndex = 19;
             // 
-            // cboTipoPrincipalErrorProvider
+            // erroNoCampo
             // 
-            cboTipoPrincipalErrorProvider.ContainerControl = this;
-            // 
-            // cboTipoSecundarioErrorProvider
-            // 
-            cboTipoSecundarioErrorProvider.ContainerControl = this;
-            // 
-            // cbShinyErrorProvider
-            // 
-            cbShinyErrorProvider.ContainerControl = this;
-            // 
-            // fotoErrorProvider
-            // 
-            fotoErrorProvider.ContainerControl = this;
+            erroNoCampo.ContainerControl = this;
             // 
             // CadastroPokemon
             // 
@@ -307,12 +259,12 @@
             Controls.Add(botaoCancelar);
             Controls.Add(botaoAdicionar);
             Controls.Add(label7);
-            Controls.Add(dtpCaptura);
+            Controls.Add(dataPickerCaptura);
             Controls.Add(label6);
-            Controls.Add(cboTipoSecundario);
+            Controls.Add(comboBoxTipoSecundario);
             Controls.Add(label5);
-            Controls.Add(cboTipoPrincipal);
-            Controls.Add(cbShiny);
+            Controls.Add(comboBoxTipoPrincipal);
+            Controls.Add(checkBoxShiny);
             Controls.Add(txtAltura);
             Controls.Add(label4);
             Controls.Add(txtNivel);
@@ -324,16 +276,8 @@
             Name = "CadastroPokemon";
             Text = "Cadastro de Pokemon";
             Load += CadastroPokemon_Load;
-            ((System.ComponentModel.ISupportInitialize)nomeErrorProvider).EndInit();
-            ((System.ComponentModel.ISupportInitialize)apelidoErrorProvider).EndInit();
-            ((System.ComponentModel.ISupportInitialize)nivelErrorProvider).EndInit();
-            ((System.ComponentModel.ISupportInitialize)alturaErrorProvider).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataErrorProvider).EndInit();
             ((System.ComponentModel.ISupportInitialize)fotoPokemon).EndInit();
-            ((System.ComponentModel.ISupportInitialize)cboTipoPrincipalErrorProvider).EndInit();
-            ((System.ComponentModel.ISupportInitialize)cboTipoSecundarioErrorProvider).EndInit();
-            ((System.ComponentModel.ISupportInitialize)cbShinyErrorProvider).EndInit();
-            ((System.ComponentModel.ISupportInitialize)fotoErrorProvider).EndInit();
+            ((System.ComponentModel.ISupportInitialize)erroNoCampo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -348,26 +292,18 @@
         private Label label3;
         private TextBox txtAltura;
         private Label label4;
-        private CheckBox cbShiny;
-        private ComboBox cboTipoPrincipal;
+        private CheckBox checkBoxShiny;
+        private ComboBox comboBoxTipoPrincipal;
         private Label label5;
         private Label label6;
-        private ComboBox cboTipoSecundario;
-        private DateTimePicker dtpCaptura;
+        private ComboBox comboBoxTipoSecundario;
+        private DateTimePicker dataPickerCaptura;
         private Label label7;
         private Button botaoAdicionar;
         private Button botaoCancelar;
-        private ErrorProvider nomeErrorProvider;
-        private ErrorProvider apelidoErrorProvider;
-        private ErrorProvider nivelErrorProvider;
-        private ErrorProvider alturaErrorProvider;
-        private ErrorProvider dataErrorProvider;
         private PictureBox fotoPokemon;
         private Button botaoImagem;
         private TextBox txtFoto;
-        private ErrorProvider cboTipoPrincipalErrorProvider;
-        private ErrorProvider cboTipoSecundarioErrorProvider;
-        private ErrorProvider cbShinyErrorProvider;
-        private ErrorProvider fotoErrorProvider;
+        private ErrorProvider erroNoCampo;
     }
 }

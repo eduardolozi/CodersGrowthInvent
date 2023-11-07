@@ -2,6 +2,7 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Drawing.Design;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
@@ -12,92 +13,104 @@ namespace CrudWinFormsBancoMemoria.Validacoes
 {
     public class ValidacaoCadastro
     {
-        public static void ValidarNome(TextBox txtNome, ErrorProvider nomeErrorProvider)
+        public static string ValidaOsCampos(Pokemon pokemon)
+        {
+
+        }
+
+        public static string ValidarNome(TextBox txtNome, ErrorProvider erroNoCampoDeNome)
         {
             string padraoNome = @"^[a-zA-Z]{3,11}$";
             if(!Regex.IsMatch(txtNome.Text, padraoNome)) 
             {
-                nomeErrorProvider.SetError(txtNome, "Nome inválido, evite usar caracteres espciais e números.");
-                throw new NomeInvalidoException(txtNome.Text);
+                erroNoCampoDeNome.SetError(txtNome, "Nome inválido, evite usar caracteres especiais e números. Tamanho mínimo: 3 caracteres.");
+                return $"Nome \"{txtNome.Text}\" inválido.\n";
             }
+            return null;
         }
 
-        public static void ValidarApelido(TextBox txtApelido, ErrorProvider apelidoErrorProvider)
+        public static string ValidarApelido(TextBox txtApelido, ErrorProvider erroNoCampoDeApelido)
         {
             string padraoNome = @"^[a-zA-Z0-9 ]{1,20}$";
             if(!Regex.IsMatch(txtApelido.Text, padraoNome))
             {
-                apelidoErrorProvider.SetError(txtApelido, "Apelido inválido, evite usar caracteres especiais e números.");
-                throw new ApelidoInvalidoException(txtApelido.Text);
+                erroNoCampoDeApelido.SetError(txtApelido, "Apelido inválido, evite usar caracteres especiais e números.");
+                return $"Apelido \"{txtApelido.Text}\" inválido.\n";
             }
+            return null;
         }
 
-        public static void ValidarNivel(TextBox txtNivel, ErrorProvider nivelErrorProvider)
+        public static string ValidarNivel(TextBox txtNivel, ErrorProvider erroNoCampoDeNivel)
         {
             string padrao = @"^([1-9]{1}|[1-9]{2}|[1-9]0|100)$";
-            if (!Regex.IsMatch(txtNivel.Text, padrao))
+            if (!Regex.IsMatch(txtNivel.Text, padrao) || txtNivel.Text == "")
             {
-                nivelErrorProvider.SetError(txtNivel, "Nivel inválido. Evite usar caracteres.");
-                throw new NivelInvalidoException(txtNivel.Text);                
+                erroNoCampoDeNivel.SetError(txtNivel, "Nivel inválido. Evite usar caracteres.");
+                return $"Nivel {txtNivel.Text} inválido.\n";
             }
-
+            return null;
         }
 
-        public static void ValidarAltura(TextBox txtAltura, ErrorProvider alturaErrorProvider) 
+        public static string ValidarAltura(TextBox txtAltura, ErrorProvider erroNoCampoDeAltura) 
         {
             string padrao = @"^[0-9]([.][0-9]{1,3})?$";
             if (!Regex.IsMatch(txtAltura.Text, padrao))
             {
-                alturaErrorProvider.SetError(txtAltura, "Altura inválida (MAX: 7.000m / MIN: 0.100). Evite usar caracteres");
-                throw new AlturaInvalidaException(txtAltura.Text);
+                erroNoCampoDeAltura.SetError(txtAltura, "Altura inválida (MAX: 7.000m / MIN: 0.100). Evite usar caracteres");
+                return $"Altura {txtAltura.Text} inválida.\n";
             }
             decimal altura = Convert.ToDecimal(txtAltura.Text);
             if (altura < 0.1m)
             {
-                alturaErrorProvider.SetError(txtAltura, "Altura inválida (MAX: 7.000m / MIN: 0.100). Evite usar caracteres");
-                throw new AlturaInvalidaException(txtAltura.Text);
+                erroNoCampoDeAltura.SetError(txtAltura, "Altura inválida (MAX: 7.000m / MIN: 0.100). Evite usar caracteres");
+                return $"Altura {txtAltura.Text} inválida.\n";
             }
+            return null;
         }
 
-        public static void ValidarDataDeCaptura(DateTimePicker dataCaptura, ErrorProvider dataErrorProvider)
+        public static string ValidarDataDeCaptura(DateTimePicker dataCaptura, ErrorProvider erroNoCampoDeData)
         {
             DateTime dataLancamento = new DateTime(1996, 2, 27);
             if(dataCaptura.Value > DateTime.Now || dataCaptura.Value < dataLancamento)
             {
-                dataErrorProvider.SetError(dataCaptura, $"Data Mínima: 27/02/1996 e Data Máxima: {DateTime.Now.ToShortDateString()}");
-                throw new DataInvalidaException(dataCaptura.Value);
+                erroNoCampoDeData.SetError(dataCaptura, $"Data Mínima: 27/02/1996 e Data Máxima: {DateTime.Now.ToShortDateString()}");
+                return $"Data {dataCaptura.Value.ToShortDateString()} inválida.\n";
             }
+            return null;
         }
 
-        public static void ValidarTipoPrincipal(ComboBox cboTipoPrincipal,  ErrorProvider cboTipoPrincipalErrorProvider)
+        public static string ValidarTipoPrincipal(ComboBox comboBoxTipoPrincipal,  ErrorProvider erroNoCampoDeTipoPrincipal)
         {
-            if(cboTipoPrincipal.Text == "--Selecionar--")
+            if(comboBoxTipoPrincipal.Text == "--Selecionar--")
             {
-                cboTipoPrincipalErrorProvider.SetError(cboTipoPrincipal, "Tipo inválido");
-                throw new TipoInvalidoException(cboTipoPrincipal.Text);
+                erroNoCampoDeTipoPrincipal.SetError(comboBoxTipoPrincipal, "Tipo inválido");
+                return $"Tipo de Pokemon inválido.\n";
             }
+            return null;
         }
 
-        public static void ValidarTipoSecundario(TipoPokemon tipoPrimario, ComboBox cboTipoSecundario, ErrorProvider cboTipoSecundarioErrorProvider)
+        public static string ValidarTipoSecundario(TipoPokemon tipoPrimario, ComboBox comboBoxTipoSecundario, ErrorProvider erroNoCampoDeTipoSecundario)
         {
-            if (cboTipoSecundario.Text == "--Selecionar--") return;
-            if (tipoPrimario.Equals(Enum.Parse<TipoPokemon>(cboTipoSecundario.Text)))
+            if (comboBoxTipoSecundario.Text == "--Selecionar--") return null;
+            if (tipoPrimario.Equals(Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text)))
             {
-                cboTipoSecundarioErrorProvider.SetError(cboTipoSecundario, "Tipo inválido");
-                throw new TipoInvalidoException(cboTipoSecundario.Text);
+                erroNoCampoDeTipoSecundario.SetError(comboBoxTipoSecundario, "Tipo inválido");
+                return "Tipo inválido, não pode ser igual ao tipo principal.\n";
             }
+            return null;
         }
 
-        public static void ValidarShiny(CheckBox cbShiny, ErrorProvider cbShinyErrorProvider) 
+        public static string ValidarShiny(CheckBox checkBoxShiny, ErrorProvider erroNoCampoDeShiny) 
         {
-            if(cbShiny == null)
+            if(checkBoxShiny == null)
             {
-                cbShinyErrorProvider.SetError(cbShiny, "Erro: CheckBox nulo.");
-                throw new("Erro: Checkbox nulo.");
+                erroNoCampoDeShiny.SetError(checkBoxShiny, "Erro: CheckBox nulo.");
+                return "Erro: Checkbox nulo.\n";
             }
+            return null;
         }
 
-        public static void ValidarImagem(Button botaoImagem, byte[] bytes, ErrorProvider fotoErrorProvider)
+        public static string ValidarImagem(Button botaoImagem, ErrorProvider erroNoCampoDeImagem, byte[] bytes)
         {
             var bmp = Encoding.ASCII.GetBytes("BM");     
             var gif = Encoding.ASCII.GetBytes("GIF");    
@@ -106,9 +119,12 @@ namespace CrudWinFormsBancoMemoria.Validacoes
 
             if (!bmp.SequenceEqual(bytes.Take(bmp.Length)) && !gif.SequenceEqual(bytes.Take(gif.Length)) && !png.SequenceEqual(bytes.Take(png.Length)) && !jpeg.SequenceEqual(bytes.Take(jpeg.Length)))
             {
-                fotoErrorProvider.SetError(botaoImagem, "Extensão do arquivo inválida.");
-                throw new ImagemInvalidaException("Extensão do arquivo inválida.");
+                erroNoCampoDeImagem.SetError(botaoImagem, "Extensão do arquivo inválida.");
+                return "Extensão do arquivo inválida.\n";
             }
+            return null;
         }
+
+
     }
 }

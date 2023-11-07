@@ -43,23 +43,28 @@ namespace CrudWinFormsBancoMemoria
 
         }
 
-        private void AoClicarDuasVezesNaCelulaDeFotoExibeAFoto(object sender, DataGridViewCellEventArgs e)
+        private void ConverteBytesParaImagem(string cedula)
         {
-            var cell = this.pokemonDataGriedView.CurrentCell.Value.ToString();
-            if (pokemonDataGriedView.CurrentCell.ColumnIndex == 9)
+            byte[] imagemEmBytes = Convert.FromBase64String(cedula);
+            using (var ms = new MemoryStream(imagemEmBytes, 0, imagemEmBytes.Length))
             {
-                byte[] imagemEmBytes = Convert.FromBase64String(cell);
-                using (var ms = new MemoryStream(imagemEmBytes, 0, imagemEmBytes.Length))
-                {
-                    Image foto = Image.FromStream(ms, true);
-                    var formImagem = new FormImagem();
-                    formImagem.Show();
-                    formImagem.fotoPokemon.Image = foto;
-                }
+                Image foto = Image.FromStream(ms, true);
+                var formImagem = new FormImagem();
+                formImagem.Show();
+                formImagem.fotoPokemon.Image = foto;
             }
         }
 
-        private void pokemonDataGriedView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void AoClicarDuasVezesNaCelulaDeFoto(object sender, DataGridViewCellEventArgs e)
+        {
+            var cedula = this.pokemonDataGriedView.CurrentCell.Value.ToString();
+            if (pokemonDataGriedView.CurrentCell.ColumnIndex == 9)
+            {
+                ConverteBytesParaImagem(cedula);
+            }
+        }
+
+        private void FormatandoAsCedulasDeFoto(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.Value != null && e.ColumnIndex == 9)
             {

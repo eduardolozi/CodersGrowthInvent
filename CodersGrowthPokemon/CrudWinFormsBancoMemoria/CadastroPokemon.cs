@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Design;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ namespace CrudWinFormsBancoMemoria
     public partial class CadastroPokemon : Form
     {
         public Pokemon? novoPokemon = new Pokemon();
+        private string mensagemDeErro;
         public CadastroPokemon()
         {
             InitializeComponent();
@@ -24,75 +26,63 @@ namespace CrudWinFormsBancoMemoria
 
         private void CadastroPokemon_Load(object sender, EventArgs e)
         {
-            dtpCaptura.Format = DateTimePickerFormat.Custom;
-            dtpCaptura.CustomFormat = "dd/MM/yyyy";
+            dataPickerCaptura.Format = DateTimePickerFormat.Custom;
+            dataPickerCaptura.CustomFormat = "dd/MM/yyyy";
 
-            cboTipoPrincipal.Items.Insert(0, "--Selecionar--");
-            cboTipoPrincipal.SelectedIndex = 0;
+            comboBoxTipoPrincipal.Items.Insert(0, "--Selecionar--");
+            comboBoxTipoPrincipal.SelectedIndex = 0;
             foreach (var item in Enum.GetValues(typeof(TipoPokemon)))
             {
-                cboTipoPrincipal.Items.Add(item);
+                comboBoxTipoPrincipal.Items.Add(item);
             }
 
-            cboTipoSecundario.Items.Insert(0, "--Selecionar--");
-            cboTipoSecundario.SelectedIndex = 0;
+            comboBoxTipoSecundario.Items.Insert(0, "--Selecionar--");
+            comboBoxTipoSecundario.SelectedIndex = 0;
             foreach (var item in Enum.GetValues(typeof(TipoPokemon)))
             {
-                cboTipoSecundario.Items.Add(item);
+                comboBoxTipoSecundario.Items.Add(item);
             }
         }
 
-        private void aoClicarBotaoCancelar(object sender, EventArgs e)
+        private void AdicionaOsCamposNoPokemon()
         {
-            this.DialogResult = DialogResult.Cancel;
+            novoPokemon.Nome = txtNome.Text;
+            novoPokemon.Apelido = txtApelido.Text;
+            novoPokemon.Nivel = Convert.ToInt32(txtNivel.Text);
+            novoPokemon.Altura = Convert.ToDecimal(txtAltura.Text, new CultureInfo("en-US"));
+            novoPokemon.DataDeCaptura = dataPickerCaptura.Value;
+            novoPokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(comboBoxTipoPrincipal.Text);
+            if (comboBoxTipoSecundario.Text == "--Selecionar--")
+            {
+                novoPokemon.TipoSecundario = null;
+            }
+            else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text);
+            novoPokemon.Shiny = checkBoxShiny.Checked;
         }
 
-        public void aoClicarBotaoAdicionar(object sender, EventArgs e)
+        private void ValidaOsCampos()
+        {
+            ValidacaoCadastro.ValidaOsCampos(novoPokemon, erroNoCampo);
+        }
+
+        public void AoClicarBotaoAdicionar(object sender, EventArgs e)
         {
             try
             {
-                ValidacaoCadastro.ValidarNome(txtNome, nomeErrorProvider);
-                novoPokemon.Nome = txtNome.Text;
-                nomeErrorProvider.SetError(txtNome, "");
-
-                ValidacaoCadastro.ValidarApelido(txtApelido, apelidoErrorProvider);
-                novoPokemon.Apelido = txtApelido.Text;
-                apelidoErrorProvider.SetError(txtApelido, "");
-
-                ValidacaoCadastro.ValidarNivel(txtNivel, nivelErrorProvider);
-                novoPokemon.Nivel = Convert.ToInt32(txtNivel.Text);
-                nivelErrorProvider.SetError(txtNivel, "");
-
-                ValidacaoCadastro.ValidarAltura(txtAltura, alturaErrorProvider);
-                novoPokemon.Altura = Convert.ToDecimal(txtAltura.Text, new CultureInfo("en-US"));
-                alturaErrorProvider.SetError(txtAltura, "");
-
-                ValidacaoCadastro.ValidarDataDeCaptura(dtpCaptura, dataErrorProvider);
-                novoPokemon.DataDeCaptura = dtpCaptura.Value;
-                dataErrorProvider.SetError(dtpCaptura, "");
-
-                ValidacaoCadastro.ValidarTipoPrincipal(cboTipoPrincipal, cboTipoPrincipalErrorProvider);
-                novoPokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(cboTipoPrincipal.Text);
-                cboTipoPrincipalErrorProvider.SetError(cboTipoPrincipal, "");
-
-                ValidacaoCadastro.ValidarTipoSecundario(novoPokemon.TipoPrincipal, cboTipoSecundario, cboTipoSecundarioErrorProvider);
-                if (cboTipoSecundario.Text == "--Selecionar--")
-                {
-                    novoPokemon.TipoSecundario = null;
-                }
-                else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(cboTipoSecundario.Text);
-                cboTipoSecundarioErrorProvider.SetError(cboTipoSecundario, "");
-
-                ValidacaoCadastro.ValidarShiny(cbShiny, cbShinyErrorProvider);
-                novoPokemon.Shiny = cbShiny.Checked;
-                cbShinyErrorProvider.SetError(cbShiny, "");
+                AdicionaOsCamposNoPokemon();
+                ValidaOsCampos();
 
                 this.DialogResult = DialogResult.OK;
             }
-            catch (Exception ex) when (ex is NomeInvalidoException || ex is ApelidoInvalidoException || ex is NivelInvalidoException || ex is AlturaInvalidaException || ex is DataInvalidaException || ex is TipoInvalidoException || ex is ShinyInvalidoException)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void AoClicarBotaoCancelar(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
         }
 
         private void AoApertarTeclaNoTxtNome(object sender, KeyPressEventArgs e)
@@ -142,14 +132,15 @@ namespace CrudWinFormsBancoMemoria
                 {
                     txtFoto.Text = arquivo.FileName;
                     fotoPokemon.Image = Image.FromFile(txtFoto.Text);
-                    byte[] bytes = File.ReadAllBytes(txtFoto.Text);
-                    string fotoEmBase64 = Convert.ToBase64String(bytes);
-                    ValidacaoCadastro.ValidarImagem(botaoImagem, bytes, fotoErrorProvider);
+                    byte[] arquivoEmArrayDeBytes = File.ReadAllBytes(txtFoto.Text);
+                    string fotoEmBase64 = Convert.ToBase64String(arquivoEmArrayDeBytes);
+                    ValidacaoCadastro.DefineValidacao(botaoImagem, erroNoCampo, arquivoEmBytes: arquivoEmArrayDeBytes);
                     novoPokemon.Foto = fotoEmBase64;
-                    fotoErrorProvider.SetError(botaoImagem, "");
-                } catch(ImagemInvalidaException ex)
+                    erroNoCampo.SetError(botaoImagem, "");
+                }
+                catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(mensagemDeErro);
                 }
             }
         }
