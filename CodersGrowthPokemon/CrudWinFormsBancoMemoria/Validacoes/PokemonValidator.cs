@@ -15,12 +15,12 @@ namespace CrudWinFormsBancoMemoria.Validacoes
             RuleLevelCascadeMode = CascadeMode.Stop;
 
             RuleFor(p => p.Nome)
-                .NotNull().WithMessage("NOME: Campo vazio.")
+                .NotEmpty().WithMessage("NOME: Campo vazio.")
                 .Length(3, 11).WithMessage("NOME: Inválido (Min: 3 caracteres / Max: 11 caracteres).")
                 .Must(PadraoDeNomeCorreto).WithMessage("NOME: Inválido, deve conter apenas caracteres.");
 
             RuleFor(p => p.Apelido)
-                .NotNull().WithMessage("APELIDO: Campo de apelido vazio.")
+                .NotEmpty().WithMessage("APELIDO: Campo vazio")
                 .Length(1, 20).WithMessage("APELIDO: (Min: 1 caractere / Max: 20 caracteres).");
 
             RuleFor(p => p.Nivel)
@@ -45,11 +45,13 @@ namespace CrudWinFormsBancoMemoria.Validacoes
 
             RuleFor(p => p.Shiny)
                 .NotNull().WithMessage("SHINY: Campo nulo");
+
+            
         }
 
         private bool PadraoDeNomeCorreto(string nome)
         {
-            string padraoNome = @"^[a-zA-Z]$";
+            string padraoNome = @"^[a-zA-Z]*$";
             if (!Regex.IsMatch(nome, padraoNome))
             {
                 return false;
@@ -69,7 +71,7 @@ namespace CrudWinFormsBancoMemoria.Validacoes
         
         private bool AceitaApenasNumerosReais(decimal numero)
         {
-            string padraoNumero = @"^[0-9]([.][0-9]{1,3})$";
+            string padraoNumero = @"^[0-9]([.][0-9]{1,3})*$";
             if(!Regex.IsMatch(Convert.ToString(numero), padraoNumero))
             {
                 return false;
@@ -82,6 +84,21 @@ namespace CrudWinFormsBancoMemoria.Validacoes
             if (tipoPrincipal.Equals(tipoSecundario) && tipoPrincipal != 0)
             {
                 tipoSecundario = null;
+                return false;
+            }
+            return true;
+        }
+
+        private bool VerificaExtensaoDaImagem(string? foto)
+        {
+            var bmp = Encoding.ASCII.GetBytes("BM");
+            var gif = Encoding.ASCII.GetBytes("GIF");
+            var png = new byte[] { 137, 80, 78, 71 };
+            var jpeg = new byte[] { 255, 216, 255, 224 };
+            byte[] imagemEmBytes = Convert.FromBase64String(foto);
+
+            if (!bmp.SequenceEqual(imagemEmBytes.Take(bmp.Length)) && !gif.SequenceEqual(imagemEmBytes.Take(gif.Length)) && !png.SequenceEqual(imagemEmBytes.Take(png.Length)) && !jpeg.SequenceEqual(imagemEmBytes.Take(jpeg.Length)))
+            {
                 return false;
             }
             return true;

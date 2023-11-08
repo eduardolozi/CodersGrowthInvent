@@ -20,6 +20,7 @@ namespace CrudWinFormsBancoMemoria
     {
         public Pokemon? novoPokemon = new Pokemon();
         private string? mensagemDeErro;
+
         public CadastroPokemon()
         {
             InitializeComponent();
@@ -59,6 +60,8 @@ namespace CrudWinFormsBancoMemoria
             else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text); 
 
             novoPokemon.Shiny = checkBoxShiny.Checked;
+
+            
         }
 
         private void ObtemMensagemDeErro(ValidationResult resultado)
@@ -89,6 +92,20 @@ namespace CrudWinFormsBancoMemoria
         private void AoClicarBotaoCancelar(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
+        }
+
+        private void AoClicarNoBotaoBuscarImagem(object sender, EventArgs e)
+        {
+            OpenFileDialog arquivo = new OpenFileDialog();
+            arquivo.Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG|All files (*.*)|*.*";
+            if (arquivo.ShowDialog() == DialogResult.OK)
+            {
+                txtFoto.Text = arquivo.FileName;
+                fotoPokemon.Image = Image.FromFile(txtFoto.Text);
+                byte[] arquivoEmArrayDeBytes = File.ReadAllBytes(txtFoto.Text);
+                string fotoEmBase64 = Convert.ToBase64String(arquivoEmArrayDeBytes);
+                novoPokemon.Foto = fotoEmBase64;
+            }
         }
 
         private void AoApertarTeclaNoTxtNome(object sender, KeyPressEventArgs e)
@@ -125,30 +142,6 @@ namespace CrudWinFormsBancoMemoria
             if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
             {
                 e.Handled = true;
-            }
-        }
-
-        private void AoClicarNoBotaoBuscarImagem(object sender, EventArgs e)
-        {
-            OpenFileDialog arquivo = new OpenFileDialog();
-            arquivo.Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG|All files (*.*)|*.*";
-            if (arquivo.ShowDialog() == DialogResult.OK)
-            {
-                string mensagemDaExcecao;
-                try
-                {
-                    txtFoto.Text = arquivo.FileName;
-                    fotoPokemon.Image = Image.FromFile(txtFoto.Text);
-                    byte[] arquivoEmArrayDeBytes = File.ReadAllBytes(txtFoto.Text);
-                    string fotoEmBase64 = Convert.ToBase64String(arquivoEmArrayDeBytes);
-                    mensagemDaExcecao = ValidacaoCadastro.ValidarImagem(botaoImagem, erroNoCampo, arquivoEmArrayDeBytes);
-                    novoPokemon.Foto = fotoEmBase64;
-                    erroNoCampo.SetError(botaoImagem, "");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
             }
         }
     }
