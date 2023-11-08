@@ -18,7 +18,7 @@ namespace CrudWinFormsBancoMemoria
     public partial class CadastroPokemon : Form
     {
         public Pokemon? novoPokemon = new Pokemon();
-        private string mensagemDeErro;
+        private string? mensagemDeErro;
         public CadastroPokemon()
         {
             InitializeComponent();
@@ -46,23 +46,32 @@ namespace CrudWinFormsBancoMemoria
 
         private void AdicionaOsCamposNoPokemon()
         {
-            novoPokemon.Nome = txtNome.Text;
-            novoPokemon.Apelido = txtApelido.Text;
-            novoPokemon.Nivel = Convert.ToInt32(txtNivel.Text);
-            novoPokemon.Altura = Convert.ToDecimal(txtAltura.Text, new CultureInfo("en-US"));
+            if (txtNome.Text == "") novoPokemon.Nome = "0";
+            else novoPokemon.Nome = txtNome.Text;
+
+            if (txtApelido.Text == "") novoPokemon.Apelido = "0";
+            else novoPokemon.Apelido = txtApelido.Text;
+
+            if (txtNivel.Text == "") novoPokemon.Nivel = -1;
+            else novoPokemon.Nivel = Convert.ToInt32(txtNivel.Text);
+
+            if(txtAltura.Text == "") novoPokemon.Altura = -1;
+            else novoPokemon.Altura = Convert.ToDecimal(txtAltura.Text, new CultureInfo("en-US"));
+            
             novoPokemon.DataDeCaptura = dataPickerCaptura.Value;
-            novoPokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(comboBoxTipoPrincipal.Text);
-            if (comboBoxTipoSecundario.Text == "--Selecionar--")
-            {
-                novoPokemon.TipoSecundario = null;
-            }
+
+            if (comboBoxTipoPrincipal.Text == "--Selecionar--") novoPokemon.TipoPrincipal = 0;
+            else novoPokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(comboBoxTipoPrincipal.Text);
+
+            if (comboBoxTipoSecundario.Text == "--Selecionar--") novoPokemon.TipoSecundario = 0;
             else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text);
+
             novoPokemon.Shiny = checkBoxShiny.Checked;
         }
 
-        private void ValidaOsCampos()
+        private string ValidacaoDoCadastro()
         {
-            ValidacaoCadastro.ValidaOsCampos(novoPokemon, erroNoCampo);
+            return ValidacaoCadastro.ValidaOsCampos(novoPokemon, erroNoCampo, this.Controls);
         }
 
         public void AoClicarBotaoAdicionar(object sender, EventArgs e)
@@ -70,13 +79,14 @@ namespace CrudWinFormsBancoMemoria
             try
             {
                 AdicionaOsCamposNoPokemon();
-                ValidaOsCampos();
+                mensagemDeErro = ValidacaoDoCadastro();
+                if (mensagemDeErro != "") throw new Exception();
 
                 this.DialogResult = DialogResult.OK;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(mensagemDeErro);
             }
         }
 
@@ -128,19 +138,20 @@ namespace CrudWinFormsBancoMemoria
             arquivo.Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG|All files (*.*)|*.*";
             if (arquivo.ShowDialog() == DialogResult.OK)
             {
+                string mensagemDaExcecao;
                 try
                 {
                     txtFoto.Text = arquivo.FileName;
                     fotoPokemon.Image = Image.FromFile(txtFoto.Text);
                     byte[] arquivoEmArrayDeBytes = File.ReadAllBytes(txtFoto.Text);
                     string fotoEmBase64 = Convert.ToBase64String(arquivoEmArrayDeBytes);
-                    ValidacaoCadastro.DefineValidacao(botaoImagem, erroNoCampo, arquivoEmBytes: arquivoEmArrayDeBytes);
+                    mensagemDaExcecao = ValidacaoCadastro.ValidarImagem(botaoImagem, erroNoCampo, arquivoEmArrayDeBytes);
                     novoPokemon.Foto = fotoEmBase64;
                     erroNoCampo.SetError(botaoImagem, "");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(mensagemDeErro);
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
