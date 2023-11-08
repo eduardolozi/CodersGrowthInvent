@@ -7,28 +7,16 @@ namespace CrudWinFormsBancoMemoria
 {
     public partial class GerenciadorDePokemons : Form
     {
-        private List<Pokemon> listaPokemons = new List<Pokemon>() {
-            new Pokemon {Id = 1, Nome = "Charmander", Apelido = "Tobias", Nivel = 12, DataDeCaptura = DateTime.Now, Altura = 0.60m, Shiny = true, TipoPrincipal = TipoPokemon.Fogo, TipoSecundario = null},
-            new Pokemon {Id = 2, Nome = "Mewtwo", Apelido = "Tiringa", Nivel = 70, DataDeCaptura = DateTime.Now, Altura = 2.0m, Shiny = false, TipoPrincipal = TipoPokemon.Psiquico, TipoSecundario = null},
-            new Pokemon {Id = 3, Nome = "Zubat", Apelido = "Dracula", Nivel = 7, DataDeCaptura = DateTime.Now, Altura = 0.80m, Shiny = false, TipoPrincipal = TipoPokemon.Veneno, TipoSecundario = TipoPokemon.Voador},
-        };
+        private List<Pokemon> listaPokemons = new List<Pokemon>();
 
         public GerenciadorDePokemons()
         {
             InitializeComponent();
+
+            pokemonDataGriedView.DataSource = null;
         }
 
-        private void GerenciadorDePokemons_Load(object sender, EventArgs e)
-        {
-            Criacao_DataGriedView();
-        }
-
-        private void Criacao_DataGriedView()
-        {
-            pokemonDataGriedView.DataSource = listaPokemons;
-        }
-
-        private void btnCriar_Click(object sender, EventArgs e)
+        private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
         {
             var formCadastro = new CadastroPokemon();
             formCadastro.ShowDialog();
@@ -42,16 +30,46 @@ namespace CrudWinFormsBancoMemoria
         private void SalvarPokemonCadastradoNaLista(Pokemon novoPokemon)
         {
             novoPokemon.Id = listaPokemons.Count + 1;
+            novoPokemon.DataDeCaptura = Convert.ToDateTime(novoPokemon.DataDeCaptura.ToShortDateString());
+
             listaPokemons.Add(novoPokemon);
-            refresh_dataGridView();
+            AtualizandoDataGridView();
         }
 
-        public void refresh_dataGridView()
+        public void AtualizandoDataGridView()
         {
             pokemonDataGriedView.DataSource = typeof(List<Pokemon>);
             pokemonDataGriedView.DataSource = listaPokemons;
+
         }
 
-       
+        private void ConverteBytesParaImagem(string cedula)
+        {
+            byte[] imagemEmBytes = Convert.FromBase64String(cedula);
+            using (var ms = new MemoryStream(imagemEmBytes, 0, imagemEmBytes.Length))
+            {
+                Image foto = Image.FromStream(ms, true);
+                var formImagem = new FormImagem();
+                formImagem.Show();
+                formImagem.fotoPokemon.Image = foto;
+            }
+        }
+
+        private void AoClicarDuasVezesNaCelulaDeFoto(object sender, DataGridViewCellEventArgs e)
+        {
+            var cedula = this.pokemonDataGriedView.CurrentCell.Value.ToString();
+            if (pokemonDataGriedView.CurrentCell.ColumnIndex == 9)
+            {
+                ConverteBytesParaImagem(cedula);
+            }
+        }
+
+        private void FormatandoAsCedulasDeFoto(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.Value != null && e.ColumnIndex == 9)
+            {
+                e.Value = "Clique para ver";
+            }
+        }
     }
 }
