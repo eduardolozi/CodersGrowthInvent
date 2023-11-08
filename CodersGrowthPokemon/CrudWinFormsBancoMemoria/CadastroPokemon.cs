@@ -60,8 +60,6 @@ namespace CrudWinFormsBancoMemoria
             else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text); 
 
             novoPokemon.Shiny = checkBoxShiny.Checked;
-
-            
         }
 
         private void ObtemMensagemDeErro(ValidationResult resultado)
@@ -131,7 +129,6 @@ namespace CrudWinFormsBancoMemoria
                 e.Handled = true;
             }
         }
-
         private void AoApertarTeclaNoTxtAltura(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))

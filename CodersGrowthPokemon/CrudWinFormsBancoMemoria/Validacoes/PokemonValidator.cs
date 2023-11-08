@@ -93,6 +93,8 @@ namespace CrudWinFormsBancoMemoria.Validacoes
 
         private bool VerificaExtensaoDaImagem(string? foto)
         {
+            if (foto == null) return true;
+
             var bmp = Encoding.ASCII.GetBytes("BM");
             var gif = Encoding.ASCII.GetBytes("GIF");
             var png = new byte[] { 137, 80, 78, 71 };
