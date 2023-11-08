@@ -1,5 +1,6 @@
 ﻿using CrudWinFormsBancoMemoria.Models;
 using CrudWinFormsBancoMemoria.Validacoes;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,54 +25,49 @@ namespace CrudWinFormsBancoMemoria
             InitializeComponent();
         }
 
-        private void CadastroPokemon_Load(object sender, EventArgs e)
+        private void CarregandoCamposDoCadastro(object sender, EventArgs e)
         {
             dataPickerCaptura.Format = DateTimePickerFormat.Custom;
             dataPickerCaptura.CustomFormat = "dd/MM/yyyy";
 
             comboBoxTipoPrincipal.Items.Insert(0, "--Selecionar--");
             comboBoxTipoPrincipal.SelectedIndex = 0;
-            foreach (var item in Enum.GetValues(typeof(TipoPokemon)))
-            {
-                comboBoxTipoPrincipal.Items.Add(item);
-            }
-
+            comboBoxTipoPrincipal.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
+            
             comboBoxTipoSecundario.Items.Insert(0, "--Selecionar--");
             comboBoxTipoSecundario.SelectedIndex = 0;
-            foreach (var item in Enum.GetValues(typeof(TipoPokemon)))
-            {
-                comboBoxTipoSecundario.Items.Add(item);
-            }
+            comboBoxTipoSecundario.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());            
         }
 
         private void AdicionaOsCamposNoPokemon()
         {
-            if (txtNome.Text == "") novoPokemon.Nome = "0";
-            else novoPokemon.Nome = txtNome.Text;
-
-            if (txtApelido.Text == "") novoPokemon.Apelido = "0";
-            else novoPokemon.Apelido = txtApelido.Text;
+            novoPokemon.Nome = txtNome.Text;
+            novoPokemon.Apelido = txtApelido.Text;
 
             if (txtNivel.Text == "") novoPokemon.Nivel = -1;
             else novoPokemon.Nivel = Convert.ToInt32(txtNivel.Text);
 
-            if(txtAltura.Text == "") novoPokemon.Altura = -1;
+            if (txtAltura.Text == "") novoPokemon.Altura = -1;
             else novoPokemon.Altura = Convert.ToDecimal(txtAltura.Text, new CultureInfo("en-US"));
-            
+
             novoPokemon.DataDeCaptura = dataPickerCaptura.Value;
 
             if (comboBoxTipoPrincipal.Text == "--Selecionar--") novoPokemon.TipoPrincipal = 0;
             else novoPokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(comboBoxTipoPrincipal.Text);
 
             if (comboBoxTipoSecundario.Text == "--Selecionar--") novoPokemon.TipoSecundario = 0;
-            else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text);
+            else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text); 
 
             novoPokemon.Shiny = checkBoxShiny.Checked;
         }
 
-        private string ValidacaoDoCadastro()
+        private void ObtemMensagemDeErro(ValidationResult resultado)
         {
-            return ValidacaoCadastro.ValidaOsCampos(novoPokemon, erroNoCampo, this.Controls);
+            if(!resultado.IsValid)
+            {
+                mensagemDeErro = resultado.ToString();
+                throw new Exception();
+            }
         }
 
         public void AoClicarBotaoAdicionar(object sender, EventArgs e)
@@ -79,9 +75,9 @@ namespace CrudWinFormsBancoMemoria
             try
             {
                 AdicionaOsCamposNoPokemon();
-                mensagemDeErro = ValidacaoDoCadastro();
-                if (mensagemDeErro != "") throw new Exception();
-
+                PokemonValidator validacao = new PokemonValidator();
+                ValidationResult resultado = validacao.Validate(novoPokemon);
+                ObtemMensagemDeErro(resultado);
                 this.DialogResult = DialogResult.OK;
             }
             catch (Exception ex)

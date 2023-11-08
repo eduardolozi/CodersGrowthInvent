@@ -275,7 +275,7 @@
             Controls.Add(label1);
             Name = "CadastroPokemon";
             Text = "Cadastro de Pokemon";
-            Load += CadastroPokemon_Load;
+            Load += CarregandoCamposDoCadastro;
             ((System.ComponentModel.ISupportInitialize)fotoPokemon).EndInit();
             ((System.ComponentModel.ISupportInitialize)erroNoCampo).EndInit();
             ResumeLayout(false);
