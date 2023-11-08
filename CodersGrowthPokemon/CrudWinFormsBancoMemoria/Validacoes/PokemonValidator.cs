@@ -2,6 +2,7 @@
 using FluentValidation;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -46,7 +47,8 @@ namespace CrudWinFormsBancoMemoria.Validacoes
             RuleFor(p => p.Shiny)
                 .NotNull().WithMessage("SHINY: Campo nulo");
 
-            
+            RuleFor(p => p.Foto)
+                .Must(VerificaExtensaoDaImagem).WithMessage("FOTO: EXTENSÃO DA IMAGEM INVÁLIDA");
         }
 
         private bool PadraoDeNomeCorreto(string nome)
@@ -71,8 +73,8 @@ namespace CrudWinFormsBancoMemoria.Validacoes
         
         private bool AceitaApenasNumerosReais(decimal numero)
         {
-            string padraoNumero = @"^[0-9]([.][0-9]{1,3})*$";
-            if(!Regex.IsMatch(Convert.ToString(numero), padraoNumero))
+            string padraoNumero = @"^[0-9]([.][0-9])*$";
+            if(!Regex.IsMatch(Convert.ToString(numero, CultureInfo.InvariantCulture), padraoNumero))
             {
                 return false;
             }

@@ -56,7 +56,7 @@ namespace CrudWinFormsBancoMemoria
             if (comboBoxTipoPrincipal.Text == "--Selecionar--") novoPokemon.TipoPrincipal = 0;
             else novoPokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(comboBoxTipoPrincipal.Text);
 
-            if (comboBoxTipoSecundario.Text == "--Selecionar--") novoPokemon.TipoSecundario = 0;
+            if (comboBoxTipoSecundario.Text == "--Selecionar--") novoPokemon.TipoSecundario = null;
             else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text); 
 
             novoPokemon.Shiny = checkBoxShiny.Checked;
