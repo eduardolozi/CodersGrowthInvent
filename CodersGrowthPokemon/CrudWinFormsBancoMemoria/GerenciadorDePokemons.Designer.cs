@@ -185,6 +185,7 @@
             btnEditar.TabIndex = 3;
             btnEditar.Text = "Editar";
             btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.Click += AoClicarNoBotaoEditar;
             // 
             // btnApagar
             // 
