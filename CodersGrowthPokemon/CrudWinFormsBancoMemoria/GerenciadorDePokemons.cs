@@ -71,5 +71,34 @@ namespace CrudWinFormsBancoMemoria
                 e.Value = "Clique para ver";
             }
         }
+
+        private void SalvarPokemonEditadoNaLista(Pokemon pokemonEditado)
+        {
+            int index = listaPokemons.FindIndex(p => p.Equals(pokemonEditado));
+            listaPokemons[index] = pokemonEditado;
+            AtualizandoDataGridView(); 
+        }
+
+        private void AoClicarNoBotaoEditar(object sender, EventArgs e)
+        {
+            if (pokemonDataGriedView.SelectedRows.Count == 1)
+            {
+                Pokemon pokemonEditado;
+                pokemonEditado = (Pokemon)pokemonDataGriedView.CurrentRow.DataBoundItem;
+
+                var formCadastro = new CadastroPokemon(pokemonEditado.Id, pokemonEditado);
+                formCadastro.ShowDialog();
+                if (formCadastro.DialogResult == DialogResult.OK)
+                {
+                    SalvarPokemonEditadoNaLista(formCadastro.novoPokemon);
+                    formCadastro.Dispose();
+                }
+            }
+            else if (pokemonDataGriedView.SelectedRows.Count > 1)
+            {
+                MessageBox.Show("Selecione apenas uma linha.");
+            }
+            else MessageBox.Show("Selecione uma linha.");
+        }
     }
 }

@@ -20,9 +20,15 @@ namespace CrudWinFormsBancoMemoria
     {
         public Pokemon? novoPokemon = new Pokemon();
         private string? mensagemDeErro;
+        private int indiceDoPokemon = -1;
 
-        public CadastroPokemon()
+        public CadastroPokemon(int indicePokemon = -1, Pokemon pokemonEditado = null)
         {
+            if(indicePokemon != -1 && pokemonEditado != null)
+            {
+                indiceDoPokemon = indicePokemon;
+                novoPokemon = pokemonEditado;
+            }
             InitializeComponent();
         }
 
@@ -37,14 +43,28 @@ namespace CrudWinFormsBancoMemoria
             
             comboBoxTipoSecundario.Items.Insert(0, "--Selecionar--");
             comboBoxTipoSecundario.SelectedIndex = 0;
-            comboBoxTipoSecundario.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());            
+            comboBoxTipoSecundario.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
+
+            if (indiceDoPokemon != -1)
+            {
+                txtNome.Text = novoPokemon.Nome;
+                txtApelido.Text = novoPokemon.Apelido;
+                txtNivel.Text = novoPokemon.Nivel.ToString();
+                txtAltura.Text = novoPokemon.Altura.ToString();
+                dataPickerCaptura.Value = novoPokemon.DataDeCaptura;
+                comboBoxTipoPrincipal.Text = novoPokemon.TipoPrincipal.ToString();
+                if (novoPokemon.TipoSecundario == null) comboBoxTipoSecundario.Text = "--Selecionar--";
+                else comboBoxTipoSecundario.Text = novoPokemon.TipoSecundario.ToString();
+                checkBoxShiny.Checked = novoPokemon.Shiny;
+            }
+            
         }
 
         private void AdicionaOsCamposNoPokemon()
         {
             novoPokemon.Nome = txtNome.Text;
             novoPokemon.Apelido = txtApelido.Text;
-
+            
             if (txtNivel.Text == "") novoPokemon.Nivel = -1;
             else novoPokemon.Nivel = Convert.ToInt32(txtNivel.Text);
 
