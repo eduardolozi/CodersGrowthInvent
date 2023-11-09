@@ -22,7 +22,7 @@ namespace CrudWinFormsBancoMemoria
             formCadastro.ShowDialog();
             if (formCadastro.DialogResult == DialogResult.OK)
             {
-                SalvarPokemonCadastradoNaLista(formCadastro.novoPokemon);
+                SalvarPokemonCadastradoNaLista(formCadastro.pokemon);
                 formCadastro.Dispose();
             }
         }
@@ -86,11 +86,11 @@ namespace CrudWinFormsBancoMemoria
                 Pokemon pokemonEditado;
                 pokemonEditado = (Pokemon)pokemonDataGriedView.CurrentRow.DataBoundItem;
 
-                var formCadastro = new CadastroPokemon(pokemonEditado.Id, pokemonEditado);
+                var formCadastro = new CadastroPokemon(pokemonEditado);
                 formCadastro.ShowDialog();
                 if (formCadastro.DialogResult == DialogResult.OK)
                 {
-                    SalvarPokemonEditadoNaLista(formCadastro.novoPokemon);
+                    SalvarPokemonEditadoNaLista(formCadastro.pokemon);
                     formCadastro.Dispose();
                 }
             }

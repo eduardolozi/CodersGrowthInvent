@@ -18,17 +18,14 @@ namespace CrudWinFormsBancoMemoria
 {
     public partial class CadastroPokemon : Form
     {
-        public Pokemon? novoPokemon = new Pokemon();
+        public Pokemon? pokemon;
         private string? mensagemDeErro;
-        private int indiceDoPokemon = -1;
 
-        public CadastroPokemon(int indicePokemon = -1, Pokemon pokemonEditado = null)
+        public CadastroPokemon(Pokemon pokemonEditado = null)
         {
-            if(indicePokemon != -1 && pokemonEditado != null)
-            {
-                indiceDoPokemon = indicePokemon;
-                novoPokemon = pokemonEditado;
-            }
+            if (pokemonEditado != null) pokemon = pokemonEditado;
+            else pokemon = null;
+
             InitializeComponent();
         }
 
@@ -45,41 +42,42 @@ namespace CrudWinFormsBancoMemoria
             comboBoxTipoSecundario.SelectedIndex = 0;
             comboBoxTipoSecundario.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
 
-            if (indiceDoPokemon != -1)
+            if (pokemon != null)
             {
-                txtNome.Text = novoPokemon.Nome;
-                txtApelido.Text = novoPokemon.Apelido;
-                txtNivel.Text = novoPokemon.Nivel.ToString();
-                txtAltura.Text = novoPokemon.Altura.ToString();
-                dataPickerCaptura.Value = novoPokemon.DataDeCaptura;
-                comboBoxTipoPrincipal.Text = novoPokemon.TipoPrincipal.ToString();
-                if (novoPokemon.TipoSecundario == null) comboBoxTipoSecundario.Text = "--Selecionar--";
-                else comboBoxTipoSecundario.Text = novoPokemon.TipoSecundario.ToString();
-                checkBoxShiny.Checked = novoPokemon.Shiny;
+                txtNome.Text = pokemon.Nome;
+                txtApelido.Text = pokemon.Apelido;
+                txtNivel.Text = pokemon.Nivel.ToString();
+                txtAltura.Text = pokemon.Altura.ToString(new CultureInfo("en-US"));
+                dataPickerCaptura.Value = pokemon.DataDeCaptura;
+                comboBoxTipoPrincipal.Text = pokemon.TipoPrincipal.ToString();
+                if (pokemon.TipoSecundario == null) comboBoxTipoSecundario.Text = "--Selecionar--";
+                else comboBoxTipoSecundario.Text = pokemon.TipoSecundario.ToString();
+                checkBoxShiny.Checked = pokemon.Shiny;
             }
-            
         }
 
         private void AdicionaOsCamposNoPokemon()
         {
-            novoPokemon.Nome = txtNome.Text;
-            novoPokemon.Apelido = txtApelido.Text;
+            if (pokemon == null) pokemon = new Pokemon();
+
+            pokemon.Nome = txtNome.Text;
+            pokemon.Apelido = txtApelido.Text;
             
-            if (txtNivel.Text == "") novoPokemon.Nivel = -1;
-            else novoPokemon.Nivel = Convert.ToInt32(txtNivel.Text);
+            if (txtNivel.Text == "") pokemon.Nivel = -1;
+            else pokemon.Nivel = Convert.ToInt32(txtNivel.Text);
 
-            if (txtAltura.Text == "") novoPokemon.Altura = -1;
-            else novoPokemon.Altura = Convert.ToDecimal(txtAltura.Text, new CultureInfo("en-US"));
+            if (txtAltura.Text == "") pokemon.Altura = -1;
+            else pokemon.Altura = Convert.ToDecimal(txtAltura.Text, new CultureInfo("en-US"));
 
-            novoPokemon.DataDeCaptura = dataPickerCaptura.Value;
+            pokemon.DataDeCaptura = dataPickerCaptura.Value;
 
-            if (comboBoxTipoPrincipal.Text == "--Selecionar--") novoPokemon.TipoPrincipal = 0;
-            else novoPokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(comboBoxTipoPrincipal.Text);
+            if (comboBoxTipoPrincipal.Text == "--Selecionar--") pokemon.TipoPrincipal = 0;
+            else pokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(comboBoxTipoPrincipal.Text);
 
-            if (comboBoxTipoSecundario.Text == "--Selecionar--") novoPokemon.TipoSecundario = null;
-            else novoPokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text); 
+            if (comboBoxTipoSecundario.Text == "--Selecionar--") pokemon.TipoSecundario = null;
+            else pokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text); 
 
-            novoPokemon.Shiny = checkBoxShiny.Checked;
+            pokemon.Shiny = checkBoxShiny.Checked;
         }
 
         private void ObtemMensagemDeErro(ValidationResult resultado)
@@ -97,7 +95,7 @@ namespace CrudWinFormsBancoMemoria
             {
                 AdicionaOsCamposNoPokemon();
                 PokemonValidator validacao = new PokemonValidator();
-                ValidationResult resultado = validacao.Validate(novoPokemon);
+                ValidationResult resultado = validacao.Validate(pokemon);
                 ObtemMensagemDeErro(resultado);
                 this.DialogResult = DialogResult.OK;
             }
@@ -122,7 +120,7 @@ namespace CrudWinFormsBancoMemoria
                 fotoPokemon.Image = Image.FromFile(txtFoto.Text);
                 byte[] arquivoEmArrayDeBytes = File.ReadAllBytes(txtFoto.Text);
                 string fotoEmBase64 = Convert.ToBase64String(arquivoEmArrayDeBytes);
-                novoPokemon.Foto = fotoEmBase64;
+                pokemon.Foto = fotoEmBase64;
             }
         }
 

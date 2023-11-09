@@ -73,7 +73,7 @@ namespace CrudWinFormsBancoMemoria.Validacoes
         
         private bool AceitaApenasNumerosReais(decimal numero)
         {
-            string padraoNumero = @"^[0-9]([.][0-9])*$";
+            string padraoNumero = @"^[0-9]([.][0-9]{1,2})*$";
             if(!Regex.IsMatch(Convert.ToString(numero, CultureInfo.InvariantCulture), padraoNumero))
             {
                 return false;
