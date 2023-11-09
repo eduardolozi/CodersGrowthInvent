@@ -76,7 +76,7 @@ namespace CrudWinFormsBancoMemoria
         {
             int index = listaPokemons.FindIndex(p => p.Equals(pokemonEditado));
             listaPokemons[index] = pokemonEditado;
-            AtualizandoDataGridView(); 
+            AtualizandoDataGridView();
         }
 
         private void AoClicarNoBotaoEditar(object sender, EventArgs e)
@@ -93,6 +93,22 @@ namespace CrudWinFormsBancoMemoria
                     SalvarPokemonEditadoNaLista(formCadastro.pokemon);
                     formCadastro.Dispose();
                 }
+            }
+            else if (pokemonDataGriedView.SelectedRows.Count > 1)
+            {
+                MessageBox.Show("Selecione apenas uma linha.");
+            }
+            else MessageBox.Show("Selecione uma linha.");
+        }
+
+        private void AoClicarBotaoApagar(object sender, EventArgs e)
+        {
+            if (pokemonDataGriedView.SelectedRows.Count == 1)
+            {
+                int indexDoPokemon = (int)pokemonDataGriedView.CurrentRow.Cells[0].Value;
+                var confirmarRemocao = MessageBox.Show($@"Tem certeza que deseja remover o {listaPokemons.Find(p => p.Id == indexDoPokemon).Nome}?", "Remoção concluida!" , MessageBoxButtons.YesNo);
+                listaPokemons = listaPokemons.Where(p => p.Id !=  indexDoPokemon).ToList();
+                AtualizandoDataGridView();
             }
             else if (pokemonDataGriedView.SelectedRows.Count > 1)
             {
