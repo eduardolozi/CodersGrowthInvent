@@ -62,7 +62,7 @@ namespace CrudWinFormsBancoMemoria
 
             pokemon.Nome = txtNome.Text;
             pokemon.Apelido = txtApelido.Text;
-            
+
             if (txtNivel.Text == "") pokemon.Nivel = -1;
             else pokemon.Nivel = Convert.ToInt32(txtNivel.Text);
 
@@ -75,14 +75,14 @@ namespace CrudWinFormsBancoMemoria
             else pokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(comboBoxTipoPrincipal.Text);
 
             if (comboBoxTipoSecundario.Text == "--Selecionar--") pokemon.TipoSecundario = null;
-            else pokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text); 
+            else pokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text);
 
             pokemon.Shiny = checkBoxShiny.Checked;
         }
 
         private void ObtemMensagemDeErro(ValidationResult resultado)
         {
-            if(!resultado.IsValid)
+            if (!resultado.IsValid)
             {
                 mensagemDeErro = resultado.ToString();
                 throw new Exception();
@@ -160,5 +160,4 @@ namespace CrudWinFormsBancoMemoria
             }
         }
     }
-
 }
