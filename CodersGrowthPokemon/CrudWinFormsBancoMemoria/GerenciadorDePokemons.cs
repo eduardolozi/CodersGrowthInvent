@@ -7,7 +7,7 @@ namespace CrudWinFormsBancoMemoria
 {
     public partial class GerenciadorDePokemons : Form
     {
-        private ListaSingleton<Pokemon> listaPokemonsSingleton = ListaSingleton<Pokemon>.Instance;
+        private ListaSingleton<Pokemon> listaDePokemons = ListaSingleton<Pokemon>.Instance;
 
         public GerenciadorDePokemons()
         {
@@ -32,14 +32,14 @@ namespace CrudWinFormsBancoMemoria
             novoPokemon.Id = ListaSingleton<Pokemon>.GeraId();
             novoPokemon.DataDeCaptura = Convert.ToDateTime(novoPokemon.DataDeCaptura.ToShortDateString());
 
-            listaPokemonsSingleton.Add(novoPokemon);
+            listaDePokemons.Add(novoPokemon);
             AtualizandoDataGridView();
         }
 
         public void AtualizandoDataGridView()
         {
             pokemonDataGriedView.DataSource = typeof(ListaSingleton<Pokemon>);
-            pokemonDataGriedView.DataSource = listaPokemonsSingleton;
+            pokemonDataGriedView.DataSource = listaDePokemons;
         }
 
         private void ConverteBytesParaImagem(string cedula)
@@ -73,8 +73,8 @@ namespace CrudWinFormsBancoMemoria
 
         private void SalvarPokemonEditadoNaLista(Pokemon pokemonEditado)
         {
-            int index = listaPokemonsSingleton.FindIndex(p => p.Equals(pokemonEditado));
-            listaPokemonsSingleton[index] = pokemonEditado;
+            int index = listaDePokemons.FindIndex(p => p.Equals(pokemonEditado));
+            listaDePokemons[index] = pokemonEditado;
             AtualizandoDataGridView();
         }
 
@@ -107,7 +107,7 @@ namespace CrudWinFormsBancoMemoria
                 Pokemon pokemonASerExcluido = (Pokemon)pokemonDataGriedView.SelectedRows[0].DataBoundItem;
                 var confirmarRemocao = MessageBox.Show($@"Tem certeza que deseja remover o {pokemonASerExcluido.Nome}?", "Remoção concluida!" , MessageBoxButtons.YesNo);
                 if (confirmarRemocao == DialogResult.Yes) {
-                    listaPokemonsSingleton.Remove(pokemonASerExcluido);
+                    listaDePokemons.Remove(pokemonASerExcluido);
                     AtualizandoDataGridView();
                 }
             }
