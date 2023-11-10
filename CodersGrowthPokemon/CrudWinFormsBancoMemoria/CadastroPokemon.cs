@@ -120,6 +120,7 @@ namespace CrudWinFormsBancoMemoria
                 fotoPokemon.Image = Image.FromFile(txtFoto.Text);
                 byte[] arquivoEmArrayDeBytes = File.ReadAllBytes(txtFoto.Text);
                 string fotoEmBase64 = Convert.ToBase64String(arquivoEmArrayDeBytes);
+                if (pokemon == null) pokemon = new Pokemon();
                 pokemon.Foto = fotoEmBase64;
             }
         }
