@@ -34,12 +34,14 @@ namespace CrudWinFormsBancoMemoria
             dataPickerCaptura.Format = DateTimePickerFormat.Custom;
             dataPickerCaptura.CustomFormat = "dd/MM/yyyy";
 
-            comboBoxTipoPrincipal.Items.Insert(0, "--Selecionar--");
-            comboBoxTipoPrincipal.SelectedIndex = 0;
+            //comboBoxTipoPrincipal.Items.Insert(0, "--Selecionar--");
+            //comboBoxTipoPrincipal.SelectedIndex = 0;
+            comboBoxTipoPrincipal.Text = "--Selecione--";
             comboBoxTipoPrincipal.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
-            
-            comboBoxTipoSecundario.Items.Insert(0, "--Selecionar--");
-            comboBoxTipoSecundario.SelectedIndex = 0;
+
+            //comboBoxTipoSecundario.Items.Insert(0, "--Selecionar--");
+            //comboBoxTipoSecundario.SelectedIndex = 0;
+            comboBoxTipoSecundario.Text = "--Selecione--";
             comboBoxTipoSecundario.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
 
             if (pokemon != null)

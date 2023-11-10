@@ -24,7 +24,11 @@ namespace CrudWinFormsBancoMemoria
             }
         }
 
-       
+        public static int GeraId()
+        {
+            return ListaSingleton<T>.Instance.Count + 1;
+        }
+        
     }
 
 
