@@ -60,12 +60,13 @@
             pokemonDataGriedView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             pokemonDataGriedView.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nomeDataGridViewTextBoxColumn, apelidoDataGridViewTextBoxColumn, nivelDataGridViewTextBoxColumn, alturaDataGridViewTextBoxColumn, shinyDataGridViewCheckBoxColumn, dataDeCapturaDataGridViewTextBoxColumn, tipoPrincipalDataGridViewTextBoxColumn, tipoSecundarioDataGridViewTextBoxColumn, fotoDataGridViewTextBoxColumn });
             pokemonDataGriedView.DataSource = pokemonBindingSource;
-            pokemonDataGriedView.Location = new Point(37, 96);
+            pokemonDataGriedView.Location = new Point(32, 72);
+            pokemonDataGriedView.Margin = new Padding(3, 2, 3, 2);
             pokemonDataGriedView.Name = "pokemonDataGriedView";
             pokemonDataGriedView.ReadOnly = true;
             pokemonDataGriedView.RowHeadersWidth = 51;
             pokemonDataGriedView.RowTemplate.Height = 29;
-            pokemonDataGriedView.Size = new Size(1261, 565);
+            pokemonDataGriedView.Size = new Size(1103, 424);
             pokemonDataGriedView.TabIndex = 0;
             pokemonDataGriedView.CellDoubleClick += AoClicarDuasVezesNaCelulaDeFoto;
             pokemonDataGriedView.CellFormatting += FormatandoAsCedulasDeFoto;
@@ -159,18 +160,19 @@
             label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(502, 25);
+            label1.Location = new Point(439, 19);
             label1.Name = "label1";
-            label1.Size = new Size(362, 46);
+            label1.Size = new Size(287, 37);
             label1.TabIndex = 1;
             label1.Text = "LISTA DE POKEMONS";
             // 
             // btnCriar
             // 
             btnCriar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnCriar.Location = new Point(982, 667);
+            btnCriar.Location = new Point(859, 500);
+            btnCriar.Margin = new Padding(3, 2, 3, 2);
             btnCriar.Name = "btnCriar";
-            btnCriar.Size = new Size(94, 29);
+            btnCriar.Size = new Size(82, 22);
             btnCriar.TabIndex = 2;
             btnCriar.Text = "Criar";
             btnCriar.UseVisualStyleBackColor = true;
@@ -179,9 +181,10 @@
             // btnEditar
             // 
             btnEditar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnEditar.Location = new Point(1095, 667);
+            btnEditar.Location = new Point(958, 500);
+            btnEditar.Margin = new Padding(3, 2, 3, 2);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(94, 29);
+            btnEditar.Size = new Size(82, 22);
             btnEditar.TabIndex = 3;
             btnEditar.Text = "Editar";
             btnEditar.UseVisualStyleBackColor = true;
@@ -190,24 +193,27 @@
             // btnApagar
             // 
             btnApagar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnApagar.Location = new Point(1204, 667);
+            btnApagar.Location = new Point(1054, 500);
+            btnApagar.Margin = new Padding(3, 2, 3, 2);
             btnApagar.Name = "btnApagar";
-            btnApagar.Size = new Size(94, 29);
+            btnApagar.Size = new Size(82, 22);
             btnApagar.TabIndex = 4;
             btnApagar.Text = "Apagar";
             btnApagar.UseVisualStyleBackColor = true;
+            btnApagar.Click += AoClicarBotaoApagar;
             // 
             // GerenciadorDePokemons
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1340, 708);
+            ClientSize = new Size(1172, 531);
             Controls.Add(btnApagar);
             Controls.Add(btnEditar);
             Controls.Add(btnCriar);
             Controls.Add(label1);
             Controls.Add(pokemonDataGriedView);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 2, 3, 2);
             Name = "GerenciadorDePokemons";
             Text = "Gerenciamento de Pokemons";
             ((System.ComponentModel.ISupportInitialize)pokemonDataGriedView).EndInit();
