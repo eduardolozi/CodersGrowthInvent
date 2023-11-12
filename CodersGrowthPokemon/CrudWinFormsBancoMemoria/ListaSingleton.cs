@@ -29,6 +29,15 @@ namespace CrudWinFormsBancoMemoria
         {
             return ListaSingleton<T>.Instance.Count + 1;
         }
+
+        public static ListaSingleton<Pokemon> RedefineIdAposRemocao(ListaSingleton<Pokemon> listaDePokemons, int idRemovido)
+        {
+            for (int i = idRemovido - 1; i < listaDePokemons.Count; i++)
+            {
+                listaDePokemons[i].Id = i + 1;
+            }
+            return listaDePokemons;
+        }
         
     }
 

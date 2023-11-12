@@ -110,11 +110,7 @@ namespace CrudWinFormsBancoMemoria
                 if (confirmarRemocao == DialogResult.Yes) {
                     int idRemovido = pokemonASerExcluido.Id;
                     listaDePokemons.Remove(pokemonASerExcluido);
-                    for(int i = idRemovido-1; i < listaDePokemons.Count; i++)   
-                    {
-                        listaDePokemons[i].Id = i+1;
-                    }
-                    
+                    listaDePokemons = ListaSingleton<Pokemon>.RedefineIdAposRemocao(listaDePokemons, idRemovido);
                     AtualizandoDataGridView();
                 }
             }
