@@ -37,7 +37,7 @@ namespace CrudWinFormsBancoMemoria
             comboBoxTipoPrincipal.Items.Insert(0, "--Selecionar--");
             comboBoxTipoPrincipal.SelectedIndex = 0;
             comboBoxTipoPrincipal.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
-            
+
             comboBoxTipoSecundario.Items.Insert(0, "--Selecionar--");
             comboBoxTipoSecundario.SelectedIndex = 0;
             comboBoxTipoSecundario.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
@@ -62,7 +62,7 @@ namespace CrudWinFormsBancoMemoria
 
             pokemon.Nome = txtNome.Text;
             pokemon.Apelido = txtApelido.Text;
-            
+
             if (txtNivel.Text == "") pokemon.Nivel = -1;
             else pokemon.Nivel = Convert.ToInt32(txtNivel.Text);
 
@@ -75,14 +75,14 @@ namespace CrudWinFormsBancoMemoria
             else pokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(comboBoxTipoPrincipal.Text);
 
             if (comboBoxTipoSecundario.Text == "--Selecionar--") pokemon.TipoSecundario = null;
-            else pokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text); 
+            else pokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text);
 
             pokemon.Shiny = checkBoxShiny.Checked;
         }
 
         private void ObtemMensagemDeErro(ValidationResult resultado)
         {
-            if(!resultado.IsValid)
+            if (!resultado.IsValid)
             {
                 mensagemDeErro = resultado.ToString();
                 throw new Exception();
@@ -120,6 +120,7 @@ namespace CrudWinFormsBancoMemoria
                 fotoPokemon.Image = Image.FromFile(txtFoto.Text);
                 byte[] arquivoEmArrayDeBytes = File.ReadAllBytes(txtFoto.Text);
                 string fotoEmBase64 = Convert.ToBase64String(arquivoEmArrayDeBytes);
+                if (pokemon == null) pokemon = new Pokemon();
                 pokemon.Foto = fotoEmBase64;
             }
         }
@@ -160,5 +161,4 @@ namespace CrudWinFormsBancoMemoria
             }
         }
     }
-
 }
