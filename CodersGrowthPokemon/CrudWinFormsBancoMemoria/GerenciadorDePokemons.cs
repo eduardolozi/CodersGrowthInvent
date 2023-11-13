@@ -108,7 +108,6 @@ namespace CrudWinFormsBancoMemoria
                 Pokemon pokemonASerExcluido = (Pokemon)pokemonDataGriedView.SelectedRows[0].DataBoundItem;
                 var confirmarRemocao = MessageBox.Show($@"Tem certeza que deseja remover o {pokemonASerExcluido.Nome}?", "Remoção concluida!" , MessageBoxButtons.YesNo);
                 if (confirmarRemocao == DialogResult.Yes) {
-                    int idRemovido = pokemonASerExcluido.Id;
                     listaDePokemons.Remove(pokemonASerExcluido);
                     AtualizandoDataGridView();
                 }
