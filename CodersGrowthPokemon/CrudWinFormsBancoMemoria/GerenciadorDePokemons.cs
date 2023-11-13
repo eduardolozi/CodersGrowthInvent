@@ -7,7 +7,7 @@ namespace CrudWinFormsBancoMemoria
 {
     public partial class GerenciadorDePokemons : Form
     {
-        private ListaSingleton<Pokemon> listaDePokemons = ListaSingleton<Pokemon>.Instance;
+        private List<Pokemon> listaDePokemons = ListaSingleton.Instance;
 
         public GerenciadorDePokemons()
         {
@@ -29,7 +29,7 @@ namespace CrudWinFormsBancoMemoria
 
         private void SalvarPokemonCadastradoNaLista(Pokemon novoPokemon)
         {
-            novoPokemon.Id = ListaSingleton<Pokemon>.GeraId();
+            novoPokemon.Id = ListaSingleton.GeraId();
             novoPokemon.DataDeCaptura = Convert.ToDateTime(novoPokemon.DataDeCaptura.ToShortDateString());
 
             listaDePokemons.Add(novoPokemon);
@@ -38,7 +38,7 @@ namespace CrudWinFormsBancoMemoria
 
         public void AtualizandoDataGridView()
         {
-            pokemonDataGriedView.DataSource = typeof(ListaSingleton<Pokemon>);
+            pokemonDataGriedView.DataSource = null;
             pokemonDataGriedView.DataSource = listaDePokemons;
         }
 
@@ -110,7 +110,6 @@ namespace CrudWinFormsBancoMemoria
                 if (confirmarRemocao == DialogResult.Yes) {
                     int idRemovido = pokemonASerExcluido.Id;
                     listaDePokemons.Remove(pokemonASerExcluido);
-                    listaDePokemons = ListaSingleton<Pokemon>.RedefineIdAposRemocao(listaDePokemons, idRemovido);
                     AtualizandoDataGridView();
                 }
             }

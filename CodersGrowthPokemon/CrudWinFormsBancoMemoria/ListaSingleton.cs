@@ -7,40 +7,27 @@ using System.Threading.Tasks;
 
 namespace CrudWinFormsBancoMemoria
 {
-    public class ListaSingleton<T> : List<T>
+    public class ListaSingleton
     {
-        private static ListaSingleton<T> instance = null;
+        private static List<Pokemon> instance = null;
+        private static int contadorDeId = 0;
 
-        private ListaSingleton() { }
-
-        public static ListaSingleton<T> Instance
+        public static List<Pokemon> Instance
         {
             get
             {
                 if (instance == null)
-                    lock (typeof(ListaSingleton<T>))
-                        if (instance == null) instance = new ListaSingleton<T>();
+                    lock (typeof(ListaSingleton))
+                        if (instance == null) instance = new List<Pokemon>();
 
                 return instance;
             }
         }
-
+        
         public static int GeraId()
         {
-            return ListaSingleton<T>.Instance.Count + 1;
+            contadorDeId++;
+            return (contadorDeId);
         }
-
-        public static ListaSingleton<Pokemon> RedefineIdAposRemocao(ListaSingleton<Pokemon> listaDePokemons, int idRemovido)
-        {
-            for (int i = idRemovido - 1; i < listaDePokemons.Count; i++)
-            {
-                listaDePokemons[i].Id = i + 1;
-            }
-            return listaDePokemons;
-        }
-        
     }
-
-
-
 }
