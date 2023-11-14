@@ -12,7 +12,7 @@ namespace CrudWinFormsBancoMemoria
         public GerenciadorDePokemons()
         {
             InitializeComponent();
-                
+            pokemonDataGriedView.Columns[6].DefaultCellStyle.Format = "dd/MM/yyyy";
             pokemonDataGriedView.DataSource = null;
         }
 
@@ -91,8 +91,9 @@ namespace CrudWinFormsBancoMemoria
             if (pokemonDataGriedView.SelectedRows.Count == 1)
             {
                 Pokemon pokemonASerExcluido = (Pokemon)pokemonDataGriedView.SelectedRows[0].DataBoundItem;
-                var confirmarRemocao = MessageBox.Show($@"Tem certeza que deseja remover o {pokemonASerExcluido.Nome}?", "Remoção concluida!" , MessageBoxButtons.YesNo);
-                if (confirmarRemocao == DialogResult.Yes) {
+                var confirmarRemocao = MessageBox.Show($@"Tem certeza que deseja remover o {pokemonASerExcluido.Nome}?", "Remoção concluida!", MessageBoxButtons.YesNo);
+                if (confirmarRemocao == DialogResult.Yes)
+                {
                     repositorio.Remover(pokemonASerExcluido);
                     AtualizandoDataGridView();
                 }
