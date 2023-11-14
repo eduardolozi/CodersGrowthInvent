@@ -12,7 +12,6 @@ namespace CrudWinFormsBancoMemoria
         public GerenciadorDePokemons()
         {
             InitializeComponent();
-            pokemonDataGriedView.Columns[6].DefaultCellStyle.Format = "dd/MM/yyyy";
             pokemonDataGriedView.DataSource = null;
         }
 
