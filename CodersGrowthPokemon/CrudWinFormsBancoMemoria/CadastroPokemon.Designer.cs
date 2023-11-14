@@ -57,85 +57,90 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(33, 54);
+            label1.Location = new Point(29, 40);
             label1.Name = "label1";
-            label1.Size = new Size(50, 20);
+            label1.Size = new Size(40, 15);
             label1.TabIndex = 0;
             label1.Text = "Nome";
             // 
             // txtNome
             // 
             txtNome.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtNome.Location = new Point(33, 77);
+            txtNome.Location = new Point(29, 58);
+            txtNome.Margin = new Padding(3, 2, 3, 2);
             txtNome.MaxLength = 11;
             txtNome.Name = "txtNome";
-            txtNome.Size = new Size(322, 27);
+            txtNome.Size = new Size(282, 23);
             txtNome.TabIndex = 1;
             txtNome.KeyPress += AoApertarTeclaNoTxtNome;
             // 
             // txtApelido
             // 
             txtApelido.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtApelido.Location = new Point(33, 150);
+            txtApelido.Location = new Point(29, 112);
+            txtApelido.Margin = new Padding(3, 2, 3, 2);
             txtApelido.MaxLength = 20;
             txtApelido.Name = "txtApelido";
-            txtApelido.Size = new Size(322, 27);
+            txtApelido.Size = new Size(282, 23);
             txtApelido.TabIndex = 3;
             txtApelido.KeyPress += AoApertarTeclaNoTxtApelido;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(33, 127);
+            label2.Location = new Point(29, 95);
             label2.Name = "label2";
-            label2.Size = new Size(62, 20);
+            label2.Size = new Size(48, 15);
             label2.TabIndex = 2;
             label2.Text = "Apelido";
             // 
             // txtNivel
             // 
             txtNivel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtNivel.Location = new Point(33, 233);
+            txtNivel.Location = new Point(29, 175);
+            txtNivel.Margin = new Padding(3, 2, 3, 2);
             txtNivel.MaxLength = 3;
             txtNivel.Name = "txtNivel";
-            txtNivel.Size = new Size(322, 27);
+            txtNivel.Size = new Size(282, 23);
             txtNivel.TabIndex = 5;
             txtNivel.KeyPress += AoApertarTeclaNoTxtNivel;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(33, 210);
+            label3.Location = new Point(29, 158);
             label3.Name = "label3";
-            label3.Size = new Size(43, 20);
+            label3.Size = new Size(34, 15);
             label3.TabIndex = 4;
             label3.Text = "Nível";
             // 
             // txtAltura
             // 
             txtAltura.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtAltura.Location = new Point(33, 314);
+            txtAltura.Location = new Point(29, 236);
+            txtAltura.Margin = new Padding(3, 2, 3, 2);
             txtAltura.MaxLength = 4;
             txtAltura.Name = "txtAltura";
-            txtAltura.Size = new Size(322, 27);
+            txtAltura.Size = new Size(282, 23);
             txtAltura.TabIndex = 7;
             txtAltura.KeyPress += AoApertarTeclaNoTxtAltura;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(33, 291);
+            label4.Location = new Point(29, 218);
             label4.Name = "label4";
-            label4.Size = new Size(49, 20);
+            label4.Size = new Size(39, 15);
             label4.TabIndex = 6;
             label4.Text = "Altura";
             // 
             // checkBoxShiny
             // 
             checkBoxShiny.AutoSize = true;
-            checkBoxShiny.Location = new Point(33, 621);
+            checkBoxShiny.Location = new Point(29, 466);
+            checkBoxShiny.Margin = new Padding(3, 2, 3, 2);
             checkBoxShiny.Name = "checkBoxShiny";
-            checkBoxShiny.Size = new Size(66, 24);
+            checkBoxShiny.Size = new Size(55, 19);
             checkBoxShiny.TabIndex = 8;
             checkBoxShiny.Text = "Shiny";
             checkBoxShiny.UseVisualStyleBackColor = true;
@@ -144,26 +149,27 @@
             // 
             comboBoxTipoPrincipal.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             comboBoxTipoPrincipal.FormattingEnabled = true;
-            comboBoxTipoPrincipal.Location = new Point(33, 482);
+            comboBoxTipoPrincipal.Location = new Point(29, 362);
+            comboBoxTipoPrincipal.Margin = new Padding(3, 2, 3, 2);
             comboBoxTipoPrincipal.Name = "comboBoxTipoPrincipal";
-            comboBoxTipoPrincipal.Size = new Size(322, 28);
+            comboBoxTipoPrincipal.Size = new Size(282, 23);
             comboBoxTipoPrincipal.TabIndex = 9;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(33, 459);
+            label5.Location = new Point(29, 344);
             label5.Name = "label5";
-            label5.Size = new Size(100, 20);
+            label5.Size = new Size(79, 15);
             label5.TabIndex = 10;
             label5.Text = "Tipo Principal";
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(33, 540);
+            label6.Location = new Point(29, 405);
             label6.Name = "label6";
-            label6.Size = new Size(117, 20);
+            label6.Size = new Size(92, 15);
             label6.TabIndex = 12;
             label6.Text = "Tipo Secundário";
             // 
@@ -171,34 +177,39 @@
             // 
             comboBoxTipoSecundario.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             comboBoxTipoSecundario.FormattingEnabled = true;
-            comboBoxTipoSecundario.Location = new Point(33, 563);
+            comboBoxTipoSecundario.Location = new Point(29, 422);
+            comboBoxTipoSecundario.Margin = new Padding(3, 2, 3, 2);
             comboBoxTipoSecundario.Name = "comboBoxTipoSecundario";
-            comboBoxTipoSecundario.Size = new Size(322, 28);
+            comboBoxTipoSecundario.Size = new Size(282, 23);
             comboBoxTipoSecundario.TabIndex = 11;
             // 
             // dataPickerCaptura
             // 
             dataPickerCaptura.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataPickerCaptura.Location = new Point(33, 400);
+            dataPickerCaptura.CustomFormat = "dd/MM/yyyy";
+            dataPickerCaptura.Format = DateTimePickerFormat.Custom;
+            dataPickerCaptura.Location = new Point(29, 300);
+            dataPickerCaptura.Margin = new Padding(3, 2, 3, 2);
             dataPickerCaptura.Name = "dataPickerCaptura";
-            dataPickerCaptura.Size = new Size(322, 27);
+            dataPickerCaptura.Size = new Size(282, 23);
             dataPickerCaptura.TabIndex = 13;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(33, 377);
+            label7.Location = new Point(29, 283);
             label7.Name = "label7";
-            label7.Size = new Size(116, 20);
+            label7.Size = new Size(90, 15);
             label7.TabIndex = 14;
             label7.Text = "Data de captura";
             // 
             // botaoAdicionar
             // 
             botaoAdicionar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            botaoAdicionar.Location = new Point(33, 665);
+            botaoAdicionar.Location = new Point(29, 499);
+            botaoAdicionar.Margin = new Padding(3, 2, 3, 2);
             botaoAdicionar.Name = "botaoAdicionar";
-            botaoAdicionar.Size = new Size(170, 35);
+            botaoAdicionar.Size = new Size(149, 26);
             botaoAdicionar.TabIndex = 15;
             botaoAdicionar.Text = "Adicionar Pokemon";
             botaoAdicionar.UseVisualStyleBackColor = true;
@@ -207,9 +218,10 @@
             // botaoCancelar
             // 
             botaoCancelar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            botaoCancelar.Location = new Point(770, 665);
+            botaoCancelar.Location = new Point(674, 499);
+            botaoCancelar.Margin = new Padding(3, 2, 3, 2);
             botaoCancelar.Name = "botaoCancelar";
-            botaoCancelar.Size = new Size(104, 35);
+            botaoCancelar.Size = new Size(91, 26);
             botaoCancelar.TabIndex = 16;
             botaoCancelar.Text = "Cancelar";
             botaoCancelar.UseVisualStyleBackColor = true;
@@ -218,9 +230,10 @@
             // fotoPokemon
             // 
             fotoPokemon.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            fotoPokemon.Location = new Point(411, 54);
+            fotoPokemon.Location = new Point(360, 40);
+            fotoPokemon.Margin = new Padding(3, 2, 3, 2);
             fotoPokemon.Name = "fotoPokemon";
-            fotoPokemon.Size = new Size(478, 372);
+            fotoPokemon.Size = new Size(418, 279);
             fotoPokemon.SizeMode = PictureBoxSizeMode.StretchImage;
             fotoPokemon.TabIndex = 17;
             fotoPokemon.TabStop = false;
@@ -228,9 +241,10 @@
             // botaoImagem
             // 
             botaoImagem.Anchor = AnchorStyles.Right;
-            botaoImagem.Location = new Point(411, 467);
+            botaoImagem.Location = new Point(360, 350);
+            botaoImagem.Margin = new Padding(3, 2, 3, 2);
             botaoImagem.Name = "botaoImagem";
-            botaoImagem.Size = new Size(145, 29);
+            botaoImagem.Size = new Size(127, 22);
             botaoImagem.TabIndex = 18;
             botaoImagem.Text = "Buscar imagem";
             botaoImagem.UseVisualStyleBackColor = true;
@@ -239,9 +253,10 @@
             // txtFoto
             // 
             txtFoto.Anchor = AnchorStyles.Right;
-            txtFoto.Location = new Point(411, 432);
+            txtFoto.Location = new Point(360, 324);
+            txtFoto.Margin = new Padding(3, 2, 3, 2);
             txtFoto.Name = "txtFoto";
-            txtFoto.Size = new Size(478, 27);
+            txtFoto.Size = new Size(419, 23);
             txtFoto.TabIndex = 19;
             // 
             // erroNoCampo
@@ -250,9 +265,9 @@
             // 
             // CadastroPokemon
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(901, 712);
+            ClientSize = new Size(788, 534);
             Controls.Add(txtFoto);
             Controls.Add(botaoImagem);
             Controls.Add(fotoPokemon);
@@ -273,6 +288,7 @@
             Controls.Add(label2);
             Controls.Add(txtNome);
             Controls.Add(label1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "CadastroPokemon";
             Text = "Cadastro de Pokemon";
             Load += CarregandoCamposDoCadastro;
