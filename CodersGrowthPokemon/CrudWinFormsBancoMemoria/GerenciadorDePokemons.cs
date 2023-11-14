@@ -7,7 +7,7 @@ namespace CrudWinFormsBancoMemoria
 {
     public partial class GerenciadorDePokemons : Form
     {
-        private List<Pokemon> listaDePokemons = ListaSingleton.Instance;
+        private Repositorio repositorio = new Repositorio();
 
         public GerenciadorDePokemons()
         {
@@ -22,24 +22,16 @@ namespace CrudWinFormsBancoMemoria
             formCadastro.ShowDialog();
             if (formCadastro.DialogResult == DialogResult.OK)
             {
-                SalvarPokemonCadastradoNaLista(formCadastro.pokemon);
+                repositorio.Criar(formCadastro.pokemon);
                 formCadastro.Dispose();
+                AtualizandoDataGridView();
             }
-        }
-
-        private void SalvarPokemonCadastradoNaLista(Pokemon novoPokemon)
-        {
-            novoPokemon.Id = ListaSingleton.GeraId();
-            novoPokemon.DataDeCaptura = Convert.ToDateTime(novoPokemon.DataDeCaptura.ToShortDateString());
-
-            listaDePokemons.Add(novoPokemon);
-            AtualizandoDataGridView();
         }
 
         public void AtualizandoDataGridView()
         {
             pokemonDataGriedView.DataSource = null;
-            pokemonDataGriedView.DataSource = listaDePokemons;
+            pokemonDataGriedView.DataSource = repositorio.ObterTodos();
         }
 
         private void ConverteBytesParaImagem(string cedula)
@@ -71,13 +63,6 @@ namespace CrudWinFormsBancoMemoria
             }
         }
 
-        private void SalvarPokemonEditadoNaLista(Pokemon pokemonEditado)
-        {
-            int index = listaDePokemons.FindIndex(p => p.Equals(pokemonEditado));
-            listaDePokemons[index] = pokemonEditado;
-            AtualizandoDataGridView();
-        }
-
         private void AoClicarNoBotaoEditar(object sender, EventArgs e)
         {
             if (pokemonDataGriedView.SelectedRows.Count == 1)
@@ -89,8 +74,9 @@ namespace CrudWinFormsBancoMemoria
                 formCadastro.ShowDialog();
                 if (formCadastro.DialogResult == DialogResult.OK)
                 {
-                    SalvarPokemonEditadoNaLista(formCadastro.pokemon);
+                    repositorio.Atualizar(pokemonEditado);
                     formCadastro.Dispose();
+                    AtualizandoDataGridView();
                 }
             }
             else if (pokemonDataGriedView.SelectedRows.Count > 1)
@@ -104,11 +90,10 @@ namespace CrudWinFormsBancoMemoria
         {
             if (pokemonDataGriedView.SelectedRows.Count == 1)
             {
-                
                 Pokemon pokemonASerExcluido = (Pokemon)pokemonDataGriedView.SelectedRows[0].DataBoundItem;
                 var confirmarRemocao = MessageBox.Show($@"Tem certeza que deseja remover o {pokemonASerExcluido.Nome}?", "Remoção concluida!" , MessageBoxButtons.YesNo);
                 if (confirmarRemocao == DialogResult.Yes) {
-                    listaDePokemons.Remove(pokemonASerExcluido);
+                    repositorio.Remover(pokemonASerExcluido);
                     AtualizandoDataGridView();
                 }
             }
