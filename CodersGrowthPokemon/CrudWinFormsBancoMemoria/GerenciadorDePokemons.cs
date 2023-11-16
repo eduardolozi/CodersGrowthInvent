@@ -1,3 +1,4 @@
+using CrudWinFormsBancoMemoria.Migracoes;
 using CrudWinFormsBancoMemoria.Models;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +14,7 @@ namespace CrudWinFormsBancoMemoria
         {
             InitializeComponent();
             pokemonDataGriedView.DataSource = null;
+            
         }
 
         private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)

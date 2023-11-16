@@ -19,7 +19,7 @@ namespace CrudWinFormsBancoMemoria.Models
         public decimal Altura { get; set; }
 
         public Boolean Shiny { get; set; }
-
+        
         public DateTime DataDeCaptura { get; set; }
 
         public TipoPokemon TipoPrincipal { get; set; }
