@@ -1,17 +1,25 @@
+using CrudWinFormsBancoMemoria.Migracoes;
+using FluentMigrator.Runner;
+using Microsoft.Extensions.DependencyInjection;
+using System.Configuration;
+
 namespace CrudWinFormsBancoMemoria
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
+            try
+            {
+                BancoDeDados.ConfiguracaoDaMigracao();
+            } catch (Exception ex)
+            {
+                ex.ToString(); 
+            }
             ApplicationConfiguration.Initialize();
             Application.Run(new GerenciadorDePokemons());
         }
+
     }
 }
