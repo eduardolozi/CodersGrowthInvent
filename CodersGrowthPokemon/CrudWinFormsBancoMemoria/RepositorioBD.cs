@@ -8,13 +8,6 @@ namespace CrudWinFormsBancoMemoria
     public class RepositorioBD : IRepositorio
     {
         private string stringConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
-        private List<Pokemon> listaDePokemon = ListaSingleton.Instance;
-
-        private SqlConnection CriaConexao()
-        {
-            SqlConnection conexao = new SqlConnection(stringConexao);
-            return conexao;
-        }
 
         public void Atualizar(Pokemon pokemon)
         {
@@ -69,6 +62,7 @@ namespace CrudWinFormsBancoMemoria
                     Pokemon pokemon = new Pokemon();
                     while(dr.Read())
                     {
+                        /*
                         pokemon.Id = Convert.ToInt32(dr[0]);
                         pokemon.Nome = dr[1].ToString();
                         pokemon.Apelido = dr[2].ToString();
@@ -80,6 +74,7 @@ namespace CrudWinFormsBancoMemoria
                         pokemon.TipoSecundario = ;
                         pokemon.Foto = ;
                         listaDePokemon.Add();
+                        */
                     }
                 }
                 catch (Exception ex)
