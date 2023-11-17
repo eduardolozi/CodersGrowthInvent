@@ -43,7 +43,7 @@ namespace CrudWinFormsBancoMemoria
             comboBoxTipoSecundario.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
 
             if (pokemon != null)
-            {
+            { 
                 txtNome.Text = pokemon.Nome;
                 txtApelido.Text = pokemon.Apelido;
                 txtNivel.Text = pokemon.Nivel.ToString();

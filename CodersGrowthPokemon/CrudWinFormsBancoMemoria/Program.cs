@@ -20,6 +20,5 @@ namespace CrudWinFormsBancoMemoria
             ApplicationConfiguration.Initialize();
             Application.Run(new GerenciadorDePokemons());
         }
-
     }
 }

@@ -9,6 +9,8 @@ namespace CrudWinFormsBancoMemoria
     public partial class GerenciadorDePokemons : Form
     {
         private Repositorio repositorio = new Repositorio();
+        //IConexaoBD conexaoDB;
+        //private RepositorioBD repositorioBD = new RepositorioBD(conexaoBD);
 
         public GerenciadorDePokemons()
         {
