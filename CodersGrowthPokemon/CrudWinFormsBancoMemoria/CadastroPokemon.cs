@@ -62,6 +62,9 @@ namespace CrudWinFormsBancoMemoria
                         fotoPokemon.Image = foto;
                     }
                 }
+
+                this.Text = "Atualização de Pokemon";
+                botaoAdicionar.Text = "Atualizar Pokemon";
             }
         }
 

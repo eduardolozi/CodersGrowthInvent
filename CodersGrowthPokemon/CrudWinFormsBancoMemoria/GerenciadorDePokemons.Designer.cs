@@ -67,7 +67,6 @@
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
             dataGridViewCellStyle2.NullValue = null;
-            pokemonDataGriedView.Columns[6].DefaultCellStyle.Format = "d";
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
@@ -78,6 +77,7 @@
             pokemonDataGriedView.ReadOnly = true;
             pokemonDataGriedView.RowHeadersWidth = 51;
             pokemonDataGriedView.RowTemplate.Height = 29;
+            pokemonDataGriedView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             pokemonDataGriedView.Size = new Size(1103, 424);
             pokemonDataGriedView.TabIndex = 0;
             pokemonDataGriedView.CellDoubleClick += AoClicarDuasVezesNaCelulaDeFoto;
