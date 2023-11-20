@@ -21,16 +21,16 @@ namespace CrudWinFormsBancoMemoria
                 {
                     conexao.Open();
                     SqlCommand comando = new SqlCommand(textoComando, conexao);
-                    comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = pokemon.Nome;
-                    comando.Parameters.Add("@apelido", SqlDbType.VarChar).Value = pokemon.Apelido;
-                    comando.Parameters.Add("@nivel", SqlDbType.Int).Value = pokemon.Nivel;
-                    comando.Parameters.Add("@altura", SqlDbType.Decimal).Value = pokemon.Altura;
-                    comando.Parameters.Add("@shiny", SqlDbType.Bit).Value = pokemon.Shiny;
-                    comando.Parameters.Add("@dataCaptura", SqlDbType.DateTime).Value = pokemon.DataDeCaptura;
-                    comando.Parameters.Add("@tipoPrincipal", SqlDbType.VarChar).Value = pokemon.TipoPrincipal.ToString();
-                    comando.Parameters.Add("@tipoSecundario", SqlDbType.VarChar).Value = pokemon.TipoSecundario.ToString();
-                    comando.Parameters.Add("@foto", SqlDbType.VarChar).Value = pokemon.Foto;
-                    comando.Parameters.Add("@id", SqlDbType.Int).Value = pokemon.Id;
+                    comando.Parameters.AddWithValue("@nome", pokemon.Nome);
+                    comando.Parameters.AddWithValue("apelido", pokemon.Apelido);
+                    comando.Parameters.AddWithValue("@nivel", pokemon.Nivel);
+                    comando.Parameters.AddWithValue("@altura", pokemon.Altura);
+                    comando.Parameters.AddWithValue("@shiny", pokemon.Shiny);
+                    comando.Parameters.AddWithValue("@dataCaptura", pokemon.DataDeCaptura);
+                    comando.Parameters.AddWithValue("@tipoPrincipal", pokemon.TipoPrincipal.ToString());
+                    comando.Parameters.AddWithValue("@tipoSecundario", pokemon.TipoSecundario.ToString());
+                    comando.Parameters.AddWithValue("@foto", pokemon.Foto);
+                    comando.Parameters.AddWithValue("@id", pokemon.Id);
                     comando.ExecuteNonQuery();
                 }
                 catch (Exception ex)
@@ -51,17 +51,16 @@ namespace CrudWinFormsBancoMemoria
                 {
                     conexao.Open();
                     SqlCommand comando = new SqlCommand(textoComando, conexao);
-                    comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = novoPokemon.Nome;
-                    comando.Parameters.Add("@apelido", SqlDbType.VarChar).Value = novoPokemon.Apelido;
-                    comando.Parameters.Add("@nivel", SqlDbType.Int).Value = novoPokemon.Nivel;
-                    comando.Parameters.Add("@altura", SqlDbType.Decimal).Value = novoPokemon.Altura;
-                    comando.Parameters.Add("@shiny", SqlDbType.Bit).Value = novoPokemon.Shiny;
-                    comando.Parameters.Add("@dataCaptura", SqlDbType.DateTime).Value = novoPokemon.DataDeCaptura;
-                    comando.Parameters.Add("@tipoPrincipal", SqlDbType.VarChar).Value = novoPokemon.TipoPrincipal.ToString();
-                    comando.Parameters.Add("@tipoSecundario", SqlDbType.VarChar).Value = novoPokemon.TipoSecundario.ToString();
+                    comando.Parameters.AddWithValue("@nome", novoPokemon.Nome);
+                    comando.Parameters.AddWithValue("apelido", novoPokemon.Apelido);
+                    comando.Parameters.AddWithValue("@nivel", novoPokemon.Nivel);
+                    comando.Parameters.AddWithValue("@altura", novoPokemon.Altura);
+                    comando.Parameters.AddWithValue("@shiny", novoPokemon.Shiny);
+                    comando.Parameters.AddWithValue("@dataCaptura", novoPokemon.DataDeCaptura);
+                    comando.Parameters.AddWithValue("@tipoPrincipal", novoPokemon.TipoPrincipal.ToString());
+                    comando.Parameters.AddWithValue("@tipoSecundario", novoPokemon.TipoSecundario.ToString());
                     if (novoPokemon.Foto == null) comando.Parameters.Add(@"foto", SqlDbType.VarChar).Value = DBNull.Value;
                     else comando.Parameters.Add("@foto", SqlDbType.VarChar).Value = novoPokemon.Foto;
-
                     comando.ExecuteNonQuery();
                 }
                 catch (Exception ex)
@@ -78,13 +77,11 @@ namespace CrudWinFormsBancoMemoria
             string textoComando = "SELECT * FROM Pokemon WHERE id = @id";
             using (SqlConnection conexao = new SqlConnection(stringConexao))
             {
-
                 try
                 {
                     conexao.Open();
                     SqlCommand comando = new SqlCommand(textoComando, conexao);
-                    comando.Parameters.Add("@id", SqlDbType.Int);
-                    comando.Parameters["@id"].Value = id;
+                    comando.Parameters.AddWithValue("@id", pokemon.Id);
                     SqlDataReader dr = comando.ExecuteReader();
                     pokemon.Id = Convert.ToInt32(dr["id"]);
                     pokemon.Nome = dr["nome"].ToString();
@@ -93,11 +90,11 @@ namespace CrudWinFormsBancoMemoria
                     pokemon.Altura = Convert.ToDecimal(dr["altura"]);
                     pokemon.Shiny = Convert.ToBoolean(dr["shiny"]);
                     pokemon.DataDeCaptura = Convert.ToDateTime(dr["data_de_captura"]);
-                    pokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(dr["tipo_principal"].ToString());
 
+                    pokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(dr["tipo_principal"].ToString());
                     if (dr["tipo_secundario"].ToString() == "") pokemon.TipoSecundario = null;
                     else pokemon.TipoSecundario = Enum.Parse<TipoPokemon>(dr["tipo_secundario"].ToString());
-
+  
                     if (dr["foto"].ToString() == "") pokemon.Foto = null;
                     else pokemon.Foto = dr["foto"].ToString();
                 }
@@ -107,7 +104,6 @@ namespace CrudWinFormsBancoMemoria
                 }
                 finally { conexao.Close(); }
             }
-
             return pokemon;
         }
 
@@ -162,7 +158,7 @@ namespace CrudWinFormsBancoMemoria
                 {
                     conexao.Open();
                     SqlCommand comando = new SqlCommand(textoComando, conexao);
-                    comando.Parameters.Add("@id", SqlDbType.Int).Value = pokemon.Id;
+                    comando.Parameters.AddWithValue("@id", pokemon.Id);
                     comando.ExecuteNonQuery();
                 }
                 catch (Exception ex)

@@ -13,7 +13,7 @@ namespace CrudWinFormsBancoMemoria
         public GerenciadorDePokemons()
         {
             InitializeComponent();
-            pokemonDataGriedView.DataSource = null;
+            pokemonDataGriedView.DataSource = repositorioBD.ObterTodos();
             
         }
 
