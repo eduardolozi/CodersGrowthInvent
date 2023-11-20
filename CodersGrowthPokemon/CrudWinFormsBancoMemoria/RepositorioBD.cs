@@ -71,22 +71,50 @@ namespace CrudWinFormsBancoMemoria
             }
         }
 
+        private string ConverteValorParaString(object valor)
+        {
+            return valor.ToString();
+        }
+
+        private int ConverteValorParaInt(object valor)
+        {
+            return Convert.ToInt32(valor);
+        }
+
+        private decimal ConverteValorParaDecimal(object valor)
+        {
+            return Convert.ToDecimal(valor);
+        }
+
+        private bool ConverteValorParaBoolean(object valor)
+        {
+            return Convert.ToBoolean(valor);
+        }
+
+        private DateTime ConverteValorParaDateTime(object valor)
+        {
+            return Convert.ToDateTime(valor);
+        }
+
+        private TipoPokemon ConverteValorParaTipoPokemon(object valor)
+        {
+            return Enum.Parse<TipoPokemon>(valor.ToString());
+        }
+
         private Pokemon AtribuiLinhaAoPokemon(SqlDataReader dr, Pokemon pokemon)
         {
-            pokemon.Id = Convert.ToInt32(dr["id"]);
-            pokemon.Nome = dr["nome"].ToString();
-            pokemon.Apelido = dr["apelido"].ToString();
-            pokemon.Nivel = Convert.ToInt32(dr["nivel"]);
-            pokemon.Altura = Convert.ToDecimal(dr["altura"]);
-            pokemon.Shiny = Convert.ToBoolean(dr["shiny"]);
-            pokemon.DataDeCaptura = Convert.ToDateTime(dr["data_de_captura"]);
-
-            pokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(dr["tipo_principal"].ToString());
+            pokemon.Id = ConverteValorParaInt(dr["id"]);
+            pokemon.Nome = ConverteValorParaString(dr["nome"]);
+            pokemon.Apelido = ConverteValorParaString(dr["apelido"]);
+            pokemon.Nivel = ConverteValorParaInt(dr["nivel"]);
+            pokemon.Altura = ConverteValorParaDecimal(dr["altura"]);
+            pokemon.Shiny = ConverteValorParaBoolean(dr["shiny"]);
+            pokemon.DataDeCaptura = ConverteValorParaDateTime(dr["data_de_captura"]);
+            pokemon.TipoPrincipal = ConverteValorParaTipoPokemon(dr["tipo_principal"]);
             if (dr["tipo_secundario"].ToString() == "") pokemon.TipoSecundario = null;
-            else pokemon.TipoSecundario = Enum.Parse<TipoPokemon>(dr["tipo_secundario"].ToString());
-
+            else pokemon.TipoSecundario = ConverteValorParaTipoPokemon(dr["tipo_secundario"]);
             if (dr["foto"].ToString() == "") pokemon.Foto = null;
-            else pokemon.Foto = dr["foto"].ToString();
+            else pokemon.Foto = ConverteValorParaString(dr["foto"]);
 
             return pokemon;
         }
