@@ -8,9 +8,7 @@ namespace CrudWinFormsBancoMemoria
 {
     public partial class GerenciadorDePokemons : Form
     {
-        private Repositorio repositorio = new Repositorio();
-        //IConexaoBD conexaoDB;
-        //private RepositorioBD repositorioBD = new RepositorioBD(conexaoBD);
+        private RepositorioBD repositorioBD = new RepositorioBD();
 
         public GerenciadorDePokemons()
         {
@@ -25,7 +23,7 @@ namespace CrudWinFormsBancoMemoria
             formCadastro.ShowDialog();
             if (formCadastro.DialogResult == DialogResult.OK)
             {
-                repositorio.Criar(formCadastro.pokemon);
+                repositorioBD.Criar(formCadastro.pokemon);
                 formCadastro.Dispose();
                 AtualizandoDataGridView();
             }
@@ -34,7 +32,7 @@ namespace CrudWinFormsBancoMemoria
         public void AtualizandoDataGridView()
         {
             pokemonDataGriedView.DataSource = null;
-            pokemonDataGriedView.DataSource = repositorio.ObterTodos();
+            pokemonDataGriedView.DataSource = repositorioBD.ObterTodos();
         }
 
         private void ConverteBytesParaImagem(string cedula)
@@ -77,7 +75,7 @@ namespace CrudWinFormsBancoMemoria
                 formCadastro.ShowDialog();
                 if (formCadastro.DialogResult == DialogResult.OK)
                 {
-                    repositorio.Atualizar(pokemonEditado);
+                    repositorioBD.Atualizar(pokemonEditado);
                     formCadastro.Dispose();
                     AtualizandoDataGridView();
                 }
@@ -97,7 +95,7 @@ namespace CrudWinFormsBancoMemoria
                 var confirmarRemocao = MessageBox.Show($@"Tem certeza que deseja remover o {pokemonASerExcluido.Nome}?", "Remoção concluida!", MessageBoxButtons.YesNo);
                 if (confirmarRemocao == DialogResult.Yes)
                 {
-                    repositorio.Remover(pokemonASerExcluido);
+                    repositorioBD.Remover(pokemonASerExcluido);
                     AtualizandoDataGridView();
                 }
             }
