@@ -8,6 +8,12 @@ namespace CrudWinFormsBancoMemoria
     public class RepositorioBD : IRepositorio
     {
         private string stringConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
+        private ConversaoBancoParaPokemon conversao;
+
+        public RepositorioBD(ConversaoBancoParaPokemon conversao) {
+            this.conversao = conversao;
+        }
+
 
         public void Atualizar(Pokemon pokemon)
         {
@@ -103,6 +109,7 @@ namespace CrudWinFormsBancoMemoria
 
         private Pokemon AtribuiLinhaAoPokemon(SqlDataReader dr, Pokemon pokemon)
         {
+
             pokemon.Id = ConverteValorParaInt(dr["id"]);
             pokemon.Nome = ConverteValorParaString(dr["nome"]);
             pokemon.Apelido = ConverteValorParaString(dr["apelido"]);
@@ -115,6 +122,8 @@ namespace CrudWinFormsBancoMemoria
             else pokemon.TipoSecundario = ConverteValorParaTipoPokemon(dr["tipo_secundario"]);
             if (dr["foto"].ToString() == "") pokemon.Foto = null;
             else pokemon.Foto = ConverteValorParaString(dr["foto"]);
+
+            conversao.
 
             return pokemon;
         }
