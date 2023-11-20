@@ -71,6 +71,26 @@ namespace CrudWinFormsBancoMemoria
             }
         }
 
+        private Pokemon AtribuiLinhaAoPokemon(SqlDataReader dr, Pokemon pokemon)
+        {
+            pokemon.Id = Convert.ToInt32(dr["id"]);
+            pokemon.Nome = dr["nome"].ToString();
+            pokemon.Apelido = dr["apelido"].ToString();
+            pokemon.Nivel = Convert.ToInt32(dr["nivel"]);
+            pokemon.Altura = Convert.ToDecimal(dr["altura"]);
+            pokemon.Shiny = Convert.ToBoolean(dr["shiny"]);
+            pokemon.DataDeCaptura = Convert.ToDateTime(dr["data_de_captura"]);
+
+            pokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(dr["tipo_principal"].ToString());
+            if (dr["tipo_secundario"].ToString() == "") pokemon.TipoSecundario = null;
+            else pokemon.TipoSecundario = Enum.Parse<TipoPokemon>(dr["tipo_secundario"].ToString());
+
+            if (dr["foto"].ToString() == "") pokemon.Foto = null;
+            else pokemon.Foto = dr["foto"].ToString();
+
+            return pokemon;
+        }
+
         public Pokemon ObterPorId(int id)
         {
             Pokemon pokemon = new Pokemon();
@@ -83,20 +103,7 @@ namespace CrudWinFormsBancoMemoria
                     SqlCommand comando = new SqlCommand(textoComando, conexao);
                     comando.Parameters.AddWithValue("@id", pokemon.Id);
                     SqlDataReader dr = comando.ExecuteReader();
-                    pokemon.Id = Convert.ToInt32(dr["id"]);
-                    pokemon.Nome = dr["nome"].ToString();
-                    pokemon.Apelido = dr["apelido"].ToString();
-                    pokemon.Nivel = Convert.ToInt32(dr["nivel"]);
-                    pokemon.Altura = Convert.ToDecimal(dr["altura"]);
-                    pokemon.Shiny = Convert.ToBoolean(dr["shiny"]);
-                    pokemon.DataDeCaptura = Convert.ToDateTime(dr["data_de_captura"]);
-
-                    pokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(dr["tipo_principal"].ToString());
-                    if (dr["tipo_secundario"].ToString() == "") pokemon.TipoSecundario = null;
-                    else pokemon.TipoSecundario = Enum.Parse<TipoPokemon>(dr["tipo_secundario"].ToString());
-  
-                    if (dr["foto"].ToString() == "") pokemon.Foto = null;
-                    else pokemon.Foto = dr["foto"].ToString();
+                    pokemon = AtribuiLinhaAoPokemon(dr, pokemon);
                 }
                 catch (Exception ex)
                 {
@@ -121,22 +128,7 @@ namespace CrudWinFormsBancoMemoria
                     while (dr.Read())
                     {
                         Pokemon pokemon = new Pokemon();
-                        pokemon.Id = Convert.ToInt32(dr["id"]);
-                        pokemon.Nome = dr["nome"].ToString();
-                        pokemon.Apelido = dr["apelido"].ToString();
-                        pokemon.Nivel = Convert.ToInt32(dr["nivel"]);
-                        pokemon.Altura = Convert.ToDecimal(dr["altura"]);
-                        pokemon.Shiny = Convert.ToBoolean(dr["shiny"]);
-                        pokemon.DataDeCaptura = Convert.ToDateTime(dr["data_de_captura"]);
-                        pokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(dr["tipo_principal"].ToString());
-
-                        if (dr["tipo_secundario"].ToString() == "") pokemon.TipoSecundario = null;
-                        else pokemon.TipoSecundario = Enum.Parse<TipoPokemon>(dr["tipo_secundario"].ToString());
-
-                        if (dr["foto"].ToString() == "") pokemon.Foto = null;
-                        else pokemon.Foto = dr["foto"].ToString();
-
-                        listaPokemon.Add(pokemon);
+                        listaPokemon.Add(AtribuiLinhaAoPokemon(dr, pokemon));
                     }
                 }
                 catch (Exception ex)

@@ -8,13 +8,12 @@ namespace CrudWinFormsBancoMemoria
 {
     public partial class GerenciadorDePokemons : Form
     {
-        private RepositorioBD repositorioBD = new RepositorioBD();
+        private RepositorioBD repositorio = new RepositorioBD();
 
         public GerenciadorDePokemons()
         {
             InitializeComponent();
-            pokemonDataGriedView.DataSource = repositorioBD.ObterTodos();
-
+            pokemonDataGriedView.DataSource = repositorio.ObterTodos();
         }
 
         private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
@@ -23,7 +22,7 @@ namespace CrudWinFormsBancoMemoria
             formCadastro.ShowDialog();
             if (formCadastro.DialogResult == DialogResult.OK)
             {
-                repositorioBD.Criar(formCadastro.pokemon);
+                repositorio.Criar(formCadastro.pokemon);
                 formCadastro.Dispose();
                 AtualizandoDataGridView();
             }
@@ -32,7 +31,7 @@ namespace CrudWinFormsBancoMemoria
         public void AtualizandoDataGridView()
         {
             pokemonDataGriedView.DataSource = null;
-            pokemonDataGriedView.DataSource = repositorioBD.ObterTodos();
+            pokemonDataGriedView.DataSource = repositorio.ObterTodos();
         }
 
         private void ConverteBytesParaImagem(string cedula)
@@ -87,7 +86,7 @@ namespace CrudWinFormsBancoMemoria
                 formCadastro.ShowDialog();
                 if (formCadastro.DialogResult == DialogResult.OK)
                 {
-                    repositorioBD.Atualizar(pokemonEditado);
+                    repositorio.Atualizar(pokemonEditado);
                     formCadastro.Dispose();
                     AtualizandoDataGridView();
                 }
@@ -107,7 +106,7 @@ namespace CrudWinFormsBancoMemoria
                 var confirmarRemocao = MessageBox.Show($@"Tem certeza que deseja remover o {pokemonASerExcluido.Nome}?", "Remoção concluida!", MessageBoxButtons.YesNo);
                 if (confirmarRemocao == DialogResult.Yes)
                 {
-                    repositorioBD.Remover(pokemonASerExcluido);
+                    repositorio.Remover(pokemonASerExcluido);
                     AtualizandoDataGridView();
                 }
             }
