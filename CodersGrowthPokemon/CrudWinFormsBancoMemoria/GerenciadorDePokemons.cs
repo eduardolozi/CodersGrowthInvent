@@ -1,5 +1,6 @@
 using CrudWinFormsBancoMemoria.Migracoes;
 using CrudWinFormsBancoMemoria.Models;
+using CrudWinFormsBancoMemoria.Validacoes;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -8,21 +9,23 @@ namespace CrudWinFormsBancoMemoria
 {
     public partial class GerenciadorDePokemons : Form
     {
-        private RepositorioBD repositorio = new RepositorioBD();
+        private IRepositorio _repositorio;
+        private PokemonValidator _validacao = new PokemonValidator();
 
-        public GerenciadorDePokemons()
+        public GerenciadorDePokemons(IRepositorio repositorio)
         {
             InitializeComponent();
-            pokemonDataGriedView.DataSource = repositorio.ObterTodos();
+            _repositorio = repositorio;
+            pokemonDataGriedView.DataSource = _repositorio.ObterTodos();
         }
 
         private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
         {
-            var formCadastro = new CadastroPokemon();
+            var formCadastro = new CadastroPokemon(_validacao);
             formCadastro.ShowDialog();
             if (formCadastro.DialogResult == DialogResult.OK)
             {
-                repositorio.Criar(formCadastro.pokemon);
+                _repositorio.Criar(formCadastro.pokemon);
                 formCadastro.Dispose();
                 AtualizandoDataGridView();
             }
@@ -31,7 +34,7 @@ namespace CrudWinFormsBancoMemoria
         public void AtualizandoDataGridView()
         {
             pokemonDataGriedView.DataSource = null;
-            pokemonDataGriedView.DataSource = repositorio.ObterTodos();
+            pokemonDataGriedView.DataSource = _repositorio.ObterTodos();
         }
 
         private void ConverteBytesParaImagem(string cedula)
@@ -82,11 +85,11 @@ namespace CrudWinFormsBancoMemoria
                 Pokemon pokemonEditado;
                 pokemonEditado = (Pokemon)pokemonDataGriedView.CurrentRow.DataBoundItem;
 
-                var formCadastro = new CadastroPokemon(pokemonEditado);
+                var formCadastro = new CadastroPokemon(_validacao, pokemonEditado);
                 formCadastro.ShowDialog();
                 if (formCadastro.DialogResult == DialogResult.OK)
                 {
-                    repositorio.Atualizar(pokemonEditado);
+                    _repositorio.Atualizar(pokemonEditado);
                     formCadastro.Dispose();
                     AtualizandoDataGridView();
                 }
@@ -106,7 +109,7 @@ namespace CrudWinFormsBancoMemoria
                 var confirmarRemocao = MessageBox.Show($@"Tem certeza que deseja remover o {pokemonASerExcluido.Nome}?", "Remoção concluida!", MessageBoxButtons.YesNo);
                 if (confirmarRemocao == DialogResult.Yes)
                 {
-                    repositorio.Remover(pokemonASerExcluido);
+                    _repositorio.Remover(pokemonASerExcluido);
                     AtualizandoDataGridView();
                 }
             }

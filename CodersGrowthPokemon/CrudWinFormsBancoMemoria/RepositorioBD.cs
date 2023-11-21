@@ -8,7 +8,13 @@ namespace CrudWinFormsBancoMemoria
     public class RepositorioBD : IRepositorio
     {
         private string stringConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
-        private ConversaoBancoParaPokemon conversao = new ConversaoBancoParaPokemon();
+        private ConversaoBancoParaPokemon _conversao;
+        
+        public RepositorioBD(ConversaoBancoParaPokemon conversao)
+        {
+            _conversao = conversao;
+        }
+
 
         public void Atualizar(Pokemon pokemon)
         {
@@ -84,7 +90,7 @@ namespace CrudWinFormsBancoMemoria
                     SqlCommand comando = new SqlCommand(textoComando, conexao);
                     comando.Parameters.AddWithValue("@id", pokemon.Id);
                     SqlDataReader dr = comando.ExecuteReader();
-                    pokemon = conversao.AtribuiLinhaAoPokemon(dr, pokemon);
+                    pokemon = _conversao.AtribuiLinhaAoPokemon(dr, pokemon);
                 }
                 catch (Exception ex)
                 {
@@ -109,7 +115,7 @@ namespace CrudWinFormsBancoMemoria
                     while (dr.Read())
                     {
                         Pokemon pokemon = new Pokemon();
-                        listaPokemon.Add(conversao.AtribuiLinhaAoPokemon(dr, pokemon));
+                        listaPokemon.Add(_conversao.AtribuiLinhaAoPokemon(dr, pokemon));
                     }
                 }
                 catch (Exception ex)
