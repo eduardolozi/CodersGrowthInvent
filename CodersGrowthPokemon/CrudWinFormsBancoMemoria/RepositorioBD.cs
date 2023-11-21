@@ -8,12 +8,7 @@ namespace CrudWinFormsBancoMemoria
     public class RepositorioBD : IRepositorio
     {
         private string stringConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
-        private ConversaoBancoParaPokemon conversao;
-
-        public RepositorioBD(ConversaoBancoParaPokemon conversao) {
-            this.conversao = conversao;
-        }
-
+        private ConversaoBancoParaPokemon conversao = new ConversaoBancoParaPokemon();
 
         public void Atualizar(Pokemon pokemon)
         {
@@ -77,57 +72,6 @@ namespace CrudWinFormsBancoMemoria
             }
         }
 
-        private string ConverteValorParaString(object valor)
-        {
-            return valor.ToString();
-        }
-
-        private int ConverteValorParaInt(object valor)
-        {
-            return Convert.ToInt32(valor);
-        }
-
-        private decimal ConverteValorParaDecimal(object valor)
-        {
-            return Convert.ToDecimal(valor);
-        }
-
-        private bool ConverteValorParaBoolean(object valor)
-        {
-            return Convert.ToBoolean(valor);
-        }
-
-        private DateTime ConverteValorParaDateTime(object valor)
-        {
-            return Convert.ToDateTime(valor);
-        }
-
-        private TipoPokemon ConverteValorParaTipoPokemon(object valor)
-        {
-            return Enum.Parse<TipoPokemon>(valor.ToString());
-        }
-
-        private Pokemon AtribuiLinhaAoPokemon(SqlDataReader dr, Pokemon pokemon)
-        {
-
-            pokemon.Id = ConverteValorParaInt(dr["id"]);
-            pokemon.Nome = ConverteValorParaString(dr["nome"]);
-            pokemon.Apelido = ConverteValorParaString(dr["apelido"]);
-            pokemon.Nivel = ConverteValorParaInt(dr["nivel"]);
-            pokemon.Altura = ConverteValorParaDecimal(dr["altura"]);
-            pokemon.Shiny = ConverteValorParaBoolean(dr["shiny"]);
-            pokemon.DataDeCaptura = ConverteValorParaDateTime(dr["data_de_captura"]);
-            pokemon.TipoPrincipal = ConverteValorParaTipoPokemon(dr["tipo_principal"]);
-            if (dr["tipo_secundario"].ToString() == "") pokemon.TipoSecundario = null;
-            else pokemon.TipoSecundario = ConverteValorParaTipoPokemon(dr["tipo_secundario"]);
-            if (dr["foto"].ToString() == "") pokemon.Foto = null;
-            else pokemon.Foto = ConverteValorParaString(dr["foto"]);
-
-            conversao.
-
-            return pokemon;
-        }
-
         public Pokemon ObterPorId(int id)
         {
             Pokemon pokemon = new Pokemon();
@@ -140,7 +84,7 @@ namespace CrudWinFormsBancoMemoria
                     SqlCommand comando = new SqlCommand(textoComando, conexao);
                     comando.Parameters.AddWithValue("@id", pokemon.Id);
                     SqlDataReader dr = comando.ExecuteReader();
-                    pokemon = AtribuiLinhaAoPokemon(dr, pokemon);
+                    pokemon = conversao.AtribuiLinhaAoPokemon(dr, pokemon);
                 }
                 catch (Exception ex)
                 {
@@ -165,7 +109,7 @@ namespace CrudWinFormsBancoMemoria
                     while (dr.Read())
                     {
                         Pokemon pokemon = new Pokemon();
-                        listaPokemon.Add(AtribuiLinhaAoPokemon(dr, pokemon));
+                        listaPokemon.Add(conversao.AtribuiLinhaAoPokemon(dr, pokemon));
                     }
                 }
                 catch (Exception ex)
