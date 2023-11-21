@@ -20,11 +20,14 @@ namespace CrudWinFormsBancoMemoria
     {
         public Pokemon? pokemon;
         private string? mensagemDeErro;
+        private PokemonValidator _validacao;
 
-        public CadastroPokemon(Pokemon pokemonEditado = null)
+        public CadastroPokemon(PokemonValidator validacao, Pokemon pokemonEditado = null)
         {
             if (pokemonEditado != null) pokemon = pokemonEditado;
             else pokemon = null;
+
+            _validacao = validacao;
 
             InitializeComponent();
         }
@@ -106,8 +109,7 @@ namespace CrudWinFormsBancoMemoria
             try
             {
                 AdicionaOsCamposNoPokemon();
-                PokemonValidator validacao = new PokemonValidator();
-                ValidationResult resultado = validacao.Validate(pokemon);
+                ValidationResult resultado = _validacao.Validate(pokemon);
                 ObtemMensagemDeErro(resultado);
                 this.DialogResult = DialogResult.OK;
             }
