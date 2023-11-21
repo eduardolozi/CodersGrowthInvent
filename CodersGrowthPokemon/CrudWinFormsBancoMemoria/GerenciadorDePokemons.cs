@@ -1,4 +1,6 @@
+using CrudWinFormsBancoMemoria.Migracoes;
 using CrudWinFormsBancoMemoria.Models;
+using CrudWinFormsBancoMemoria.Validacoes;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -7,21 +9,23 @@ namespace CrudWinFormsBancoMemoria
 {
     public partial class GerenciadorDePokemons : Form
     {
-        private Repositorio repositorio = new Repositorio();
+        private IRepositorio _repositorio;
+        private PokemonValidator _validacao = new PokemonValidator();
 
-        public GerenciadorDePokemons()
+        public GerenciadorDePokemons(IRepositorio repositorio)
         {
             InitializeComponent();
-            pokemonDataGriedView.DataSource = null;
+            _repositorio = repositorio;
+            pokemonDataGriedView.DataSource = _repositorio.ObterTodos();
         }
 
         private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
         {
-            var formCadastro = new CadastroPokemon();
+            var formCadastro = new CadastroPokemon(_validacao);
             formCadastro.ShowDialog();
             if (formCadastro.DialogResult == DialogResult.OK)
             {
-                repositorio.Criar(formCadastro.pokemon);
+                _repositorio.Criar(formCadastro.pokemon);
                 formCadastro.Dispose();
                 AtualizandoDataGridView();
             }
@@ -30,7 +34,7 @@ namespace CrudWinFormsBancoMemoria
         public void AtualizandoDataGridView()
         {
             pokemonDataGriedView.DataSource = null;
-            pokemonDataGriedView.DataSource = repositorio.ObterTodos();
+            pokemonDataGriedView.DataSource = _repositorio.ObterTodos();
         }
 
         private void ConverteBytesParaImagem(string cedula)
@@ -47,11 +51,19 @@ namespace CrudWinFormsBancoMemoria
 
         private void AoClicarDuasVezesNaCelulaDeFoto(object sender, DataGridViewCellEventArgs e)
         {
-            var cedula = this.pokemonDataGriedView.CurrentCell.Value.ToString();
-            if (pokemonDataGriedView.CurrentCell.ColumnIndex == 9)
+            try
             {
-                ConverteBytesParaImagem(cedula);
+                if (pokemonDataGriedView.CurrentCell.ColumnIndex == 9 && this.pokemonDataGriedView.CurrentCell.Value != null)
+                {
+                    var cedula = this.pokemonDataGriedView.CurrentCell.Value.ToString();
+                    ConverteBytesParaImagem(cedula);
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void FormatandoAsCedulasDeFoto(object sender, DataGridViewCellFormattingEventArgs e)
@@ -59,6 +71,10 @@ namespace CrudWinFormsBancoMemoria
             if (e.Value != null && e.ColumnIndex == 9)
             {
                 e.Value = "Clique para ver";
+            }
+            else if (e.Value == null && e.ColumnIndex == 9)
+            {
+                e.Value = "Foto inválida";
             }
         }
 
@@ -69,11 +85,11 @@ namespace CrudWinFormsBancoMemoria
                 Pokemon pokemonEditado;
                 pokemonEditado = (Pokemon)pokemonDataGriedView.CurrentRow.DataBoundItem;
 
-                var formCadastro = new CadastroPokemon(pokemonEditado);
+                var formCadastro = new CadastroPokemon(_validacao, pokemonEditado);
                 formCadastro.ShowDialog();
                 if (formCadastro.DialogResult == DialogResult.OK)
                 {
-                    repositorio.Atualizar(pokemonEditado);
+                    _repositorio.Atualizar(pokemonEditado);
                     formCadastro.Dispose();
                     AtualizandoDataGridView();
                 }
@@ -93,7 +109,7 @@ namespace CrudWinFormsBancoMemoria
                 var confirmarRemocao = MessageBox.Show($@"Tem certeza que deseja remover o {pokemonASerExcluido.Nome}?", "Remoção concluida!", MessageBoxButtons.YesNo);
                 if (confirmarRemocao == DialogResult.Yes)
                 {
-                    repositorio.Remover(pokemonASerExcluido);
+                    _repositorio.Remover(pokemonASerExcluido);
                     AtualizandoDataGridView();
                 }
             }

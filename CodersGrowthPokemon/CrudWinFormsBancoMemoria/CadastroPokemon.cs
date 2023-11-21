@@ -20,11 +20,14 @@ namespace CrudWinFormsBancoMemoria
     {
         public Pokemon? pokemon;
         private string? mensagemDeErro;
+        private PokemonValidator _validacao;
 
-        public CadastroPokemon(Pokemon pokemonEditado = null)
+        public CadastroPokemon(PokemonValidator validacao, Pokemon pokemonEditado = null)
         {
             if (pokemonEditado != null) pokemon = pokemonEditado;
             else pokemon = null;
+
+            _validacao = validacao;
 
             InitializeComponent();
         }
@@ -43,7 +46,7 @@ namespace CrudWinFormsBancoMemoria
             comboBoxTipoSecundario.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
 
             if (pokemon != null)
-            {
+            { 
                 txtNome.Text = pokemon.Nome;
                 txtApelido.Text = pokemon.Apelido;
                 txtNivel.Text = pokemon.Nivel.ToString();
@@ -53,6 +56,18 @@ namespace CrudWinFormsBancoMemoria
                 if (pokemon.TipoSecundario == null) comboBoxTipoSecundario.Text = "--Selecionar--";
                 else comboBoxTipoSecundario.Text = pokemon.TipoSecundario.ToString();
                 checkBoxShiny.Checked = pokemon.Shiny;
+                if (pokemon.Foto != null)
+                {
+                    byte[] imagemEmBytes = Convert.FromBase64String(pokemon.Foto);
+                    using (var ms = new MemoryStream(imagemEmBytes, 0, imagemEmBytes.Length))
+                    {
+                        Image foto = Image.FromStream(ms, true);
+                        fotoPokemon.Image = foto;
+                    }
+                }
+
+                this.Text = "Atualização de Pokemon";
+                botaoAdicionar.Text = "Atualizar Pokemon";
             }
         }
 
@@ -94,8 +109,7 @@ namespace CrudWinFormsBancoMemoria
             try
             {
                 AdicionaOsCamposNoPokemon();
-                PokemonValidator validacao = new PokemonValidator();
-                ValidationResult resultado = validacao.Validate(pokemon);
+                ValidationResult resultado = _validacao.Validate(pokemon);
                 ObtemMensagemDeErro(resultado);
                 this.DialogResult = DialogResult.OK;
             }

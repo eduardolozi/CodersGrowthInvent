@@ -32,7 +32,7 @@ namespace CrudWinFormsBancoMemoria.Validacoes
 
             RuleFor(p => p.DataDeCaptura)
                 .GreaterThanOrEqualTo(new DateTime(1996, 2, 27)).WithMessage("DATA DE CAPTURA: Data Mínima: 27/02/1996")
-                .LessThanOrEqualTo(DateTime.Now).WithMessage($"DATA DE CAPTURA: Data Máxima: {DateTime.Now.ToShortDateString()}");
+                .LessThanOrEqualTo(DateTime.Now.AddDays(1)).WithMessage($"DATA DE CAPTURA: Data Máxima: {DateTime.Now.ToShortDateString()}");
 
             RuleFor(p => p.TipoPrincipal)
                 .NotEqual(Enum.Parse<TipoPokemon>("0")).WithMessage("TIPO PRINCIPAL: Selecione um tipo.");

@@ -1,17 +1,39 @@
+using CrudWinFormsBancoMemoria.Migracoes;
+using CrudWinFormsBancoMemoria.Validacoes;
+using FluentMigrator.Runner;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System.Configuration;
+
 namespace CrudWinFormsBancoMemoria
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
+            try
+            {
+                BancoDeDados.ConfiguracaoDaMigracao();
+            } catch (Exception ex)
+            {
+                ex.ToString(); 
+            }
+            var builder = CriaHostBuilder();
+            var servicesProvider = builder.Build().Services;
+            var repositorio = servicesProvider.GetService<IRepositorio>();
+
             ApplicationConfiguration.Initialize();
-            Application.Run(new GerenciadorDePokemons());
+            Application.Run(new GerenciadorDePokemons(repositorio));
+        }
+
+        static IHostBuilder CriaHostBuilder()
+        {
+            return Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) => {
+                    services.AddScoped<IRepositorio, RepositorioBD>();
+                    services.AddScoped<ConversaoBancoParaPokemon>();
+                });
         }
     }
 }
