@@ -8,13 +8,12 @@ namespace CrudWinFormsBancoMemoria
 {
     public partial class GerenciadorDePokemons : Form
     {
-        private Repositorio repositorio = new Repositorio();
+        private RepositorioBD repositorio = new RepositorioBD();
 
         public GerenciadorDePokemons()
         {
             InitializeComponent();
-            pokemonDataGriedView.DataSource = null;
-            
+            pokemonDataGriedView.DataSource = repositorio.ObterTodos();
         }
 
         private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
@@ -49,11 +48,19 @@ namespace CrudWinFormsBancoMemoria
 
         private void AoClicarDuasVezesNaCelulaDeFoto(object sender, DataGridViewCellEventArgs e)
         {
-            var cedula = this.pokemonDataGriedView.CurrentCell.Value.ToString();
-            if (pokemonDataGriedView.CurrentCell.ColumnIndex == 9)
+            try
             {
-                ConverteBytesParaImagem(cedula);
+                if (pokemonDataGriedView.CurrentCell.ColumnIndex == 9 && this.pokemonDataGriedView.CurrentCell.Value != null)
+                {
+                    var cedula = this.pokemonDataGriedView.CurrentCell.Value.ToString();
+                    ConverteBytesParaImagem(cedula);
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void FormatandoAsCedulasDeFoto(object sender, DataGridViewCellFormattingEventArgs e)
@@ -61,6 +68,10 @@ namespace CrudWinFormsBancoMemoria
             if (e.Value != null && e.ColumnIndex == 9)
             {
                 e.Value = "Clique para ver";
+            }
+            else if (e.Value == null && e.ColumnIndex == 9)
+            {
+                e.Value = "Foto inválida";
             }
         }
 

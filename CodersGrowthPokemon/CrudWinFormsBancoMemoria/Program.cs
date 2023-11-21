@@ -1,6 +1,7 @@
 using CrudWinFormsBancoMemoria.Migracoes;
 using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System.Configuration;
 
 namespace CrudWinFormsBancoMemoria
@@ -17,6 +18,7 @@ namespace CrudWinFormsBancoMemoria
             {
                 ex.ToString(); 
             }
+            
             ApplicationConfiguration.Initialize();
             Application.Run(new GerenciadorDePokemons());
         }

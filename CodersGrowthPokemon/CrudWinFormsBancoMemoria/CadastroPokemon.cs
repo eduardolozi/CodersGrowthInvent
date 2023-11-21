@@ -43,7 +43,7 @@ namespace CrudWinFormsBancoMemoria
             comboBoxTipoSecundario.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
 
             if (pokemon != null)
-            {
+            { 
                 txtNome.Text = pokemon.Nome;
                 txtApelido.Text = pokemon.Apelido;
                 txtNivel.Text = pokemon.Nivel.ToString();
@@ -53,6 +53,18 @@ namespace CrudWinFormsBancoMemoria
                 if (pokemon.TipoSecundario == null) comboBoxTipoSecundario.Text = "--Selecionar--";
                 else comboBoxTipoSecundario.Text = pokemon.TipoSecundario.ToString();
                 checkBoxShiny.Checked = pokemon.Shiny;
+                if (pokemon.Foto != null)
+                {
+                    byte[] imagemEmBytes = Convert.FromBase64String(pokemon.Foto);
+                    using (var ms = new MemoryStream(imagemEmBytes, 0, imagemEmBytes.Length))
+                    {
+                        Image foto = Image.FromStream(ms, true);
+                        fotoPokemon.Image = foto;
+                    }
+                }
+
+                this.Text = "Atualização de Pokemon";
+                botaoAdicionar.Text = "Atualizar Pokemon";
             }
         }
 
