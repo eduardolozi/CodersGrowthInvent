@@ -1,5 +1,6 @@
 ﻿using CrudWinFormsBancoMemoria.Models;
 using CrudWinFormsBancoMemoria.Validacoes;
+using Dominio.Enums;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;

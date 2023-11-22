@@ -1,4 +1,4 @@
-﻿namespace CrudWinFormsBancoMemoria.Models
+﻿namespace Dominio.Enums
 {
     public enum TipoPokemon
     {
@@ -14,10 +14,10 @@
         Veneno = 10,
         Rocha = 11,
         Inseto = 12,
-        Fantasma = 13, 
+        Fantasma = 13,
         Noturno = 14,
         Aco = 15,
-        Dragao = 16, 
+        Dragao = 16,
         Normal = 17
     }
 }

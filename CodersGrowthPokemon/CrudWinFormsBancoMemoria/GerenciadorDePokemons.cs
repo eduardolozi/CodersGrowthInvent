@@ -1,9 +1,6 @@
-using CrudWinFormsBancoMemoria.Migracoes;
 using CrudWinFormsBancoMemoria.Models;
 using CrudWinFormsBancoMemoria.Validacoes;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows.Forms;
+using Infraestrutura.Repositorios;
 
 namespace CrudWinFormsBancoMemoria
 {

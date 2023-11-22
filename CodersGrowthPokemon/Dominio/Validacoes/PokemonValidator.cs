@@ -1,4 +1,5 @@
 ﻿using CrudWinFormsBancoMemoria.Models;
+using Dominio.Enums;
 using FluentValidation;
 using System.Globalization;
 using System.Text;
