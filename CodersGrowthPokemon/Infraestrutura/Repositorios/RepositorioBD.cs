@@ -37,7 +37,8 @@ namespace Infraestrutura.Repositorios
                     comando.Parameters.AddWithValue("@tipoPrincipal", pokemon.TipoPrincipal.ToString());
                     comando.Parameters.AddWithValue("@tipoSecundario", pokemon.TipoSecundario.ToString());
                     comando.Parameters.AddWithValue("@foto", pokemon.Foto);
-                    comando.Parameters.AddWithValue("@id", pokemon.Id);
+                    if (pokemon.Foto == null) comando.Parameters.Add(@"foto", SqlDbType.VarChar).Value = DBNull.Value;
+                    else comando.Parameters.Add("@foto", SqlDbType.VarChar).Value = pokemon.Foto;
                     comando.ExecuteNonQuery();
                 }
                 catch (Exception ex)
