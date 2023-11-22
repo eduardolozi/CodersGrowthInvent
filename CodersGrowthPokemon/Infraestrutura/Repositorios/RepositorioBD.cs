@@ -1,20 +1,20 @@
-﻿using CrudWinFormsBancoMemoria.Models;
+﻿using CrudWinFormsBancoMemoria;
+using CrudWinFormsBancoMemoria.Models;
 using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 
-namespace CrudWinFormsBancoMemoria
+namespace Infraestrutura.Repositorios
 {
     public class RepositorioBD : IRepositorio
     {
         private string stringConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
         private ConversaoBancoParaPokemon _conversao;
-        
+
         public RepositorioBD(ConversaoBancoParaPokemon conversao)
         {
             _conversao = conversao;
         }
-
 
         public void Atualizar(Pokemon pokemon)
         {
@@ -42,7 +42,7 @@ namespace CrudWinFormsBancoMemoria
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    throw new Exception("Erro ao atualizar Pokemon do Banco.");
                 }
                 finally { conexao.Close(); }
             }
@@ -72,7 +72,7 @@ namespace CrudWinFormsBancoMemoria
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    throw new Exception("Erro ao inserir Pokemon ao Banco.");
                 }
                 finally { conexao.Close(); }
             }
@@ -94,7 +94,7 @@ namespace CrudWinFormsBancoMemoria
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    throw new Exception("Erro ao obter Pokemon pelo id do Banco.");
                 }
                 finally { conexao.Close(); }
             }
@@ -120,7 +120,7 @@ namespace CrudWinFormsBancoMemoria
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    throw new Exception("Erro ao obter os Pokemon do Banco.");
                 }
                 finally { conexao.Close(); }
             }
@@ -142,7 +142,7 @@ namespace CrudWinFormsBancoMemoria
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    throw new Exception("Erro ao remover Pokemon ao Banco.");
                 }
                 finally { conexao.Close(); }
             }

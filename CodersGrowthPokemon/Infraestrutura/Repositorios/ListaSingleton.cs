@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrudWinFormsBancoMemoria
+namespace Infraestrutura.Repositorios
 {
     public class ListaSingleton
     {
@@ -23,11 +23,11 @@ namespace CrudWinFormsBancoMemoria
                 return instance;
             }
         }
-        
+
         public static int GeraId()
         {
             contadorDeId++;
-            return (contadorDeId);
+            return contadorDeId;
         }
     }
 }
