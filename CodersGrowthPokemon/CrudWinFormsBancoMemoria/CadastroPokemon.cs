@@ -106,18 +106,20 @@ namespace CrudWinFormsBancoMemoria
             }
             catch (Exception ex)
             {
+
                 MessageBox.Show(mensagemDeErro);
             }
         }
 
         private void AoClicarBotaoCancelar(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            var result = MessageBox.Show("Tem certeza que deseja cancelar?", "Atualização cancelada.", MessageBoxButtons.YesNo);
+            if(result == DialogResult.Yes) this.DialogResult = DialogResult.Cancel;
         }
 
         private void AoClicarNoBotaoBuscarImagem(object sender, EventArgs e)
         {
-            OpenFileDialog arquivo = new OpenFileDialog();
+            OpenFileDialog arquivo = new();
             arquivo.Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG|All files (*.*)|*.*";
             if (arquivo.ShowDialog() == DialogResult.OK)
             {

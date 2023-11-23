@@ -12,7 +12,7 @@ namespace CrudWinFormsBancoMemoria
 {
     public class BancoDeDados
     {
-        private static string stringDeConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
+        private static readonly string stringDeConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
 
         public static void ConfiguracaoDaMigracao()
         {

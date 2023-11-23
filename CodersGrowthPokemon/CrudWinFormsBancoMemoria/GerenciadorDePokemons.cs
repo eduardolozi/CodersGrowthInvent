@@ -6,8 +6,8 @@ namespace CrudWinFormsBancoMemoria
 {
     public partial class GerenciadorDePokemons : Form
     {
-        private IRepositorio _repositorio;
-        private PokemonValidator _validacao = new PokemonValidator();
+        private readonly IRepositorio _repositorio;
+        private readonly PokemonValidator _validacao = new();
 
         public GerenciadorDePokemons(IRepositorio repositorio)
         {
@@ -24,6 +24,7 @@ namespace CrudWinFormsBancoMemoria
             {
                 _repositorio.Criar(formCadastro.pokemon);
                 formCadastro.Dispose();
+                MessageBox.Show("Pokemon adicionado com sucesso!");
                 AtualizandoDataGridView();
             }
         }
@@ -88,6 +89,7 @@ namespace CrudWinFormsBancoMemoria
                 {
                     _repositorio.Atualizar(pokemonEditado);
                     formCadastro.Dispose();
+                    MessageBox.Show("Pokemon editado com sucesso!");
                     AtualizandoDataGridView();
                 }
             }
@@ -107,6 +109,7 @@ namespace CrudWinFormsBancoMemoria
                 if (confirmarRemocao == DialogResult.Yes)
                 {
                     _repositorio.Remover(pokemonASerExcluido);
+                    MessageBox.Show("Pokemon removido com sucesso!");
                     AtualizandoDataGridView();
                 }
             }

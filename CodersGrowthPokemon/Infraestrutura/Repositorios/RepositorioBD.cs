@@ -8,8 +8,8 @@ namespace Infraestrutura.Repositorios
 {
     public class RepositorioBD : IRepositorio
     {
-        private string stringConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
-        private ConversaoBancoParaPokemon _conversao;
+        private readonly string stringConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
+        private readonly ConversaoBancoParaPokemon _conversao;
 
         public RepositorioBD(ConversaoBancoParaPokemon conversao)
         {
