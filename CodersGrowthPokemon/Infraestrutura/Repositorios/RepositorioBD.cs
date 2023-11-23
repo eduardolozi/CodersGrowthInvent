@@ -28,6 +28,7 @@ namespace Infraestrutura.Repositorios
                 {
                     conexao.Open();
                     SqlCommand comando = new SqlCommand(textoComando, conexao);
+                    comando.Parameters.AddWithValue("@id", pokemon.Id);
                     comando.Parameters.AddWithValue("@nome", pokemon.Nome);
                     comando.Parameters.AddWithValue("apelido", pokemon.Apelido);
                     comando.Parameters.AddWithValue("@nivel", pokemon.Nivel);
@@ -36,7 +37,6 @@ namespace Infraestrutura.Repositorios
                     comando.Parameters.AddWithValue("@dataCaptura", pokemon.DataDeCaptura);
                     comando.Parameters.AddWithValue("@tipoPrincipal", pokemon.TipoPrincipal.ToString());
                     comando.Parameters.AddWithValue("@tipoSecundario", pokemon.TipoSecundario.ToString());
-                    comando.Parameters.AddWithValue("@foto", pokemon.Foto);
                     if (pokemon.Foto == null) comando.Parameters.Add(@"foto", SqlDbType.VarChar).Value = DBNull.Value;
                     else comando.Parameters.Add("@foto", SqlDbType.VarChar).Value = pokemon.Foto;
                     comando.ExecuteNonQuery();
