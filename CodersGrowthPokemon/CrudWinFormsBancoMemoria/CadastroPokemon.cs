@@ -1,19 +1,9 @@
 ﻿using CrudWinFormsBancoMemoria.Models;
-using CrudWinFormsBancoMemoria.Validacoes;
 using Dominio.Enums;
+using Dominio.Validacoes;
 using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Design;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CrudWinFormsBancoMemoria
 {
@@ -21,7 +11,7 @@ namespace CrudWinFormsBancoMemoria
     {
         public Pokemon? pokemon;
         private string? mensagemDeErro;
-        private PokemonValidator _validacao;
+        private readonly PokemonValidator _validacao;
 
         public CadastroPokemon(PokemonValidator validacao, Pokemon pokemonEditado = null)
         {

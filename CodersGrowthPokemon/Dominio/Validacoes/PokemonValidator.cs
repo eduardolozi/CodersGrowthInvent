@@ -1,51 +1,51 @@
 ﻿using CrudWinFormsBancoMemoria.Models;
 using Dominio.Enums;
+using Dominio.Validacoes;
 using FluentValidation;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CrudWinFormsBancoMemoria.Validacoes
-{
+namespace Dominio.Validacoes{
     public class PokemonValidator : AbstractValidator<Pokemon>
     {
         public PokemonValidator() {
             RuleLevelCascadeMode = CascadeMode.Stop;
 
             RuleFor(p => p.Nome)
-                .NotEmpty().WithMessage("NOME: Campo vazio.")
-                .Length(3, 11).WithMessage("NOME: Inválido (Min: 3 caracteres / Max: 11 caracteres).")
-                .Must(PadraoDeNomeCorreto).WithMessage("NOME: Inválido, deve conter apenas caracteres.");
+                .NotEmpty().WithMessage(MensagensDeValidacao.GerarErroCampoVazio("NOME"))
+                .Length(3, 11).WithMessage(MensagensDeValidacao.TAMANHO_NOME_INVALIDO)
+                .Must(PadraoDeNomeCorreto).WithMessage(MensagensDeValidacao.FORMATO_NOME_INVALIDO);
 
             RuleFor(p => p.Apelido)
-                .NotEmpty().WithMessage("APELIDO: Campo vazio")
-                .Length(1, 20).WithMessage("APELIDO: (Min: 1 caractere / Max: 20 caracteres).");
+                .NotEmpty().WithMessage(MensagensDeValidacao.GerarErroCampoVazio("APELIDO"))
+                .Length(1, 20).WithMessage(MensagensDeValidacao.TAMANHO_APELIDO_INVALIDO);
 
             RuleFor(p => p.Nivel)
-                .NotEqual(-1).WithMessage("NÍVEL: Campo de nivel vazio.")
-                .ExclusiveBetween(0, 101).WithMessage("NÍVEL: Inválido (Min: 1 / Max: 100)")
-                .Must(AceitaApenasNumerosInteiros).WithMessage("NÍVEL: Inválido, deve conter apenas números inteiros.");
+                .NotEqual(-1).WithMessage(MensagensDeValidacao.GerarErroCampoVazio("NIVEL"))
+                .ExclusiveBetween(0, 101).WithMessage(MensagensDeValidacao.VALOR_NIVEL_INVALIDO)
+                .Must(AceitaApenasNumerosInteiros).WithMessage(MensagensDeValidacao.FORMATO_NIVEL_INVALIDO);
 
             RuleFor(p => p.Altura)
-                .NotEqual(-1).WithMessage("ALTURA: Campo de nivel vazio.")
-                .ExclusiveBetween(0, 7).WithMessage("ALTURA: Inválido (Min: 0.01 / Max: 6.99)")
-                .Must(AceitaApenasNumerosReais).WithMessage("ALTURA: Inválido, não aceita caracteres. Apenas ponto.");
+                .NotEqual(-1).WithMessage(MensagensDeValidacao.GerarErroCampoVazio("APELIDO"))
+                .ExclusiveBetween(0, 7).WithMessage(MensagensDeValidacao.VALOR_ALTURA_INVALIDO)
+                .Must(AceitaApenasNumerosReais).WithMessage(MensagensDeValidacao.FORMATO_ALTURA_INVALIDO);
 
             RuleFor(p => p.DataDeCaptura)
-                .GreaterThanOrEqualTo(new DateTime(1996, 2, 27)).WithMessage("DATA DE CAPTURA: Data Mínima: 27/02/1996")
-                .LessThanOrEqualTo(DateTime.Now.AddDays(1)).WithMessage($"DATA DE CAPTURA: Data Máxima: {DateTime.Now.ToShortDateString()}");
+                .GreaterThanOrEqualTo(new DateTime(1996, 2, 27)).WithMessage(MensagensDeValidacao.VALOR_DATA_MENOR)
+                .LessThanOrEqualTo(DateTime.Now.AddDays(1)).WithMessage(MensagensDeValidacao.VALOR_DATA_MAIOR);
 
             RuleFor(p => p.TipoPrincipal)
-                .NotEqual(Enum.Parse<TipoPokemon>("0")).WithMessage("TIPO PRINCIPAL: Selecione um tipo.");
+                .NotEqual(Enum.Parse<TipoPokemon>("0")).WithMessage(MensagensDeValidacao.CAMPO_TIPO_PRINCIPAL_VAZIO);
 
             RuleFor(p => p.TipoSecundario)
-                .Must((pokemon, tipoSecundario) => VerificaSeOsTipoSaoIguais(pokemon.TipoPrincipal, tipoSecundario)).WithMessage("TIPO SECUNDÁRIO: Não pode ser igual ao Tipo Primário.");
+                .Must((pokemon, tipoSecundario) => VerificaSeOsTipoSaoIguais(pokemon.TipoPrincipal, tipoSecundario)).WithMessage(MensagensDeValidacao.CAMPO_TIPO_SECUNDARIO_INVALIDO);
 
             RuleFor(p => p.Shiny)
-                .NotNull().WithMessage("SHINY: Campo nulo");
+                .NotNull().WithMessage(MensagensDeValidacao.CAMPO_SHINY_NULO);
 
             RuleFor(p => p.Foto)
-                .Must(VerificaExtensaoDaImagem).WithMessage("FOTO: EXTENSÃO DA IMAGEM INVÁLIDA");
+                .Must(VerificaExtensaoDaImagem).WithMessage(MensagensDeValidacao.EXTENSAO_FOTO_INVALIDA);
         }
 
         private bool PadraoDeNomeCorreto(string nome)

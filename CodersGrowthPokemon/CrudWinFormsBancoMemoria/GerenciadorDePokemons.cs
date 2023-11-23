@@ -1,5 +1,5 @@
 using CrudWinFormsBancoMemoria.Models;
-using CrudWinFormsBancoMemoria.Validacoes;
+using Dominio.Validacoes;
 using Infraestrutura.Repositorios;
 
 namespace CrudWinFormsBancoMemoria

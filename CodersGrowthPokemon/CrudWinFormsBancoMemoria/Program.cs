@@ -1,5 +1,4 @@
 using CrudWinFormsBancoMemoria.Migracoes;
-using CrudWinFormsBancoMemoria.Validacoes;
 using FluentMigrator.Runner;
 using Infraestrutura.Repositorios;
 using Microsoft.Extensions.DependencyInjection;
