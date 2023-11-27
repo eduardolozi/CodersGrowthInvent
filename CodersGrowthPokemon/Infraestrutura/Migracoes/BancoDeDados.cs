@@ -12,7 +12,7 @@ namespace CrudWinFormsBancoMemoria
 {
     public class BancoDeDados
     {
-        private static string stringDeConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
+        private static readonly string StringDeConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
 
         public static void ConfiguracaoDaMigracao()
         {
@@ -29,7 +29,7 @@ namespace CrudWinFormsBancoMemoria
                 .AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
                     .AddSqlServer()
-                    .WithGlobalConnectionString(stringDeConexao)
+                    .WithGlobalConnectionString(StringDeConexao)
                     .ScanIn(typeof(AddPokemonTable).Assembly).For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);

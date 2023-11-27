@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrudWinFormsBancoMemoria
+namespace Infraestrutura.Repositorios
 {
     public class ListaSingleton
     {
         private static List<Pokemon> instance = null;
         private static int contadorDeId = 0;
+        const int INCREMENTO_DE_ID = 1;
 
         public static List<Pokemon> Instance
         {
@@ -23,11 +24,11 @@ namespace CrudWinFormsBancoMemoria
                 return instance;
             }
         }
-        
+
         public static int GeraId()
         {
-            contadorDeId++;
-            return (contadorDeId);
+            contadorDeId+=INCREMENTO_DE_ID;
+            return contadorDeId;
         }
     }
 }
