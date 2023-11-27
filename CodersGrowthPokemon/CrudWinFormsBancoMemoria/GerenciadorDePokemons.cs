@@ -15,7 +15,7 @@ namespace CrudWinFormsBancoMemoria
             InitializeComponent();
             _repositorio = repositorio;
 
-            pokemonDataGriedView.DataSource = (_repositorio is RepositorioBD) ? _repositorio.ObterTodos() : null;
+            pokemonDataGriedView.DataSource = (_repositorio is Repositorio) ? null : _repositorio.ObterTodos();
         }
 
         private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
