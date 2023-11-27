@@ -1,18 +1,9 @@
 ﻿using CrudWinFormsBancoMemoria.Models;
-using CrudWinFormsBancoMemoria.Validacoes;
+using Dominio.Enums;
+using Dominio.Validacoes;
 using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Design;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CrudWinFormsBancoMemoria
 {
@@ -20,29 +11,32 @@ namespace CrudWinFormsBancoMemoria
     {
         public Pokemon? pokemon;
         private string? mensagemDeErro;
-        private PokemonValidator _validacao;
+        private readonly PokemonValidator _Validacao;
 
         public CadastroPokemon(PokemonValidator validacao, Pokemon pokemonEditado = null)
         {
-            if (pokemonEditado != null) pokemon = pokemonEditado;
-            else pokemon = null;
-
-            _validacao = validacao;
-
+            pokemon = (pokemonEditado != null) ? pokemonEditado : null;
+            _Validacao = validacao;
             InitializeComponent();
         }
 
         private void CarregandoCamposDoCadastro(object sender, EventArgs e)
         {
-            dataPickerCaptura.Format = DateTimePickerFormat.Custom;
-            dataPickerCaptura.CustomFormat = "dd/MM/yyyy";
+            const int NENHUM_TIPO_SELECIONADO = 0;
+            const string TEXTO_PADRAO_COMBO_BOX = "--Selecionar--";
+            const string FORMATO_DE_DATA = "dd/MM/yyyy";
+            const string NOME_DO_FORMULARIO = "Atualização de Pokemon";
+            const string TEXTO_BOTAO_ADICIONAR = "Atualizar Pokemon";
 
-            comboBoxTipoPrincipal.Items.Insert(0, "--Selecionar--");
-            comboBoxTipoPrincipal.SelectedIndex = 0;
+            dataPickerCaptura.Format = DateTimePickerFormat.Custom;
+            dataPickerCaptura.CustomFormat = FORMATO_DE_DATA;
+
+            comboBoxTipoPrincipal.Items.Insert(NENHUM_TIPO_SELECIONADO, TEXTO_PADRAO_COMBO_BOX);
+            comboBoxTipoPrincipal.SelectedIndex = NENHUM_TIPO_SELECIONADO;
             comboBoxTipoPrincipal.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
 
-            comboBoxTipoSecundario.Items.Insert(0, "--Selecionar--");
-            comboBoxTipoSecundario.SelectedIndex = 0;
+            comboBoxTipoSecundario.Items.Insert(NENHUM_TIPO_SELECIONADO, TEXTO_PADRAO_COMBO_BOX);
+            comboBoxTipoSecundario.SelectedIndex = NENHUM_TIPO_SELECIONADO;
             comboBoxTipoSecundario.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
 
             if (pokemon != null)
@@ -53,7 +47,7 @@ namespace CrudWinFormsBancoMemoria
                 txtAltura.Text = pokemon.Altura.ToString(new CultureInfo("en-US"));
                 dataPickerCaptura.Value = pokemon.DataDeCaptura;
                 comboBoxTipoPrincipal.Text = pokemon.TipoPrincipal.ToString();
-                if (pokemon.TipoSecundario == null) comboBoxTipoSecundario.Text = "--Selecionar--";
+                if (pokemon.TipoSecundario == null) comboBoxTipoSecundario.Text = TEXTO_PADRAO_COMBO_BOX;
                 else comboBoxTipoSecundario.Text = pokemon.TipoSecundario.ToString();
                 checkBoxShiny.Checked = pokemon.Shiny;
                 if (pokemon.Foto != null)
@@ -66,32 +60,26 @@ namespace CrudWinFormsBancoMemoria
                     }
                 }
 
-                this.Text = "Atualização de Pokemon";
-                botaoAdicionar.Text = "Atualizar Pokemon";
+                this.Text = NOME_DO_FORMULARIO;
+                botaoAdicionar.Text = TEXTO_BOTAO_ADICIONAR;
             }
         }
 
         private void AdicionaOsCamposNoPokemon()
         {
-            if (pokemon == null) pokemon = new Pokemon();
+            const int CAMPO_NUMERICO_VAZIO = -1;
+            const int TIPO_PRINCIPAL_NAO_SELECIONADO = 0;
+            const string CAMPO_VAZIO = "";
+            const string TEXTO_PADRAO_COMBO_BOX = "--Selecionar--";
 
+            if (pokemon == null) pokemon = new Pokemon();
             pokemon.Nome = txtNome.Text;
             pokemon.Apelido = txtApelido.Text;
-
-            if (txtNivel.Text == "") pokemon.Nivel = -1;
-            else pokemon.Nivel = Convert.ToInt32(txtNivel.Text);
-
-            if (txtAltura.Text == "") pokemon.Altura = -1;
-            else pokemon.Altura = Convert.ToDecimal(txtAltura.Text, new CultureInfo("en-US"));
-
+            pokemon.Nivel = (txtNivel.Text == CAMPO_VAZIO) ? CAMPO_NUMERICO_VAZIO : Convert.ToInt32(txtNivel.Text);
+            pokemon.Altura = (txtAltura.Text == CAMPO_VAZIO) ? CAMPO_NUMERICO_VAZIO : Convert.ToDecimal(txtAltura.Text, new CultureInfo("en-US"));
             pokemon.DataDeCaptura = dataPickerCaptura.Value;
-
-            if (comboBoxTipoPrincipal.Text == "--Selecionar--") pokemon.TipoPrincipal = 0;
-            else pokemon.TipoPrincipal = Enum.Parse<TipoPokemon>(comboBoxTipoPrincipal.Text);
-
-            if (comboBoxTipoSecundario.Text == "--Selecionar--") pokemon.TipoSecundario = null;
-            else pokemon.TipoSecundario = Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text);
-
+            pokemon.TipoPrincipal = (comboBoxTipoPrincipal.Text == TEXTO_PADRAO_COMBO_BOX) ? pokemon.TipoPrincipal = TIPO_PRINCIPAL_NAO_SELECIONADO : Enum.Parse<TipoPokemon>(comboBoxTipoPrincipal.Text);
+            pokemon.TipoSecundario = (comboBoxTipoSecundario.Text == TEXTO_PADRAO_COMBO_BOX) ? null : Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text);
             pokemon.Shiny = checkBoxShiny.Checked;
         }
 
@@ -109,25 +97,32 @@ namespace CrudWinFormsBancoMemoria
             try
             {
                 AdicionaOsCamposNoPokemon();
-                ValidationResult resultado = _validacao.Validate(pokemon);
+                ValidationResult resultado = _Validacao.Validate(pokemon);
                 ObtemMensagemDeErro(resultado);
                 this.DialogResult = DialogResult.OK;
             }
             catch (Exception ex)
             {
+
                 MessageBox.Show(mensagemDeErro);
             }
         }
 
         private void AoClicarBotaoCancelar(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            const string CONFIRMACAO_DE_REMOCAO = "Tem certeza que deseja cancelar?";
+            const string REMOCAO_BEM_SUCEDIDA = "Atualização cancelada.";
+
+            var result = MessageBox.Show(CONFIRMACAO_DE_REMOCAO, REMOCAO_BEM_SUCEDIDA, MessageBoxButtons.YesNo);
+            if(result == DialogResult.Yes) this.DialogResult = DialogResult.Cancel;
         }
 
         private void AoClicarNoBotaoBuscarImagem(object sender, EventArgs e)
         {
-            OpenFileDialog arquivo = new OpenFileDialog();
-            arquivo.Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG|All files (*.*)|*.*";
+            const string FILTRO_DE_IMAGEM = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG|All files (*.*)|*.*";
+            
+            OpenFileDialog arquivo = new();
+            arquivo.Filter = FILTRO_DE_IMAGEM;
             if (arquivo.ShowDialog() == DialogResult.OK)
             {
                 txtFoto.Text = arquivo.FileName;

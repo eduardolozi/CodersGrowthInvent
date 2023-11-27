@@ -1,33 +1,34 @@
-﻿using CrudWinFormsBancoMemoria.Models;
+﻿using CrudWinFormsBancoMemoria;
+using CrudWinFormsBancoMemoria.Models;
+using Infraestrutura.MensagensDeErro;
 using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 
-namespace CrudWinFormsBancoMemoria
+namespace Infraestrutura.Repositorios
 {
     public class RepositorioBD : IRepositorio
     {
-        private string stringConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
-        private ConversaoBancoParaPokemon _conversao;
-        
+        private readonly string StringDeConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
+        private readonly ConversaoBancoParaPokemon _conversao;
+
         public RepositorioBD(ConversaoBancoParaPokemon conversao)
         {
             _conversao = conversao;
         }
-
 
         public void Atualizar(Pokemon pokemon)
         {
             string textoComando = "UPDATE pokemons " +
                                   "SET nome = @nome, apelido = @apelido, nivel = @nivel, altura = @altura, shiny = @shiny, data_de_captura = @dataCaptura, tipo_principal = @tipoPrincipal, tipo_secundario = @tipoSecundario, foto = @foto " +
                                   "WHERE id = @id";
-
-            using (SqlConnection conexao = new SqlConnection(stringConexao))
+            using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
                     conexao.Open();
                     SqlCommand comando = new SqlCommand(textoComando, conexao);
+                    comando.Parameters.AddWithValue("@id", pokemon.Id);
                     comando.Parameters.AddWithValue("@nome", pokemon.Nome);
                     comando.Parameters.AddWithValue("apelido", pokemon.Apelido);
                     comando.Parameters.AddWithValue("@nivel", pokemon.Nivel);
@@ -36,13 +37,13 @@ namespace CrudWinFormsBancoMemoria
                     comando.Parameters.AddWithValue("@dataCaptura", pokemon.DataDeCaptura);
                     comando.Parameters.AddWithValue("@tipoPrincipal", pokemon.TipoPrincipal.ToString());
                     comando.Parameters.AddWithValue("@tipoSecundario", pokemon.TipoSecundario.ToString());
-                    comando.Parameters.AddWithValue("@foto", pokemon.Foto);
-                    comando.Parameters.AddWithValue("@id", pokemon.Id);
+                    if (pokemon.Foto == null) comando.Parameters.Add(@"foto", SqlDbType.VarChar).Value = DBNull.Value;
+                    else comando.Parameters.Add("@foto", SqlDbType.VarChar).Value = pokemon.Foto;
                     comando.ExecuteNonQuery();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_ATUALIZACAO) ;
                 }
                 finally { conexao.Close(); }
             }
@@ -52,7 +53,7 @@ namespace CrudWinFormsBancoMemoria
         {
             string textoComando = "INSERT INTO pokemons (nome, apelido, nivel, altura, shiny, data_de_captura, tipo_principal, tipo_secundario, foto)" +
                                   "VALUES (@nome, @apelido, @nivel, @altura, @shiny, @dataCaptura, @tipoPrincipal, @tipoSecundario, @foto)";
-            using (SqlConnection conexao = new SqlConnection(stringConexao))
+            using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
@@ -72,7 +73,7 @@ namespace CrudWinFormsBancoMemoria
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_CRIACAO);
                 }
                 finally { conexao.Close(); }
             }
@@ -82,7 +83,7 @@ namespace CrudWinFormsBancoMemoria
         {
             Pokemon pokemon = new Pokemon();
             string textoComando = "SELECT * FROM Pokemon WHERE id = @id";
-            using (SqlConnection conexao = new SqlConnection(stringConexao))
+            using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
@@ -94,7 +95,7 @@ namespace CrudWinFormsBancoMemoria
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_OBTER_POR_ID);
                 }
                 finally { conexao.Close(); }
             }
@@ -105,7 +106,7 @@ namespace CrudWinFormsBancoMemoria
         {
             List<Pokemon> listaPokemon = new List<Pokemon>();
             string textoComando = "SELECT * FROM pokemons";
-            using (SqlConnection conexao = new SqlConnection(stringConexao))
+            using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
@@ -120,7 +121,7 @@ namespace CrudWinFormsBancoMemoria
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_OBTER_TODOS);
                 }
                 finally { conexao.Close(); }
             }
@@ -131,7 +132,7 @@ namespace CrudWinFormsBancoMemoria
         {
             string textoComando = "DELETE FROM pokemons " +
                                   "WHERE id=@id";
-            using (SqlConnection conexao = new SqlConnection(stringConexao))
+            using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
@@ -142,7 +143,7 @@ namespace CrudWinFormsBancoMemoria
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_REMOCAO);
                 }
                 finally { conexao.Close(); }
             }
