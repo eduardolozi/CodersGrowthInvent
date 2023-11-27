@@ -4,55 +4,55 @@ namespace Dominio.Enums
 {
     public enum TipoPokemon
     {
-        [MapValue("Agua")]
+        [MapValue(Value = "Agua")]
         Agua = 1,
 
-        [MapValue("Fogo")]
+        [MapValue(Value = "Fogo")]
         Fogo = 2,
 
-        [MapValue("Planta")]
+        [MapValue(Value = "Planta")]
         Planta = 3,
 
-        [MapValue("Eletrico")]
+        [MapValue(Value = "Eletrico")]
         Eletrico = 4,
 
-        [MapValue("Gelo")]
+        [MapValue(Value = "Gelo")]
         Gelo = 5,
 
-        [MapValue("Lutador")]
+        [MapValue(Value = "Lutador")]
         Lutador = 6,
 
-        [MapValue("Psiquico")]
+        [MapValue(Value = "Psiquico")]
         Psiquico = 7,
 
-        [MapValue("Terra")]
+        [MapValue(Value = "Terra")]
         Terra = 8,
 
-        [MapValue("Voador")]
+        [MapValue(Value = "Voador")]
         Voador = 9,
 
-        [MapValue("Veneno")]
+        [MapValue(Value = "Veneno")]
         Veneno = 10,
 
-        [MapValue("Rocha")]
+        [MapValue(Value = "Rocha")]
         Rocha = 11,
 
-        [MapValue("Inseto")]
+        [MapValue(Value = "Inseto")]
         Inseto = 12,
 
-        [MapValue("Fantasma")]
+        [MapValue(Value = "Fantasma")]
         Fantasma = 13,
 
-        [MapValue("Noturno")]
+        [MapValue(Value = "Noturno")]
         Noturno = 14,
 
-        [MapValue("Aco")]
+        [MapValue(Value = "Aco")]
         Aco = 15,
 
-        [MapValue("Dragao")]
+        [MapValue(Value = "Dragao")]
         Dragao = 16,
 
-        [MapValue("Normal")]
+        [MapValue(Value = "Normal")]
         Normal = 17
     }
 }

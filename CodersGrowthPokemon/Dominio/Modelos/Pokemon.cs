@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dominio.Enums;
 using LinqToDB.Mapping;
+using LinqToDB.Common;
 
 namespace CrudWinFormsBancoMemoria.Models
 {
@@ -35,7 +37,7 @@ namespace CrudWinFormsBancoMemoria.Models
         [Column("tipo_principal"), NotNull]
         public TipoPokemon TipoPrincipal { get; set; }
 
-        [Column("tipo_secundario")]
+        [Column("tipo_secundario"), Nullable]
         public TipoPokemon? TipoSecundario { get; set; }
 
         [Column("foto"), Nullable]

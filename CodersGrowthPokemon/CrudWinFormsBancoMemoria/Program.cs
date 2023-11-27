@@ -32,7 +32,7 @@ namespace CrudWinFormsBancoMemoria
         {
             return Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) => {
-                    services.AddScoped<IRepositorio, RepositorioLinqToDb>();
+                    services.AddScoped<IRepositorio, RepositorioBD>();
                     services.AddScoped<ConversaoBancoParaPokemon>();
                 });
         }
