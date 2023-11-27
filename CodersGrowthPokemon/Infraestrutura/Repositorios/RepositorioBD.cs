@@ -1,5 +1,6 @@
 ﻿using CrudWinFormsBancoMemoria;
 using CrudWinFormsBancoMemoria.Models;
+using Infraestrutura.MensagensDeErro;
 using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Data;
@@ -8,7 +9,7 @@ namespace Infraestrutura.Repositorios
 {
     public class RepositorioBD : IRepositorio
     {
-        private readonly string stringConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
+        private readonly string StringDeConexao = ConfigurationManager.ConnectionStrings["PokemonDB"].ConnectionString;
         private readonly ConversaoBancoParaPokemon _conversao;
 
         public RepositorioBD(ConversaoBancoParaPokemon conversao)
@@ -21,8 +22,7 @@ namespace Infraestrutura.Repositorios
             string textoComando = "UPDATE pokemons " +
                                   "SET nome = @nome, apelido = @apelido, nivel = @nivel, altura = @altura, shiny = @shiny, data_de_captura = @dataCaptura, tipo_principal = @tipoPrincipal, tipo_secundario = @tipoSecundario, foto = @foto " +
                                   "WHERE id = @id";
-
-            using (SqlConnection conexao = new SqlConnection(stringConexao))
+            using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
@@ -43,7 +43,7 @@ namespace Infraestrutura.Repositorios
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Erro ao atualizar Pokemon do Banco.");
+                    throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_ATUALIZACAO) ;
                 }
                 finally { conexao.Close(); }
             }
@@ -53,7 +53,7 @@ namespace Infraestrutura.Repositorios
         {
             string textoComando = "INSERT INTO pokemons (nome, apelido, nivel, altura, shiny, data_de_captura, tipo_principal, tipo_secundario, foto)" +
                                   "VALUES (@nome, @apelido, @nivel, @altura, @shiny, @dataCaptura, @tipoPrincipal, @tipoSecundario, @foto)";
-            using (SqlConnection conexao = new SqlConnection(stringConexao))
+            using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
@@ -73,7 +73,7 @@ namespace Infraestrutura.Repositorios
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Erro ao inserir Pokemon ao Banco.");
+                    throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_CRIACAO);
                 }
                 finally { conexao.Close(); }
             }
@@ -83,7 +83,7 @@ namespace Infraestrutura.Repositorios
         {
             Pokemon pokemon = new Pokemon();
             string textoComando = "SELECT * FROM Pokemon WHERE id = @id";
-            using (SqlConnection conexao = new SqlConnection(stringConexao))
+            using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
@@ -95,7 +95,7 @@ namespace Infraestrutura.Repositorios
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Erro ao obter Pokemon pelo id do Banco.");
+                    throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_OBTER_POR_ID);
                 }
                 finally { conexao.Close(); }
             }
@@ -106,7 +106,7 @@ namespace Infraestrutura.Repositorios
         {
             List<Pokemon> listaPokemon = new List<Pokemon>();
             string textoComando = "SELECT * FROM pokemons";
-            using (SqlConnection conexao = new SqlConnection(stringConexao))
+            using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
@@ -121,7 +121,7 @@ namespace Infraestrutura.Repositorios
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Erro ao obter os Pokemon do Banco.");
+                    throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_OBTER_TODOS);
                 }
                 finally { conexao.Close(); }
             }
@@ -132,7 +132,7 @@ namespace Infraestrutura.Repositorios
         {
             string textoComando = "DELETE FROM pokemons " +
                                   "WHERE id=@id";
-            using (SqlConnection conexao = new SqlConnection(stringConexao))
+            using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
@@ -143,7 +143,7 @@ namespace Infraestrutura.Repositorios
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Erro ao remover Pokemon ao Banco.");
+                    throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_REMOCAO);
                 }
                 finally { conexao.Close(); }
             }

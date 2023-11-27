@@ -21,7 +21,7 @@ namespace Dominio.Validacoes
         public const string FORMATO_ALTURA_INVALIDO = "ALTURA: Inválido, não aceita caracteres. Apenas ponto.";
 
         public const string VALOR_DATA_MENOR = "DATA DE CAPTURA: Data Mínima: 27/02/1996";
-        public static readonly string VALOR_DATA_MAIOR = $"DATA DE CAPTURA: Data Máxima: {DateTime.Now.ToShortDateString()}.";
+        public static readonly string ValorDataMaior = $"DATA DE CAPTURA: Data Máxima: {DateTime.Now.ToShortDateString()}.";
 
         public const string CAMPO_TIPO_PRINCIPAL_VAZIO = "TIPO PRINCIPAL: Selecione um tipo.";
 

@@ -1,5 +1,6 @@
 using CrudWinFormsBancoMemoria.Migracoes;
 using FluentMigrator.Runner;
+using Infraestrutura.MensagensDeErro;
 using Infraestrutura.Repositorios;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

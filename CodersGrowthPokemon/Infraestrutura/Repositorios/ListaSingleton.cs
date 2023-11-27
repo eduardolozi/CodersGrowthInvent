@@ -11,6 +11,7 @@ namespace Infraestrutura.Repositorios
     {
         private static List<Pokemon> instance = null;
         private static int contadorDeId = 0;
+        const int INCREMENTO_DE_ID = 1;
 
         public static List<Pokemon> Instance
         {
@@ -26,7 +27,7 @@ namespace Infraestrutura.Repositorios
 
         public static int GeraId()
         {
-            contadorDeId++;
+            contadorDeId+=INCREMENTO_DE_ID;
             return contadorDeId;
         }
     }

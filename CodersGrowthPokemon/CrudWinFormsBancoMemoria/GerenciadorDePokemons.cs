@@ -1,6 +1,7 @@
 using CrudWinFormsBancoMemoria.Models;
 using Dominio.Validacoes;
 using Infraestrutura.Repositorios;
+using System.Data.Common;
 
 namespace CrudWinFormsBancoMemoria
 {
@@ -19,13 +20,15 @@ namespace CrudWinFormsBancoMemoria
 
         private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
         {
+            const string ADICAO_BEM_SUCEDIDA = "Pokemon adicionado com sucesso!";
+
             var formCadastro = new CadastroPokemon(_validacao);
             formCadastro.ShowDialog();
             if (formCadastro.DialogResult == DialogResult.OK)
             {
                 _repositorio.Criar(formCadastro.pokemon);
                 formCadastro.Dispose();
-                MessageBox.Show("Pokemon adicionado com sucesso!");
+                MessageBox.Show(ADICAO_BEM_SUCEDIDA);
                 AtualizandoDataGridView();
             }
         }
@@ -50,9 +53,11 @@ namespace CrudWinFormsBancoMemoria
 
         private void AoClicarDuasVezesNaCelulaDeFoto(object sender, DataGridViewCellEventArgs e)
         {
+            const int COLUNA_DE_IMAGEM = 9;
+
             try
             {
-                if (pokemonDataGriedView.CurrentCell.ColumnIndex == 9 && this.pokemonDataGriedView.CurrentCell.Value != null)
+                if (pokemonDataGriedView.CurrentCell.ColumnIndex == COLUNA_DE_IMAGEM && this.pokemonDataGriedView.CurrentCell.Value != null)
                 {
                     var cedula = this.pokemonDataGriedView.CurrentCell.Value.ToString();
                     ConverteBytesParaImagem(cedula);
@@ -62,23 +67,30 @@ namespace CrudWinFormsBancoMemoria
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
 
         private void FormatandoAsCedulasDeFoto(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.Value != null && e.ColumnIndex == 9)
+            const int COLUNA_DE_IMAGEM = 9;
+            const string CELULA_COM_FOTO = "Clique para ver";
+            const string CELULA_SEM_FOTO = "Foto inválida";
+
+            if (e.Value != null && e.ColumnIndex == COLUNA_DE_IMAGEM)
             {
-                e.Value = "Clique para ver";
+                e.Value = CELULA_COM_FOTO;
             }
-            else if (e.Value == null && e.ColumnIndex == 9)
+            else if (e.Value == null && e.ColumnIndex == COLUNA_DE_IMAGEM)
             {
-                e.Value = "Foto inválida";
+                e.Value = CELULA_SEM_FOTO;
             }
         }
 
         private void AoClicarNoBotaoEditar(object sender, EventArgs e)
         {
+            const string EDICAO_BEM_SUCEDIDA = "Pokemon editado com sucesso!";
+            const string NENHUMA_LINHA_SELECIONADA = "Selecione uma linha.";
+            const string MAIS_DE_UMA_LINHA_SELECIONADA = "Selecione apenas uma linha.";
+
             if (pokemonDataGriedView.SelectedRows.Count == 1)
             {
                 Pokemon pokemonEditado;
@@ -90,35 +102,42 @@ namespace CrudWinFormsBancoMemoria
                 {
                     _repositorio.Atualizar(pokemonEditado);
                     formCadastro.Dispose();
-                    MessageBox.Show("Pokemon editado com sucesso!");
+                    MessageBox.Show(EDICAO_BEM_SUCEDIDA);
                     AtualizandoDataGridView();
                 }
             }
             else if (pokemonDataGriedView.SelectedRows.Count > 1)
             {
-                MessageBox.Show("Selecione apenas uma linha.");
+                MessageBox.Show(MAIS_DE_UMA_LINHA_SELECIONADA);
             }
-            else MessageBox.Show("Selecione uma linha.");
+            else MessageBox.Show(NENHUMA_LINHA_SELECIONADA);
         }
 
         private void AoClicarBotaoApagar(object sender, EventArgs e)
         {
+            const int COLUNA_DE_INDICE = 0;
+            const string REMOCAO_BEM_SUCEDIDA = "Pokemon removido com sucesso!";
+            const string NENHUMA_LINHA_SELECIONADA = "Selecione uma linha.";
+            const string MAIS_DE_UMA_LINHA_SELECIONADA = "Selecione apenas uma linha.";
+            const string NOME_MESSAGE_BOX_REMOCAO = "Remoção de Pokemon";
+            const string MENSAGEM_DE_REMOCAO = $"Tem certeza que deseja remover o pokemon?";
+
             if (pokemonDataGriedView.SelectedRows.Count == 1)
             {
-                Pokemon pokemonASerExcluido = (Pokemon)pokemonDataGriedView.SelectedRows[0].DataBoundItem;
-                var confirmarRemocao = MessageBox.Show($@"Tem certeza que deseja remover o {pokemonASerExcluido.Nome}?", "Remoção concluida!", MessageBoxButtons.YesNo);
+                Pokemon pokemonASerExcluido = (Pokemon)pokemonDataGriedView.SelectedRows[COLUNA_DE_INDICE].DataBoundItem;
+                var confirmarRemocao = MessageBox.Show(MENSAGEM_DE_REMOCAO, NOME_MESSAGE_BOX_REMOCAO, MessageBoxButtons.YesNo);
                 if (confirmarRemocao == DialogResult.Yes)
                 {
                     _repositorio.Remover(pokemonASerExcluido);
-                    MessageBox.Show("Pokemon removido com sucesso!");
+                    MessageBox.Show(REMOCAO_BEM_SUCEDIDA);
                     AtualizandoDataGridView();
                 }
             }
             else if (pokemonDataGriedView.SelectedRows.Count > 1)
             {
-                MessageBox.Show("Selecione apenas uma linha.");
+                MessageBox.Show(MAIS_DE_UMA_LINHA_SELECIONADA);
             }
-            else MessageBox.Show("Selecione uma linha.");
+            else MessageBox.Show(NENHUMA_LINHA_SELECIONADA);
         }
     }
 }
