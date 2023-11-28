@@ -15,7 +15,7 @@ namespace CrudWinFormsBancoMemoria
             InitializeComponent();
             _repositorio = repositorio;
 
-            pokemonDataGriedView.DataSource = (_repositorio is RepositorioBD) ? _repositorio.ObterTodos() : null;
+            pokemonDataGriedView.DataSource = (_repositorio is Repositorio) ? null : _repositorio.ObterTodos();
         }
 
         private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
@@ -94,7 +94,8 @@ namespace CrudWinFormsBancoMemoria
             if (pokemonDataGriedView.SelectedRows.Count == 1)
             {
                 Pokemon pokemonEditado;
-                pokemonEditado = (Pokemon)pokemonDataGriedView.CurrentRow.DataBoundItem;
+                var index = (int)pokemonDataGriedView.CurrentRow.Cells[0].Value;
+                pokemonEditado = _repositorio.ObterPorId(index);
 
                 var formCadastro = new CadastroPokemon(_validacao, pokemonEditado);
                 formCadastro.ShowDialog();
