@@ -18,7 +18,10 @@ namespace Infraestrutura.Repositorios
 
         public Pokemon ObterPorId(int id)
         {
-            return listaDePokemons.ElementAt(id);
+            var pokemon = (from p in listaDePokemons
+                          where p.Id == id
+                          select p).FirstOrDefault();
+            return pokemon;
         }
 
         public void Remover(Pokemon pokemon)

@@ -36,8 +36,7 @@ namespace Infraestrutura.Repositorios
                     comando.Parameters.AddWithValue("@shiny", pokemon.Shiny);
                     comando.Parameters.AddWithValue("@dataCaptura", pokemon.DataDeCaptura);
                     comando.Parameters.AddWithValue("@tipoPrincipal", pokemon.TipoPrincipal.ToString());
-                    //comando.Parameters.AddWithValue("@tipoSecundario", pokemon.TipoSecundario.ToString());
-                    comando.Parameters.Add("@tipoSecundario", SqlDbType.VarChar).Value = (pokemon.Foto == null) ? DBNull.Value : pokemon.TipoSecundario.ToString();
+                    comando.Parameters.Add("@tipoSecundario", SqlDbType.VarChar).Value = (pokemon.TipoSecundario == null) ? DBNull.Value : pokemon.TipoSecundario.ToString();
                     if (pokemon.Foto == null) comando.Parameters.Add(@"foto", SqlDbType.VarChar).Value = DBNull.Value;
                     else comando.Parameters.Add("@foto", SqlDbType.VarChar).Value = pokemon.Foto;
                     comando.ExecuteNonQuery();
@@ -67,8 +66,7 @@ namespace Infraestrutura.Repositorios
                     comando.Parameters.AddWithValue("@shiny", novoPokemon.Shiny);
                     comando.Parameters.AddWithValue("@dataCaptura", novoPokemon.DataDeCaptura);
                     comando.Parameters.AddWithValue("@tipoPrincipal", novoPokemon.TipoPrincipal.ToString());
-                    //comando.Parameters.AddWithValue("@tipoSecundario", novoPokemon.TipoSecundario.ToString());
-                    comando.Parameters.Add("@tipoSecundario", SqlDbType.VarChar).Value = (novoPokemon.Foto == null) ? DBNull.Value : novoPokemon.TipoSecundario.ToString();
+                    comando.Parameters.Add("@tipoSecundario", SqlDbType.VarChar).Value = (novoPokemon.TipoSecundario == null) ? DBNull.Value : novoPokemon.TipoSecundario.ToString();
                     if (novoPokemon.Foto == null) comando.Parameters.Add(@"foto", SqlDbType.VarChar).Value = DBNull.Value;
                     else comando.Parameters.Add("@foto", SqlDbType.VarChar).Value = novoPokemon.Foto;
                     comando.ExecuteNonQuery();
@@ -83,17 +81,18 @@ namespace Infraestrutura.Repositorios
 
         public Pokemon ObterPorId(int id)
         {
-            Pokemon pokemon = new Pokemon();
-            string textoComando = "SELECT * FROM Pokemon WHERE id = @id";
+            string textoComando = "SELECT * FROM pokemons WHERE id=@id";
             using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
                     conexao.Open();
                     SqlCommand comando = new SqlCommand(textoComando, conexao);
-                    comando.Parameters.AddWithValue("@id", pokemon.Id);
+                    comando.Parameters.AddWithValue("@id", id);
                     SqlDataReader dr = comando.ExecuteReader();
-                    pokemon = _conversao.AtribuiLinhaAoPokemon(dr, pokemon);
+                    Pokemon pokemon = new();
+                    while(dr.Read()) pokemon = _conversao.AtribuiLinhaAoPokemon(dr, pokemon);
+                    return pokemon;
                 }
                 catch (Exception ex)
                 {
@@ -101,7 +100,7 @@ namespace Infraestrutura.Repositorios
                 }
                 finally { conexao.Close(); }
             }
-            return pokemon;
+            return null;
         }
 
         public List<Pokemon> ObterTodos()
