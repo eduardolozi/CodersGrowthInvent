@@ -51,7 +51,7 @@ namespace CrudWinFormsBancoMemoria
             pokemon.Shiny = ConverteValorParaBoolean(dr["shiny"]);
             pokemon.DataDeCaptura = ConverteValorParaDateTime(dr["data_de_captura"]);
             pokemon.TipoPrincipal = ConverteValorParaTipoPokemon(dr["tipo_principal"]);
-            if (dr["tipo_secundario"].ToString() == "") pokemon.TipoSecundario = null;
+            if (dr["tipo_secundario"] == DBNull.Value) pokemon.TipoSecundario = null;
             else pokemon.TipoSecundario = ConverteValorParaTipoPokemon(dr["tipo_secundario"]);
             if (dr["foto"].ToString() == "") pokemon.Foto = null;
             else pokemon.Foto = ConverteValorParaString(dr["foto"]);

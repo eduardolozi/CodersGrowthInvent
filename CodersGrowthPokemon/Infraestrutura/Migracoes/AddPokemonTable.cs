@@ -22,8 +22,7 @@ namespace CrudWinFormsBancoMemoria.Migracoes
                 .WithColumn("data_de_captura").AsDateTime().NotNullable()
                 .WithColumn("tipo_principal").AsString().NotNullable()
                 .WithColumn("tipo_secundario").AsString().Nullable()
-                .WithColumn("foto").AsCustom("VARCHAR(MAX)").Nullable();
-        }
+                .WithColumn("foto").AsCustom("VARCHAR(MAX)").Nullable();        }
 
         public override void Down()
         {
