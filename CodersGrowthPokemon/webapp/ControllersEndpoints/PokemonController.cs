@@ -33,7 +33,13 @@ namespace webapp.wwwroot.Controllers
         public IActionResult Criar(Pokemon pokemon)
         {
             ValidationResult resultado = _validacao.Validate(pokemon);
+            if (!resultado.IsValid)
+            {
+                var mensagemDeErro = resultado.ToString();
+                throw new Exception(mensagemDeErro);
+            }
             _repositorio.Criar(pokemon);
+
             return CreatedAtAction(nameof(ObterPorId), new { id = pokemon.Id}, pokemon);
         }
 
