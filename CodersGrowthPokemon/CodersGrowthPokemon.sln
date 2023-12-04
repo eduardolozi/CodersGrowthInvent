@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dominio", "Dominio\Dominio.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infraestrutura", "Infraestrutura\Infraestrutura.csproj", "{31D04459-4733-4D8B-B49D-00F861A77B0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webapp", "webapp\webapp.csproj", "{523471DE-1A3A-4169-A728-23CA27A231F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webapp", "webapp\webapp.csproj", "{523471DE-1A3A-4169-A728-23CA27A231F6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{31D04459-4733-4D8B-B49D-00F861A77B0B} = {31D04459-4733-4D8B-B49D-00F861A77B0B}
+		{E744EE45-F2ED-40C8-B731-BCEDC46F3817} = {E744EE45-F2ED-40C8-B731-BCEDC46F3817}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
