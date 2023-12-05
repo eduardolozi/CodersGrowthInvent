@@ -28,50 +28,43 @@ namespace webapp.wwwroot.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Pokemon> ObterPorId(int id)
+        public ActionResult<Pokemon> ObterPorId([FromRoute]int id)
         {
             var pokemon = _repositorio.ObterPorId(id);
             return (pokemon == null) ? NotFound() : Ok(pokemon);
         }
 
         [HttpPost]
-        public IActionResult Criar(Pokemon pokemon)
+        public IActionResult Criar([FromBody]Pokemon pokemon)
         {
             ValidationResult resultado = _validacao.Validate(pokemon);
-            if (!resultado.IsValid)
-            {
-                return BadRequest();
-            }
+            if (!resultado.IsValid) return BadRequest();
+
             _repositorio.Criar(pokemon);
             return Created("https://localhost:7237", pokemon);
-
-            //return CreatedAtAction(nameof(ObterPorId), new { id = pokemon.Id}, pokemon);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Atualizar(int id, Pokemon pokemon)
+        public IActionResult Atualizar([FromRoute]int id,[FromBody] Pokemon pokemon)
         {
-            if (id != pokemon.Id) return BadRequest();
             if (_repositorio.ObterPorId(id) == null) return NotFound();
+            pokemon.Id = id;
 
             ValidationResult resultado = _validacao.Validate(pokemon);
-            if (!resultado.IsValid)
-            {
-                return BadRequest();
-            }
+            if (!resultado.IsValid) return BadRequest();
+
             _repositorio.Atualizar(pokemon);
-            return NoContent();
+            return Ok(pokemon);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Remover(int id)
+        public IActionResult Remover([FromRoute] int id)
         {
             var pokemon = _repositorio.ObterPorId(id);
             if (pokemon == null) return NotFound();
 
             _repositorio.Remover(pokemon);
-            return NoContent();
+            return Ok(pokemon);
         }
-
     }
 }
