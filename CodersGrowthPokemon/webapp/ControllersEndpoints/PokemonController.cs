@@ -4,6 +4,7 @@ using CrudWinFormsBancoMemoria.Models;
 using Infraestrutura.Repositorios;
 using FluentValidation.Results;
 using Dominio.Validacoes;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace webapp.wwwroot.Controllers
 {
@@ -20,13 +21,17 @@ namespace webapp.wwwroot.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Pokemon>> ObterTodos() => _repositorio.ObterTodos();
+        public ActionResult<List<Pokemon>> ObterTodos()
+        {
+            var pokemons = _repositorio.ObterTodos();
+            return pokemons == null ? NotFound() : Ok(pokemons);
+        }
 
         [HttpGet("{id}")]
         public ActionResult<Pokemon> ObterPorId(int id)
         {
             var pokemon = _repositorio.ObterPorId(id);
-            return (pokemon == null) ? NotFound() : pokemon;
+            return (pokemon == null) ? NotFound() : Ok(pokemon);
         }
 
         [HttpPost]
@@ -35,8 +40,7 @@ namespace webapp.wwwroot.Controllers
             ValidationResult resultado = _validacao.Validate(pokemon);
             if (!resultado.IsValid)
             {
-                var mensagemDeErro = resultado.ToString();
-                throw new Exception(mensagemDeErro);
+                return BadRequest();
             }
             _repositorio.Criar(pokemon);
 
@@ -49,6 +53,11 @@ namespace webapp.wwwroot.Controllers
             if (id != pokemon.Id) return BadRequest();
             if (_repositorio.ObterPorId(id) == null) return NotFound();
 
+            ValidationResult resultado = _validacao.Validate(pokemon);
+            if (!resultado.IsValid)
+            {
+                return BadRequest();
+            }
             _repositorio.Atualizar(pokemon);
             return NoContent();
         }
