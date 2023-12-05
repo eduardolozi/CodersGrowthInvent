@@ -8,14 +8,14 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace webapp.wwwroot.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/pokemons")]
     [ApiController]
-    public class PokemonController : ControllerBase
+    public class Controller : ControllerBase
     {
         private IRepositorio _repositorio;
         private PokemonValidator _validacao;
 
-        public PokemonController(IRepositorio repositorio, PokemonValidator validacao) {
+        public Controller(IRepositorio repositorio, PokemonValidator validacao) {
             this._repositorio = repositorio;
             this._validacao = validacao;
         }
@@ -43,8 +43,9 @@ namespace webapp.wwwroot.Controllers
                 return BadRequest();
             }
             _repositorio.Criar(pokemon);
+            return Created("https://localhost:7237", pokemon);
 
-            return CreatedAtAction(nameof(ObterPorId), new { id = pokemon.Id}, pokemon);
+            //return CreatedAtAction(nameof(ObterPorId), new { id = pokemon.Id}, pokemon);
         }
 
         [HttpPut("{id}")]
