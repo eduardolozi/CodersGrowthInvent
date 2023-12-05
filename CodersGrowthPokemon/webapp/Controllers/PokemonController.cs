@@ -10,12 +10,12 @@ namespace webapp.wwwroot.Controllers
 {
     [Route("/pokemons")]
     [ApiController]
-    public class Controller : ControllerBase
+    public class PokemonController : ControllerBase
     {
         private IRepositorio _repositorio;
         private PokemonValidator _validacao;
 
-        public Controller(IRepositorio repositorio, PokemonValidator validacao) {
+        public PokemonController(IRepositorio repositorio, PokemonValidator validacao) {
             this._repositorio = repositorio;
             this._validacao = validacao;
         }
