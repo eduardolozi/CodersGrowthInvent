@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CrudWinFormsBancoMemoria.Migracoes
 {
-    [Migration(20231120080600)]
+    [Migration(20231206101000)]
     public class AddPokemonTable : Migration
     {
         public override void Up()

@@ -3,6 +3,15 @@ using CrudWinFormsBancoMemoria.Models;
 using Dominio.Validacoes;
 using Infraestrutura.Repositorios;
 
+try
+{
+    BancoDeDados.ConfiguracaoDaMigracao();
+}
+catch (Exception ex)
+{
+    ex.ToString();
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IRepositorio, RepositorioLinqToDb>();

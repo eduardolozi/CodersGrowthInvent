@@ -23,7 +23,7 @@ namespace Infraestrutura.Repositorios
                     return db.GetTable<Pokemon>().ToList();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_OBTER_TODOS);
             }
@@ -40,7 +40,7 @@ namespace Infraestrutura.Repositorios
                             select p).First();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_OBTER_POR_ID);
             }
@@ -55,7 +55,7 @@ namespace Infraestrutura.Repositorios
                     db.Delete(pokemon);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_REMOCAO);
             }
@@ -70,7 +70,7 @@ namespace Infraestrutura.Repositorios
                     db.Insert(novoPokemon);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_CRIACAO);
             }
@@ -85,7 +85,7 @@ namespace Infraestrutura.Repositorios
                     db.Update(pokemon);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_ATUALIZACAO);
             }
