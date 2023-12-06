@@ -2,5 +2,43 @@
 	"_version": "1.58.0",
 	"sap.app": {
 		"id": "webapp"
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "webapp.Views.App",
+			"type": "XML",
+			"id": "app"
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"type": "View",
+				"viewType": "XML",
+				"path": "webapp.Views",
+				"controlId": "app",
+				"controlAggregation": "pages"
+			},
+			"routes": [
+				{
+					"pattern": "",
+					"name": "listagem",
+					"target": "listagem"
+				}
+			],
+			"targets": {
+				"listagem": {
+					"id": "listagem",
+					"name": "Listagem"
+				}
+			}
+		}
 	}
 }
