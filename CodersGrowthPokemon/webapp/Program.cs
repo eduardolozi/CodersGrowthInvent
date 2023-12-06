@@ -1,4 +1,21 @@
+using CrudWinFormsBancoMemoria;
+using CrudWinFormsBancoMemoria.Models;
+using Dominio.Validacoes;
+using Infraestrutura.Repositorios;
+
+try
+{
+    BancoDeDados.ConfiguracaoDaMigracao();
+}
+catch (Exception ex)
+{
+    ex.ToString();
+}
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IRepositorio, RepositorioLinqToDb>();
+builder.Services.AddScoped<PokemonValidator>();
 
 // Add services to the container.
 
@@ -23,3 +40,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
