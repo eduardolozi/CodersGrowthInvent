@@ -3,12 +3,6 @@
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">
     <Shell>
-        <App id="app">
-            <Page>
-                <content>
-                    <mvc:XMLView viewName="webapp.Views.Listagem"/>
-                </content>
-            </Page>
-        </App>
+        <App id="app"/>
     </Shell>
 </mvc:View>

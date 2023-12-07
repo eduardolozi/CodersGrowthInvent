@@ -12,6 +12,13 @@
 		}
 	},
 	"sap.ui5": {
+		"dependencies": {
+			"minUI5Version": "1.108.0",
+			"libs": {
+			  "sap.ui.core": {},
+			  "sap.m": {}
+			}
+		},
 		"rootView": {
 			"viewName": "webapp.Views.App",
 			"type": "XML",
