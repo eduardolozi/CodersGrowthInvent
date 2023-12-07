@@ -3,5 +3,5 @@ sap.ui.define([
  ], (Controller) => {
     "use strict";
  
-    return Controller.extend("webapp.Controllers.App", {});
+    return Controller.extend("webapp.Controller.App", {});
  });

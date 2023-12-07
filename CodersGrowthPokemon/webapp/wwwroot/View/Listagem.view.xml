@@ -1,0 +1,21 @@
+<mvc:View
+    controllerName="webapp.Controller.Listagem"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc">
+	<Panel>
+        <headerToolbar>
+            <Toolbar>
+                <Title text="Pokemons"/>
+                <ToolbarSpacer/>
+                <SearchField width="50%"/>
+            </Toolbar>
+        </headerToolbar>
+            <Table width="auto" class="sapUiResponsiveMargin">
+                <columns>
+                    <Column>
+                        <Text text="Nome"/>
+                    </Column>
+                </columns>
+            </Table>
+	</Panel>
+</mvc:View>

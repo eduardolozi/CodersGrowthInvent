@@ -20,7 +20,7 @@
 			}
 		},
 		"rootView": {
-			"viewName": "webapp.Views.App",
+			"viewName": "webapp.View.App",
 			"type": "XML",
 			"id": "app"
 		},
@@ -29,7 +29,7 @@
 				"routerClass": "sap.m.routing.Router",
 				"type": "View",
 				"viewType": "XML",
-				"path": "webapp.Views",
+				"path": "webapp.View",
 				"controlId": "app",
 				"controlAggregation": "pages"
 			},
