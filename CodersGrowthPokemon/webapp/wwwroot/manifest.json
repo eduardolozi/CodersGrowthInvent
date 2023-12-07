@@ -2,7 +2,9 @@
 	"_version": "1.58.0",
 	"sap.app": {
 		"id": "webapp",
+		"i18n": "i18n/i18n.properties",
 		"type": "application"
+		
 	},
 	"sap.ui": {
 		"technology": "UI5",
@@ -18,6 +20,14 @@
 			"libs": {
 			  "sap.ui.core": {},
 			  "sap.m": {}
+			}
+		},
+		"models": {
+			"i18n": {
+			  "type": "sap.ui.model.resource.ResourceModel",
+			  "settings": {
+				"bundleName": "webapp.i18n.i18n"
+			  }
 			}
 		},
 		"rootView": {
@@ -38,7 +48,7 @@
 				{
 					"pattern": "",
 					"name": "listagem",
-					"target": ["listagem"]
+					"target": "listagem"
 				}
 			],
 			"targets": {

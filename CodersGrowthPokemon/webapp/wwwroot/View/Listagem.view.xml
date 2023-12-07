@@ -1,21 +1,67 @@
 <mvc:View
     controllerName="webapp.Controller.Listagem"
     xmlns="sap.m"
+    xmlns:tnt="sap.tnt"
     xmlns:mvc="sap.ui.core.mvc">
-	<Panel>
-        <headerToolbar>
-            <Toolbar>
-                <Title text="Pokemons"/>
-                <ToolbarSpacer/>
-                <SearchField width="50%"/>
-            </Toolbar>
-        </headerToolbar>
-            <Table width="auto" class="sapUiResponsiveMargin">
+        <Table width="auto" ariaLabelledBy="title" fixedLayout="Strict"
+        autoPopinMode="true" growing="true" sticky="ColumnHeaders,HeaderToolbar" popinLayout="GridSmall">
+            <headerToolbar>
+                <Toolbar>
+                    <Title text="{i18n>tituloTabela}"/>
+                    <ToolbarSeparator/>
+                    <ToolbarSpacer/>
+                    <SearchField width="30%"/>
+                    <Button type="Emphasized" icon="sap-icon://add" text="{i18n>textoBotaoAdicionar}"/>
+                </Toolbar>
+            </headerToolbar>
                 <columns>
-                    <Column>
-                        <Text text="Nome"/>
+                    <Column width="10%" headerMenu="menu" hAlign="Center">
+                            <Text text="{i18n>colunaNome}"/>
+                    </Column>
+                    <Column width="10%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaApelido}"/>
+                    </Column>
+                    <Column width="9%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaNivel}"/>
+                    </Column>
+                    <Column width="9%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaAltura}"/>
+                    </Column>
+                    <Column width="9%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaShiny}"/>
+                    </Column>
+                    <Column width="12%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaDataCaptura}"/>
+                    </Column>
+                    <Column width="13.5%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaTipoPrincipal}"/>
+                    </Column>
+                    <Column width="13.5%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaTipoSecundario}"/>
+                    </Column>
+                    <Column width="auto" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaFoto}"/>
                     </Column>
                 </columns>
-            </Table>
-	</Panel>
+                <!-- <items>
+                    <ColumnListItem type="Navigation">
+                        <cells>
+                            <ObjectIdentifier title="{}"/>
+                        </cells> 
+                        <Text text="{Nome}"/>
+                    </ColumnListItem>
+                </items> -->
+        </Table>
 </mvc:View>
+    <!-- 
+tituloTabela=Pokemons
+textoBotaoAdicionar=Adicionar
+colunaNome=Nome
+colunaApelido=Apelido
+colunaNivel=Nivel
+colunaAltura=Altura
+colunaShiny=Shiny
+colunaDataCaptura=Data de Captura
+colunaTipoPrincipal=TipoPrincipal
+colunaTipoSecundario=TipoSecundario
+colunaFoto=Foto -->
