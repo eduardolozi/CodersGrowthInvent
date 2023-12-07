@@ -1,7 +1,8 @@
 {
 	"_version": "1.58.0",
 	"sap.app": {
-		"id": "webapp"
+		"id": "webapp",
+		"type": "application"
 	},
 	"sap.ui": {
 		"technology": "UI5",
@@ -37,7 +38,7 @@
 				{
 					"pattern": "",
 					"name": "listagem",
-					"target": "listagem"
+					"target": ["listagem"]
 				}
 			],
 			"targets": {
