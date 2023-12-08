@@ -3,65 +3,81 @@
     xmlns="sap.m"
     xmlns:tnt="sap.tnt"
     xmlns:mvc="sap.ui.core.mvc">
-        <Table items="{path: 'pokemons>/'}" width="auto" ariaLabelledBy="title" fixedLayout="Strict"
-        autoPopinMode="true" growing="true" sticky="ColumnHeaders,HeaderToolbar" popinLayout="GridSmall">
-            <headerToolbar>
-                <Toolbar>
-                    <Title text="{i18n>tituloTabela}"/>
-                    <ToolbarSeparator/>
-                    <ToolbarSpacer/>
-                    <SearchField width="30%"/>
-                    <Button type="Emphasized" icon="sap-icon://add" text="{i18n>textoBotaoAdicionar}"/>
-                </Toolbar>
-            </headerToolbar>
-                <columns>
-                    <Column width="10%" headerMenu="menu" hAlign="Center">
-                            <Text text="{i18n>colunaNome}"/>
-                    </Column>
-                    <Column width="10%" headerMenu="menu" hAlign="Center">
-                        <Text text="{i18n>colunaApelido}"/>
-                    </Column>
-                    <Column width="9%" headerMenu="menu" hAlign="Center">
-                        <Text text="{i18n>colunaNivel}"/>
-                    </Column>
-                    <Column width="9%" headerMenu="menu" hAlign="Center">
-                        <Text text="{i18n>colunaAltura}"/>
-                    </Column>
-                    <Column width="9%" headerMenu="menu" hAlign="Center">
-                        <Text text="{i18n>colunaShiny}"/>
-                    </Column>
-                    <Column width="12%" headerMenu="menu" hAlign="Center">
-                        <Text text="{i18n>colunaDataCaptura}"/>
-                    </Column>
-                    <Column width="13.5%" headerMenu="menu" hAlign="Center">
-                        <Text text="{i18n>colunaTipoPrincipal}"/>
-                    </Column>
-                    <Column width="13.5%" headerMenu="menu" hAlign="Center">
-                        <Text text="{i18n>colunaTipoSecundario}"/>
-                    </Column>
-                    <Column width="auto" headerMenu="menu" hAlign="Center">
-                        <Text text="{i18n>colunaFoto}"/>
-                    </Column>
-                </columns>
-                <items>
-                    <ColumnListItem type="Navigation">
-                        <cells>
-                            <ObjectIdentifier title="{}"/>
-                        </cells> 
-                        <Text text="{pokemons>nome}"/>
-                    </ColumnListItem>
-                </items>
-        </Table>
+    <Shell>
+        <App id="app">
+            <Table items="{path: 'pokemons>/'}" width="auto" ariaLabelledBy="title" fixedLayout="Strict"
+                autoPopinMode="true" growing="true" sticky="ColumnHeaders,HeaderToolbar" popinLayout="GridSmall">
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="{i18n>tituloTabela}"/>
+                            <ToolbarSeparator/>
+                            <ToolbarSpacer/>
+                            <SearchField width="30%"/>
+                            <Button type="Emphasized" icon="sap-icon://add" text="{i18n>textoBotaoAdicionar}"/>
+                        </Toolbar>
+                    </headerToolbar>
+                        <columns>
+                            <Column width="10%" headerMenu="menu" hAlign="Center">
+                                    <Text text="{i18n>colunaNome}"/>
+                            </Column>
+                            <Column width="10%" headerMenu="menu" hAlign="Center">
+                                <Text text="{i18n>colunaApelido}"/>
+                            </Column>
+                            <Column width="9%" headerMenu="menu" hAlign="Center">
+                                <Text text="{i18n>colunaNivel}"/>
+                            </Column>
+                            <Column width="9%" headerMenu="menu" hAlign="Center">
+                                <Text text="{i18n>colunaAltura}"/>
+                            </Column>
+                            <Column width="9%" headerMenu="menu" hAlign="Center">
+                                <Text text="{i18n>colunaShiny}"/>
+                            </Column>
+                            <Column width="12%" headerMenu="menu" hAlign="Center">
+                                <Text text="{i18n>colunaDataCaptura}"/>
+                            </Column>
+                            <Column width="13.5%" headerMenu="menu" hAlign="Center">
+                                <Text text="{i18n>colunaTipoPrincipal}"/>
+                            </Column>
+                            <Column width="13.5%" headerMenu="menu" hAlign="Center">
+                                <Text text="{i18n>colunaTipoSecundario}"/>
+                            </Column>
+                            <Column width="auto" headerMenu="menu" hAlign="Center">
+                                <Text text="{i18n>colunaFoto}"/>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem type="Navigation">
+                                <cells>
+                                    <Text text="{pokemons>nome}"/>
+                                </cells> 
+                                <cells>
+                                    <Text text="{pokemons>apelido}"/>
+                                </cells> 
+                                <cells>
+                                    <Text text="{pokemons>nivel}"/>
+                                </cells> 
+                                <cells>
+                                    <Text text="{pokemons>altura}"/>
+                                </cells> 
+                                <cells>
+                                    <Text text="{pokemons>shiny}"/>
+                                </cells> 
+                                <cells>
+                                    <Text text="{pokemons>dataDeCaptura}"/>
+                                </cells> 
+                                <cells>
+                                    <Text text="{pokemons>tipoPrincipal}"/>
+                                </cells> 
+                                <cells>
+                                    <Text text="{pokemons>tipoSecundario}"/>
+                                </cells> 
+                                <cells>
+                                    <Text text="{pokemons>foto}"/>
+                                </cells> 
+                            </ColumnListItem>
+                        </items>
+                </Table>
+        </App>
+    </Shell>
+        
 </mvc:View>
-    <!-- 
-tituloTabela=Pokemons
-textoBotaoAdicionar=Adicionar
-colunaNome=Nome
-colunaApelido=Apelido
-colunaNivel=Nivel
-colunaAltura=Altura
-colunaShiny=Shiny
-colunaDataCaptura=Data de Captura
-colunaTipoPrincipal=TipoPrincipal
-colunaTipoSecundario=TipoSecundario
-colunaFoto=Foto -->
