@@ -3,7 +3,7 @@
     xmlns="sap.m"
     xmlns:tnt="sap.tnt"
     xmlns:mvc="sap.ui.core.mvc">
-        <Table width="auto" ariaLabelledBy="title" fixedLayout="Strict"
+        <Table items="{path: 'pokemons>/'}" width="auto" ariaLabelledBy="title" fixedLayout="Strict"
         autoPopinMode="true" growing="true" sticky="ColumnHeaders,HeaderToolbar" popinLayout="GridSmall">
             <headerToolbar>
                 <Toolbar>
@@ -43,14 +43,14 @@
                         <Text text="{i18n>colunaFoto}"/>
                     </Column>
                 </columns>
-                <!-- <items>
+                <items>
                     <ColumnListItem type="Navigation">
                         <cells>
                             <ObjectIdentifier title="{}"/>
                         </cells> 
-                        <Text text="{Nome}"/>
+                        <Text text="{pokemons>nome}"/>
                     </ColumnListItem>
-                </items> -->
+                </items>
         </Table>
 </mvc:View>
     <!-- 
