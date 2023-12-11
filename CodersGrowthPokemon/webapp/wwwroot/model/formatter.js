@@ -3,9 +3,12 @@ sap.ui.define([
 "use strict";
 
     return {
-        formatarTipoSecundario: function(tipoSecundario) {
-            const oTipo = this.getView("Listagem").getModel("pokemons").getProperty("/tipoSecundario");
-            switch(oTipo) {
+        formataShiny(shiny) {
+            return ((shiny==true) ? "Sim" : "Não");
+        },
+
+        formataTipo(tipo) {            
+            switch(tipo) {
                 case 1:
                     return "Agua";
                 case 2:
@@ -25,7 +28,7 @@ sap.ui.define([
                 case 9:
                     return "Voador";
                 case 10:
-                    return oTipo.getText( "Veneno");
+                    return "Veneno";
                 case 11:
                     return "Rocha";
                 case 12:
@@ -41,8 +44,17 @@ sap.ui.define([
                 case 17:
                     return "Normal";
                 default:
-                    return tipoSecundario;
+                    return "Nenhum";
             }
+        },
+
+        formataImagem(base64) {
+            let urlCreator = window.URL || window.webkitURL;
+            let url = urlCreator.createObjectURL(base64);
+            let foto = xmlDoc.createElement("ImagemPokemon");
+            foto.src = url;
+            let elemento = xmlDoc.getElementsByTagName("FlexBox");
+            elemento[0].appendChild(foto)
         }
     }
 })

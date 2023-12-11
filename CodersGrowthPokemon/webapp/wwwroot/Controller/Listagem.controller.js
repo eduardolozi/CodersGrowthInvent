@@ -2,10 +2,10 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "../model/formatter"
-], (Controller, JSONModel) => {
+], (Controller, JSONModel, formatter) => {
     "use strict"
     return Controller.extend("webapp.Controller.Listagem", {
-
+        formatter: formatter,
         onInit() {
             this._carregarPokemons();
         },
@@ -22,5 +22,6 @@ sap.ui.define([
                     console.log(error);
                 });
         }
+
     });
 })
