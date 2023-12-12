@@ -2,6 +2,8 @@ using CrudWinFormsBancoMemoria;
 using CrudWinFormsBancoMemoria.Models;
 using Dominio.Validacoes;
 using Infraestrutura.Repositorios;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.FileProviders;
 
 try
 {
@@ -13,25 +15,33 @@ catch (Exception ex)
 }
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddScoped<IRepositorio, RepositorioLinqToDb>();
 builder.Services.AddScoped<PokemonValidator>();
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+                   Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")
+               ),
+    ContentTypeProvider = new FileExtensionContentTypeProvider
+    {
+        Mappings = { [".properties"] = "application/x-msdownload" }
+    }
+});
+
+app.UseRouting();
 
 app.UseHttpsRedirection();
 

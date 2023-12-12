@@ -1,0 +1,86 @@
+<mvc:View
+    controllerName="webapp.Controller.Listagem"
+    
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc">
+    <Shell>
+        <App id="app">
+            <Table class="sapUiResponsiveMargin" width="auto" ariaLabelledBy="title" fixedLayout="Strict" autoPopinMode="true" growing="true" sticky="ColumnHeaders,HeaderToolbar" popinLayout="GridSmall" items="{pokemons>/}">
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="{i18n>titulo}"/>
+                        <ToolbarSeparator/>
+                        <ToolbarSpacer/>
+                        <SearchField width="30%"/>
+                        <Button type="Emphasized" icon="sap-icon://add" text="{i18n>textoBotaoAdicionar}"/>
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column width="10%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaNome}"/>
+                    </Column>
+                    <Column width="10%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaApelido}"/>
+                    </Column>
+                    <Column width="9%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaNivel}"/>
+                    </Column>
+                    <Column width="9%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaAltura}"/>
+                    </Column>
+                    <Column width="9%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaShiny}"/>
+                    </Column>
+                    <Column width="12%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaDataCaptura}"/>
+                    </Column>
+                    <Column width="13.5%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaTipoPrincipal}"/>
+                    </Column>
+                    <Column width="13.5%" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaTipoSecundario}"/>
+                    </Column>
+                    <Column width="auto" headerMenu="menu" hAlign="Center">
+                        <Text text="{i18n>colunaFoto}"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation">
+						<cells>
+							<Text text="{pokemons>nome}"/>
+							<Text text="{pokemons>apelido}"/>
+							<Text text="{pokemons>nivel}"/>
+							<Text text="{pokemons>altura}"/>
+							<Text text="{
+                                path: 'pokemons>shiny',
+                                formatter: '.formatter.formataShiny'
+                            }"/>
+							<Text text="{path: 'pokemons>dataDeCaptura',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: {
+                                    style: 'short',
+                                    source: {
+                                        pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
+                                    }
+                                }
+                            }"/>
+							<Text text="{
+                                path: 'pokemons>tipoPrincipal',
+                                formatter: '.formatter.formataTipo'
+                            }"/>
+							<Text text="{
+                                path: 'pokemons>tipoSecundario',
+                                formatter: '.formatter.formataTipo'
+                            }"
+                            />
+							<FlexBox alignItems="Center" justifyContent="Center">
+								<Image src="{pokemons>foto}"/>
+							</FlexBox>
+
+						</cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </App>
+    </Shell>
+</mvc:View>
