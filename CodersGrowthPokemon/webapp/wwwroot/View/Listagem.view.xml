@@ -46,16 +46,16 @@
                 </columns>
                 <items>
                     <ColumnListItem type="Navigation">
-                        <cells>
-                            <Text text="{pokemons>nome}"/>
-                            <Text text="{pokemons>apelido}"/>
-                            <Text text="{pokemons>nivel}"/>
-                            <Text text="{pokemons>altura}"/>
-                            <Text text="{
+						<cells>
+							<Text text="{pokemons>nome}"/>
+							<Text text="{pokemons>apelido}"/>
+							<Text text="{pokemons>nivel}"/>
+							<Text text="{pokemons>altura}"/>
+							<Text text="{
                                 path: 'pokemons>shiny',
                                 formatter: '.formatter.formataShiny'
                             }"/>
-                            <Text text="{path: 'pokemons>dataDeCaptura',
+							<Text text="{path: 'pokemons>dataDeCaptura',
                                 type: 'sap.ui.model.type.Date',
                                 formatOptions: {
                                     style: 'short',
@@ -63,21 +63,21 @@
                                         pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
                                     }
                                 }
-                            }"/> 
-                            <Text text="{
+                            }"/>
+							<Text text="{
                                 path: 'pokemons>tipoPrincipal',
                                 formatter: '.formatter.formataTipo'
                             }"/>
-                            <Text text="{
+							<Text text="{
                                 path: 'pokemons>tipoSecundario',
                                 formatter: '.formatter.formataTipo'
-                            }"  
+                            }"
                             />
-                            <FlexBox alignItems="Center" justifyContent="Center">
-                                <Image src="{pokemons>foto}"/>
-                            </FlexBox>
-                            
-                        </cells>
+							<FlexBox alignItems="Center" justifyContent="Center">
+								<Image src="{pokemons>foto}"/>
+							</FlexBox>
+
+						</cells>
                     </ColumnListItem>
                 </items>
             </Table>

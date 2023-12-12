@@ -32,13 +32,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseStaticFiles(new StaticFileOptions
 {
-   FileProvider = new PhysicalFileProvider(
+    FileProvider = new PhysicalFileProvider(
                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")
                ),
-   ContentTypeProvider = new FileExtensionContentTypeProvider
-   {
-       Mappings = { [".properties"] = "application/x-msdownload" }
-   }
+    ContentTypeProvider = new FileExtensionContentTypeProvider
+    {
+        Mappings = { [".properties"] = "application/x-msdownload" }
+    }
 });
 
 app.UseRouting();

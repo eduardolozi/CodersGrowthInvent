@@ -16,15 +16,13 @@ sap.ui.define([
                     return response.json();
                 })
                 .then(response => {
-                    Object.entries(reponse).forEach(([key, value]) => {
-                        console.log(response);
-                        if(key=='foto') {
-                            value = this._converteBase64ParaBlob(value);
-                            console.log(value);
-                            value = URL.createObjectURL(value);
-                            console.log(value);
-                        }
-                    })
+                    
+                    const pokemonsResponse = Object.entries(response)
+                                        
+                    for(let i=0;i<pokemonsResponse.length;i++) {
+                        let blob = this._converteBase64ParaBlob(pokemonsResponse[i][1].foto)
+                        pokemonsResponse[i][1].foto = URL.createObjectURL(blob);
+                    }
                     
                     this.getView().setModel(new JSONModel(response), "pokemons");
                 })
