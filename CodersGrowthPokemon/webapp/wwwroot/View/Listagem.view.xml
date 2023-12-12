@@ -73,8 +73,9 @@
                                 formatter: '.formatter.formataTipo'
                             }"  
                             />
-                            <FlexBox alignItems="Center" justifyContent="Center" addItem="$:formatter.formatarImagem(pokemons>foto)"/>
-                                
+                            <FlexBox alignItems="Center" justifyContent="Center">
+                                <Image src="{pokemons>foto}"/>
+                            </FlexBox>
                             
                         </cells>
                     </ColumnListItem>
