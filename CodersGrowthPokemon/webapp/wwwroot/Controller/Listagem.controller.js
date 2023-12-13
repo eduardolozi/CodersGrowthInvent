@@ -67,7 +67,7 @@ sap.ui.define([
             const oItem = oEvent.getSource();
             const oRouter = this.getOwnerComponent().getRouter();
 			oRouter.navTo("detalhes", {
-                detalhesPath: window.encodeURIComponent(oItem.getBindingContext("pokemons>id").getPath().substr(1))
+                detalhesPath: window.encodeURIComponent(oItem.getBindingContext("pokemons").getProperty("id"))
             })
           }
 
