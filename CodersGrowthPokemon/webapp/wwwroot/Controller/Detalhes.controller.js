@@ -13,16 +13,21 @@ sap.ui.define([
         },
 
         _carregarPokemon() {
-            fetch(`/pokemons/{id}`)
+            let url = window.location.href.split("/");
+            let idNaUrl = url.length - 1;
+            let idPokemon = url[idNaUrl];
+
+            fetch(`/pokemons/${idPokemon}`)
             .then(response => {
                 return response.json()
             })
             .then(response => {
-                console.log(response)
                 if(response.foto != null) {
                     let blob = this._converteBase64ParaBlob(response.foto);
                     response.foto = URL.createObjectURL(blob);
                 }
+                response = response
+                console.log(response)
                 this.getView().setModel(new JSONModel(response), "pokemon");
             })
             .catch(error => {

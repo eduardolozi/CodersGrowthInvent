@@ -3,9 +3,12 @@
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">
     <Page
-		title="Pokemon">
+		title="Pokemons">
         <List item="{pokemon>/}">
-            <StandardListItem title="{pokemon>nome}"/>
+            <StandardListItem
+                title="{pokemon>nome}"
+                description="{pokemon>apelido}"
+            />
         </List>
     </Page>
     
