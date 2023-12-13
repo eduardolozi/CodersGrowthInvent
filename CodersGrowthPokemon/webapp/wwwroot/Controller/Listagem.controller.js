@@ -20,10 +20,11 @@ sap.ui.define([
                 .then(response => {
                     const pokemonsResponse = Object.entries(response)
                     for(let i=0;i<pokemonsResponse.length;i++) {
-                        let blob = this._converteBase64ParaBlob(pokemonsResponse[i][1].foto)
-                        pokemonsResponse[i][1].foto = URL.createObjectURL(blob);
+                        if(pokemonsResponse[i][1].foto != null) {
+                            let blob = this._converteBase64ParaBlob(pokemonsResponse[i][1].foto);
+                            pokemonsResponse[i][1].foto = URL.createObjectURL(blob);
+                        }
                     }
-                    
                     this.getView().setModel(new JSONModel(response), "pokemons");
                 })
                 .catch(error => {

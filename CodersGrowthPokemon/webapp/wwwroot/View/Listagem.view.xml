@@ -1,10 +1,11 @@
 <mvc:View
     controllerName="webapp.Controller.Listagem"
     xmlns="sap.m"
+    displayBlock="true"
     xmlns:mvc="sap.ui.core.mvc">
     <App id="app">
-        <VBox class="sapUiTinyMarginTop">
-            <Table id="listaDePokemons" class="sapUiTinyMargin" width="auto" ariaLabelledBy="title" fixedLayout="Strict" autoPopinMode="true" growing="true" sticky="ColumnHeaders,HeaderToolbar" popinLayout="GridSmall" items="{pokemons>/}">
+        <ScrollContainer height="100%" width="100%" vertical="true">
+            <Table id="listaDePokemons" class="sapUiTinyMargin sapUiTinyMarginBottom" width="auto" sticky="ColumnHeaders,HeaderToolbar" items="{pokemons>/}">
                 <headerToolbar>
                     <Toolbar>
                         <Title text="{i18n>titulo}"/>
@@ -47,7 +48,10 @@
                     <ColumnListItem type="Navigation" press=".aoClicarEmUmaLinhaDaTabela">
                         <cells>
                             <FlexBox alignItems="Center" justifyContent="Center">
-                                <Image src="{pokemons>foto}"/>
+                                <Image src="{
+                                    path: 'pokemons>foto',
+                                    formatter: '.formatter.formataImagem'
+                                }"/>
                             </FlexBox>
                             <Text text="{pokemons>nome}"/>
                             <Text text="{pokemons>apelido}"/>
@@ -79,6 +83,6 @@
                     </ColumnListItem>
                 </items>
             </Table>
-        </VBox>
+        </ScrollContainer>
     </App>
 </mvc:View>
