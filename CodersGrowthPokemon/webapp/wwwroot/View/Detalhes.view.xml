@@ -1,15 +1,71 @@
 <mvc:View
     controllerName="webapp.Controller.Detalhes"
     xmlns="sap.m"
+    xmlns:toolbar="sap.m.toolbar"
+    xmlns:f="sap.f"
+    xmlns:card="sap.f.cards"
     xmlns:mvc="sap.ui.core.mvc">
     <Page
-		title="Pokemons">
-        <List item="{pokemon>/}">
-            <StandardListItem
-                title="{pokemon>nome}"
-                description="{pokemon>apelido}"
-            />
-        </List>
+        id="paginaDeDetalhes"
+		title="DETALHES DO POKÉMON"
+        titleAlignment="Center"
+        showNavButton="true"
+        navButtonPress=".onNavBack">
+
+        <FlexBox alignItems="Center" justifyContent="Center">
+            <f:Card class="sapUiMediumMargin" width="400px" headerPosition="Top">
+                <f:header>
+                    <VBox alignItems="Center" justifyContent="Center" class="sapUiSmallMarginTop">
+                        <Title level="H3" text="{detalhePokemon>/nome}"/>
+                    </VBox>
+                    </f:header>
+                <f:content>
+                    <List
+                        class="sapUiSmallMarginBottom"
+                        showSeparators="None"
+                        >
+                        <CustomListItem>
+                            <VBox alignItems="Center" justifyContent="Center">
+                                <FlexBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
+                                    <Image src="{
+                                        path: 'detalhePokemon>/foto',
+                                        formatter: '.formatter.formataImagem'
+                                    }"/>
+                                </FlexBox>
+                                <FlexBox direction="Column" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
+                                    <Label text="{i18n>colunaApelido} : {detalhePokemon>/apelido}" />
+                                    <Label text="{i18n>colunaNivel} : {detalhePokemon>/nivel}" />
+                                    <Label text="{i18n>colunaTipoPrincipal} : {
+                                        path: 'detalhePokemon>/tipoPrincipal',
+                                        formatter: '.formatter.formataTipo'
+                                    }" />
+                                    <Label text="{i18n>colunaTipoSecundario} : {
+                                        path: 'detalhePokemon>/tipoSecundario',
+                                        formatter: '.formatter.formataTipo'
+                                    }" />
+                                    <Label text="{i18n>colunaShiny} : {
+                                        path: 'detalhePokemon>/shiny',
+                                        formatter: '.formatter.formataShiny'
+                                    }" />
+                                    <Label text="{i18n>colunaAltura}: {detalhePokemon>/altura}m" />
+                                    <Label text="{i18n>colunaDataCaptura}: {
+                                        path: 'detalhePokemon>/dataDeCaptura',
+                                        type: 'sap.ui.model.type.Date',
+                                        formatOptions: {
+                                            style: 'short',
+                                            source: {
+                                                pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
+                                            }
+                                        }
+                                    }"/>
+                                </FlexBox>
+                                
+                                
+                            </VBox>
+                        </CustomListItem>
+                    </List>
+                </f:content>
+            </f:Card>
+        </FlexBox>
     </Page>
-    
 </mvc:View>

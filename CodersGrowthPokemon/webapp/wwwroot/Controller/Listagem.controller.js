@@ -25,6 +25,7 @@ sap.ui.define([
                             pokemonsResponse[i][1].foto = URL.createObjectURL(blob);
                         }
                     }
+                    
                     this.getView().setModel(new JSONModel(response), "pokemons");
                 })
                 .catch(error => {
@@ -32,44 +33,44 @@ sap.ui.define([
                 });
         },
 
-        _converteBase64ParaBlob(b64Data, contentType='', sliceSize=512) {
-            const byteCharacters = atob(b64Data);
-            const byteArrays = [];
+        _converteBase64ParaBlob(stringBase64, tipoConteudo='', tamanhoDoPedaco=512) {
+            const caracteresEmBytes = atob(stringBase64);
+            const bytesArquivo = [];
           
-            for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-              const slice = byteCharacters.slice(offset, offset + sliceSize);
+            for (let offset = 0; offset < caracteresEmBytes.length; offset += tamanhoDoPedaco) {
+              const pedaco = caracteresEmBytes.slice(offset, offset + tamanhoDoPedaco);
           
-              const byteNumbers = new Array(slice.length);
-              for (let i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
+              const numerosDosBytes = new Array(pedaco.length);
+              for (let i = 0; i < pedaco.length; i++) {
+                numerosDosBytes[i] = pedaco.charCodeAt(i);
               }
           
-              const byteArray = new Uint8Array(byteNumbers);
-              byteArrays.push(byteArray);
+              const byteArray = new Uint8Array(numerosDosBytes);
+              bytesArquivo.push(byteArray);
             }
           
-            const blob = new Blob(byteArrays, {type: contentType});
+            const blob = new Blob(bytesArquivo, {type: tipoConteudo});
             return blob;
-          },
-
-          aoFiltrarPokemons(oEvent) {
-			const aFilter = [];
-			const sQuery = oEvent.getParameter("query");
-			if (sQuery) {
-				aFilter.push(new Filter("nome", FilterOperator.Contains, sQuery));
-			}
-			const oList = this.byId("listaDePokemons");
-			const oBinding = oList.getBinding("items");
-			oBinding.filter(aFilter);
         },
 
-          aoClicarEmUmaLinhaDaTabela(oEvent) {
+        aoFiltrarPokemons(oEvent) {
+            const aFilter = [];
+            const sQuery = oEvent.getParameter("query");
+            if (sQuery) {
+                aFilter.push(new Filter("nome", FilterOperator.Contains, sQuery));
+            }
+            const oList = this.byId("listaDePokemons");
+            const oBinding = oList.getBinding("items");
+            oBinding.filter(aFilter);
+        },
+
+        aoClicarEmUmaLinhaDaTabela(oEvent) {
             const oItem = oEvent.getSource();
             const oRouter = this.getOwnerComponent().getRouter();
-			oRouter.navTo("detalhes", {
+            oRouter.navTo("detalhes", {
                 detalhesPath: window.encodeURIComponent(oItem.getBindingContext("pokemons").getProperty("id"))
             })
-          }
+        }
 
     });
 })
