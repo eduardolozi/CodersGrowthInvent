@@ -26,13 +26,14 @@
                         >
                         <CustomListItem>
                             <VBox alignItems="Center" justifyContent="Center">
-                                <FlexBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
+                                <FlexBox class="sapUiSmallMarginTopBottom" >
                                     <Image src="{
                                         path: 'detalhePokemon>/foto',
                                         formatter: '.formatter.formataImagem'
                                     }"/>
                                 </FlexBox>
-                                <FlexBox direction="Column" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
+                                <VBox class="sapUiSmallMarginBegin">
+                                    <FlexBox direction="Column" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
                                     <Label text="{i18n>colunaApelido} : {detalhePokemon>/apelido}" />
                                     <Label text="{i18n>colunaNivel} : {detalhePokemon>/nivel}" />
                                     <Label text="{i18n>colunaTipoPrincipal} : {
@@ -59,8 +60,7 @@
                                         }
                                     }"/>
                                 </FlexBox>
-                                
-                                
+                                </VBox>
                             </VBox>
                         </CustomListItem>
                     </List>
