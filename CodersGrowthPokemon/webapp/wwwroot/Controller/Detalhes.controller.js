@@ -10,17 +10,24 @@ sap.ui.define([
         formatter: formatter,
 
         onInit() {
+            const rotaDetalhes = "detalhes";
             const oRouter = this.getOwnerComponent().getRouter();
-			oRouter.getRoute("detalhes").attachPatternMatched(this.onObjectMatched, this);
+
+			oRouter.getRoute(rotaDetalhes).attachPatternMatched(this.noObjetoCorrespondente, this);
         },
 
-        onObjectMatched(oEvent) {
-            let indice = window.decodeURIComponent(oEvent.getParameter("arguments").detalhesPath)
+        noObjetoCorrespondente(oEvent) {
+            const argumentos = "arguments";
+
+            let indice = window.decodeURIComponent(oEvent.getParameter(argumentos).detalhesPath)
             this._carregarPokemon(indice)
         },
 
         _carregarPokemon(indice) {
-            fetch(`/pokemons/${indice}`)
+            const rotaApi = `/pokemons/${indice}`;
+            const nomeModeloPokemon = "detalhePokemon";
+
+            fetch(rotaApi)
             .then(response => {
                 return response.json()
             })
@@ -29,7 +36,7 @@ sap.ui.define([
                     let blob = this._converteBase64ParaBlob(response.foto);
                     response.foto = URL.createObjectURL(blob);
                 }
-                this.getView().setModel(new JSONModel(response), "detalhePokemon");
+                this.getView().setModel(new JSONModel(response), nomeModeloPokemon);
             })
             .catch(error => {
                 console.log(error);
@@ -57,26 +64,32 @@ sap.ui.define([
         },
 
         aoClicarBotaoVoltar() {
+            const paginaDeListagem = "listagem";
             const oHistory = History.getInstance();
 			const sPreviousHash = oHistory.getPreviousHash();
+            const paginaAnteriorNoHistorico = -1;
 
             if (sPreviousHash !== undefined) {
-				window.history.go(-1);
+				window.history.go(paginaAnteriorNoHistorico);
 			} else {
 				const oRouter = this.getOwnerComponent().getRouter();
-				oRouter.navTo("listagem", {}, true);
+				oRouter.navTo(paginaDeListagem, {}, true);
 			}
         },
 
         aoClicarBotaoVerCard(oEvent) {
+            const caminhoCardPokemon = "webapp.View.CardPokemon";
+
             this.pDialog ??= this.loadFragment({
-                name: "webapp.View.CardPokemon"
+                name: caminhoCardPokemon
             });
             this.pDialog.then((oDialog) => oDialog.open());
         },
 
         aoFecharDialog() {
-            this.byId("cardPokemon").close();
+            const idCardPokemon = "cardPokemon";
+
+            this.byId(idCardPokemon).close();
         }
     })
 })

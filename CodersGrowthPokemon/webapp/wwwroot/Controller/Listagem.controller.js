@@ -6,6 +6,8 @@ sap.ui.define([
 	"sap/ui/model/FilterOperator"
 ], (Controller, JSONModel, formatter, Filter, FilterOperator) => {
     "use strict"
+    const nomeModeloPokemons = "pokemons";
+
     return Controller.extend("webapp.Controller.Listagem", {
         formatter: formatter,
         onInit() {
@@ -13,7 +15,9 @@ sap.ui.define([
         },
 
         _carregarPokemons() {
-            fetch("/pokemons")
+            const urlApi = "/pokemons";
+
+            fetch(urlApi)
                 .then(response => {
                     return response.json();
                 })
@@ -26,7 +30,7 @@ sap.ui.define([
                         }
                     }
                     
-                    this.getView().setModel(new JSONModel(response), "pokemons");
+                    this.getView().setModel(new JSONModel(response), nomeModeloPokemons);
                 })
                 .catch(error => {
                     console.log(error);
@@ -54,21 +58,29 @@ sap.ui.define([
         },
 
         aoFiltrarPokemons(oEvent) {
+            const idListaDePokemons = "listaDePokemons";
+            const itensDaLista = "items";
+            const campoNome = "nome";
+            const parametroParaConsulta = "query";
+
             const aFilter = [];
-            const sQuery = oEvent.getParameter("query");
+            const sQuery = oEvent.getParameter(parametroParaConsulta);
             if (sQuery) {
-                aFilter.push(new Filter("nome", FilterOperator.Contains, sQuery));
+                aFilter.push(new Filter(campoNome, FilterOperator.Contains, sQuery));
             }
-            const oList = this.byId("listaDePokemons");
-            const oBinding = oList.getBinding("items");
+            const oList = this.byId(idListaDePokemons);
+            const oBinding = oList.getBinding(itensDaLista);
             oBinding.filter(aFilter);
         },
 
         aoClicarEmUmaLinhaDaTabela(oEvent) {
+            const nomeParametroId = "id";
+            const nomePaginaDeDetalhes = "detalhes";
+
             const oItem = oEvent.getSource();
             const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("detalhes", {
-                detalhesPath: window.encodeURIComponent(oItem.getBindingContext("pokemons").getProperty("id"))
+            oRouter.navTo(nomePaginaDeDetalhes, {
+                detalhesPath: window.encodeURIComponent(oItem.getBindingContext(nomeModeloPokemons).getProperty(nomeParametroId))
             })
         }
 
