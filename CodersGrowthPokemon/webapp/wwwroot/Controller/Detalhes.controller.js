@@ -11,16 +11,16 @@ sap.ui.define([
 
         onInit() {
             const oRouter = this.getOwnerComponent().getRouter();
-			oRouter.getRoute("detalhes").attachPatternMatched(this._carregarPokemon, this);
+			oRouter.getRoute("detalhes").attachPatternMatched(this.onObjectMatched, this);
         },
 
-        _carregarPokemon() {
-            
-            let url = window.location.href.split("/");
-            let idNaUrl = url.length - 1;
-            let idPokemon = url[idNaUrl];
+        onObjectMatched(oEvent) {
+            let indice = window.decodeURIComponent(oEvent.getParameter("arguments").detalhesPath)
+            this._carregarPokemon(indice)
+        },
 
-            fetch(`/pokemons/${idPokemon}`)
+        _carregarPokemon(indice) {
+            fetch(`/pokemons/${indice}`)
             .then(response => {
                 return response.json()
             })
@@ -56,7 +56,7 @@ sap.ui.define([
             return blob;
         },
 
-        onNavBack() {
+        aoClicarBotaoVoltar() {
             const oHistory = History.getInstance();
 			const sPreviousHash = oHistory.getPreviousHash();
 
@@ -66,6 +66,17 @@ sap.ui.define([
 				const oRouter = this.getOwnerComponent().getRouter();
 				oRouter.navTo("listagem", {}, true);
 			}
+        },
+
+        aoClicarBotaoVerCard(oEvent) {
+            this.pDialog ??= this.loadFragment({
+                name: "webapp.View.CardPokemon"
+            });
+            this.pDialog.then((oDialog) => oDialog.open());
+        },
+
+        aoFecharDialog() {
+            this.byId("cardPokemon").close();
         }
     })
 })

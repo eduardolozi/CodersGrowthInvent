@@ -7,65 +7,58 @@
     xmlns:mvc="sap.ui.core.mvc">
     <Page
         id="paginaDeDetalhes"
-		title="DETALHES DO POKÉMON"
+		title="{i18n>tituloDetalhes}"
         titleAlignment="Center"
         showNavButton="true"
-        navButtonPress=".onNavBack">
+        class="sapUiLargeMarginBottom">
+        <customHeader>
+			<Toolbar>
+				<Button type="Back" press=".aoClicarBotaoVoltar" />
+				<ToolbarSpacer/>
+				<Title text="{i18n>tituloDetalhes}" level="H2"/>
+				<ToolbarSpacer/>
+				<Button icon="sap-icon://edit" type="Transparent" press="aoClicarBotaoEditar" ariaLabelledBy="editButtonLabel"/>
+                <Button icon="sap-icon://delete" type="Transparent" press="aoClicarBotaoRemover" ariaLabelledBy="deleteButtonLabel"/>
+			</Toolbar>
+		</customHeader>
+        
 
-        <FlexBox alignItems="Center" justifyContent="Center">
-            <f:Card class="sapUiMediumMargin" width="400px" headerPosition="Top">
-                <f:header>
-                    <VBox alignItems="Center" justifyContent="Center" class="sapUiSmallMarginTop">
-                        <Title level="H3" text="{detalhePokemon>/nome}"/>
-                    </VBox>
-                    </f:header>
-                <f:content>
-                    <List
-                        class="sapUiSmallMarginBottom"
-                        showSeparators="None"
-                        >
-                        <CustomListItem>
-                            <VBox alignItems="Center" justifyContent="Center">
-                                <FlexBox class="sapUiSmallMarginTopBottom" >
-                                    <Image src="{
-                                        path: 'detalhePokemon>/foto',
-                                        formatter: '.formatter.formataImagem'
-                                    }"/>
-                                </FlexBox>
-                                <VBox class="sapUiSmallMarginBegin">
-                                    <FlexBox direction="Column" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
-                                    <Label text="{i18n>colunaApelido} : {detalhePokemon>/apelido}" />
-                                    <Label text="{i18n>colunaNivel} : {detalhePokemon>/nivel}" />
-                                    <Label text="{i18n>colunaTipoPrincipal} : {
-                                        path: 'detalhePokemon>/tipoPrincipal',
-                                        formatter: '.formatter.formataTipo'
-                                    }" />
-                                    <Label text="{i18n>colunaTipoSecundario} : {
-                                        path: 'detalhePokemon>/tipoSecundario',
-                                        formatter: '.formatter.formataTipo'
-                                    }" />
-                                    <Label text="{i18n>colunaShiny} : {
-                                        path: 'detalhePokemon>/shiny',
-                                        formatter: '.formatter.formataShiny'
-                                    }" />
-                                    <Label text="{i18n>colunaAltura}: {detalhePokemon>/altura}m" />
-                                    <Label text="{i18n>colunaDataCaptura}: {
-                                        path: 'detalhePokemon>/dataDeCaptura',
-                                        type: 'sap.ui.model.type.Date',
-                                        formatOptions: {
-                                            style: 'short',
-                                            source: {
-                                                pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
-                                            }
-                                        }
-                                    }"/>
-                                </FlexBox>
-                                </VBox>
-                            </VBox>
-                        </CustomListItem>
-                    </List>
-                </f:content>
-            </f:Card>
-        </FlexBox>
+        <VBox class="sapUiLargeMarginBegin sapUiLargeMarginTop">
+            <Title text="{detalhePokemon>/nome}" level="H3"/>
+                <FlexBox class="sapUiTinyMarginTop">
+                    <Image src="{
+                        path: 'detalhePokemon>/foto',
+                        formatter: '.formatter.formataImagem'
+                    }"/>
+                </FlexBox>
+                    <FlexBox direction="Column">
+                    <Label design="Bold" text="{i18n>colunaApelido} : {detalhePokemon>/apelido}" />
+                    <Label design="Bold" text="{i18n>colunaNivel} : {detalhePokemon>/nivel}" />
+                    <Label design="Bold" text="{i18n>colunaTipoPrincipal} : {
+                        path: 'detalhePokemon>/tipoPrincipal',
+                        formatter: '.formatter.formataTipo'
+                    }" />
+                    <Label design="Bold" text="{i18n>colunaTipoSecundario} : {
+                        path: 'detalhePokemon>/tipoSecundario',
+                        formatter: '.formatter.formataTipo'
+                    }" />
+                    <Label design="Bold" text="{i18n>colunaShiny} : {
+                        path: 'detalhePokemon>/shiny',
+                        formatter: '.formatter.formataShiny'
+                    }" />
+                    <Label design="Bold" text="{i18n>colunaAltura}: {detalhePokemon>/altura}m" />
+                    <Label design="Bold" text="{i18n>colunaDataCaptura}: {
+                        path: 'detalhePokemon>/dataDeCaptura',
+                        type: 'sap.ui.model.type.Date',
+                        formatOptions: {
+                            style: 'short',
+                            source: {
+                                pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
+                            }
+                        }
+                    }"/>
+                    <Button id="botaoVerCard" class="sapUiTinyMarginTop" type="Emphasized" press="aoClicarBotaoVerCard" text="{i18n>verCard}"/>
+                </FlexBox>
+        </VBox>
     </Page>
 </mvc:View>
