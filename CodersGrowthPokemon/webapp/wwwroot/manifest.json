@@ -51,12 +51,21 @@
 					"pattern": "",
 					"name": "listagem",
 					"target": "listagem"
+				},
+				{
+					"pattern": "detalhes/{detalhesPath}",
+					"name": "detalhes",
+					"target": "detalhes"
 				}
 			],
 			"targets": {
 				"listagem": {
 					"id": "listagem",
 					"name": "Listagem"
+				},
+				"detalhes": {
+					"id":"detalhes",
+					"name": "Detalhes"
 				}
 			}
 		}
