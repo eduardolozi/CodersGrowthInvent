@@ -56,7 +56,13 @@
 					"pattern": "detalhes/{detalhesPath}",
 					"name": "detalhes",
 					"target": "detalhes"
+				},
+				{
+					"pattern": "cadastro",
+					"name": "cadastro",
+					"target": "cadastro"
 				}
+
 			],
 			"targets": {
 				"listagem": {
@@ -66,6 +72,10 @@
 				"detalhes": {
 					"id":"detalhes",
 					"name": "Detalhes"
+				},
+				"cadastro": {
+					"id":"cadastro",
+					"name": "Cadastro"
 				}
 			}
 		}

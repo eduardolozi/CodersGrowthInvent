@@ -1,0 +1,24 @@
+<mvc:View
+    controllerName="webapp.Controller.Cadastro"
+    xmlns="sap.m"
+    displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc">
+    <Page
+        title="{i18n>tituloCadastro}"
+        titleAlignment="Center"
+        showNavButton="true"
+        navButtonPress=".aoClicarNoBotaoDeVoltar"
+    >
+    <FlexBox direction="Column" class="sapUiLargeMarginTop sapUiLargeMarginBegin">
+        <Label design="Bold" text="{i18n>colunaNome}" labelFor="inputNome"/>
+        <Input id="inputNome" width="25%" placeholder="Nome do Pokémon" maxLength="11" type="Text"/>
+        <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaApelido}" labelFor="inputApelido"/>
+        <Input id="inputApelido" width="25%" placeholder="Apelido do Pokémon" maxLength="11" type="Text"/>
+        <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaNivel}" labelFor="inputNivel"/>
+        <Input id="inputNivel" width="25%" placeholder="Nivel do Pokémon" maxLength="3" type="Number"/>
+       
+    </FlexBox>
+
+
+    </Page>
+</mvc:View>

@@ -16,6 +16,7 @@ catch (Exception ex)
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IRepositorio, RepositorioLinqToDb>();
+builder.Services.AddScoped<ConversaoBancoParaPokemon>();
 builder.Services.AddScoped<PokemonValidator>();
 
 builder.Services.AddControllers();

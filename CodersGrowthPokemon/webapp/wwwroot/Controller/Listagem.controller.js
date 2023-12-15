@@ -82,6 +82,13 @@ sap.ui.define([
             oRouter.navTo(nomePaginaDeDetalhes, {
                 detalhesPath: window.encodeURIComponent(oItem.getBindingContext(nomeModeloPokemons).getProperty(nomeParametroId))
             })
+        },
+
+        aoClicarNoBotaoAdicionar(oEvent) {
+            const nomePaginaDeCadastro = "cadastro";
+
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.navTo(nomePaginaDeCadastro, {})
         }
 
     });

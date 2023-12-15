@@ -12,7 +12,7 @@
                         <ToolbarSeparator/>
                         <ToolbarSpacer/>
                         <SearchField width="30%" search=".aoFiltrarPokemons"/>
-                        <Button type="Emphasized" icon="sap-icon://add" text="{i18n>textoBotaoAdicionar}"/>
+                        <Button type="Emphasized" icon="sap-icon://add" text="{i18n>textoBotaoAdicionar}" press="aoClicarNoBotaoAdicionar"/>
                     </Toolbar>
                 </headerToolbar>
                 <columns>
