@@ -1,0 +1,72 @@
+{
+    "TiposDosPokemons" : [
+        {
+            "nome": "Agua",
+            "indice": "0"
+        },
+        {
+            "nome": "Fogo",
+            "indice": "1"
+        },
+        {
+            "nome": "Planta",
+            "indice": "2"
+        },
+        {
+            "nome": "Eletrico",
+            "indice": "3"
+        },
+        {
+            "nome": "Gelo",
+            "indice": "4"
+        },
+        {
+            "nome": "Lutador",
+            "indice": "5"
+        },
+        {
+            "nome": "Psiquico",
+            "indice": "6"
+        },
+        {
+            "nome": "Terra",
+            "indice": "7"
+        },
+        {
+            "nome": "Voador",
+            "indice": "8"
+        },
+        {
+            "nome": "Veneno",
+            "indice": "9"
+        },
+        {
+            "nome": "Rocha",
+            "indice": "10"
+        },
+        {
+            "nome": "Inseto",
+            "indice": "11"
+        },
+        {
+            "nome": "Fantasma",
+            "indice": "12"
+        },
+        {
+            "nome": "Noturno",
+            "indice": "13"
+        },
+        {
+            "nome": "Aco",
+            "indice": "14"
+        },
+        {
+            "nome": "Dragao",
+            "indice": "15"
+        },
+        {
+            "nome": "Normal",
+            "indice": "16"
+        }
+    ]
+}

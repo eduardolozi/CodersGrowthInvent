@@ -1,24 +1,65 @@
-<mvc:View
-    controllerName="webapp.Controller.Cadastro"
+<mvc:View controllerName="webapp.Controller.Cadastro"
     xmlns="sap.m"
+    xmlns:core="sap.ui.core" 
+    xmlns:u="sap.ui.unified"
+    xmlns:l="sap.ui.layout"
     displayBlock="true"
     xmlns:mvc="sap.ui.core.mvc">
-    <Page
-        title="{i18n>tituloCadastro}"
-        titleAlignment="Center"
-        showNavButton="true"
-        navButtonPress=".aoClicarNoBotaoDeVoltar"
-    >
-    <FlexBox direction="Column" class="sapUiLargeMarginTop sapUiLargeMarginBegin">
-        <Label design="Bold" text="{i18n>colunaNome}" labelFor="inputNome"/>
-        <Input id="inputNome" width="25%" placeholder="Nome do Pokémon" maxLength="11" type="Text"/>
-        <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaApelido}" labelFor="inputApelido"/>
-        <Input id="inputApelido" width="25%" placeholder="Apelido do Pokémon" maxLength="11" type="Text"/>
-        <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaNivel}" labelFor="inputNivel"/>
-        <Input id="inputNivel" width="25%" placeholder="Nivel do Pokémon" maxLength="3" type="Number"/>
-       
-    </FlexBox>
+    <Page title="{i18n>tituloCadastro}" titleAlignment="Center" showNavButton="true" navButtonPress=".aoClicarNoBotaoDeVoltar">
+        <FlexBox direction="Row" class="sapUiLargeMarginTop sapUiLargeMarginBegin">
+            <FlexBox direction="Column" class="sapUiLargeMarginEnd">
+                <Label design="Bold" text="{i18n>colunaNome}*" labelFor="inputNome"/>
+                <Input id="inputNome" value="{pokemon>/nome}" width="100%" placeholder="Nome do Pokémon" maxLength="11" type="Text"/>
+    
+                <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaApelido}*" labelFor="inputApelido"/>
+                <Input id="inputApelido" value="{pokemon>/apelido}" width="100%" placeholder="Apelido do Pokémon" maxLength="11" type="Text"/>
+    
+                <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaNivel}*" labelFor="inputNivel"/>
+                <Input id="inputNivel" value="{pokemon>/nivel}" width="100%" placeholder="Nivel do Pokémon" maxLength="3" type="Number"/>
+    
+                <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaAltura}*" labelFor="inputAltura"/>
+                <Input id="inputAltura" value="{pokemon>/altura}" width="100%" placeholder="Altura do Pokémon" maxLength="4" type="Number"/>
+    
+                <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaDataCaptura}*" labelFor="inputDataCaptura"/>
+                <DatePicker id="inputDataCaptura" value="{pokemon>/dataDeCaptura}" placeholder="Data de captura" width="100%" displayFormat="short" valueFormat="dd.MM.yyyy"/>
 
+                <CheckBox id="inputShiny" class="sapUiSmallMarginTop" text="Shiny"/>
+            </FlexBox>
+
+            <FlexBox direction="Column">
+                <Label design="Bold" text="{i18n>colunaTipoPrincipal}*" labelFor="inputTipoPrincpial"/>
+                <ComboBox id="inputTipoPrincipal" value="{pokemon>/tipoPrincipal}" placeholder="Tipo principal" width="100%" items="{tiposDeDados>/TiposDosPokemons}">
+                    <core:ListItem key="{tiposDeDados>indice}" text="{tiposDeDados>nome}"/>
+                </ComboBox>
+    
+                <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaTipoSecundario}" labelFor="inputTipoSecundario"/>
+                <ComboBox id="inputTipoSecundario" value="{pokemon>/tipoSecundario}" placeholder="Tipo secundário" width="100%" items="{tiposDeDados>/TiposDosPokemons}">
+                    <core:ListItem key="{tiposDeDados>indice}" text="{tiposDeDados>nome}"/>
+                </ComboBox>
+    
+                <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaFoto}" labelFor="inputFoto"/>
+                    <u:FileUploader 
+                        id="inputFoto"
+                        value="{pokemon>/foto}"
+                        multiple="false" 
+                        uploadUrl="upload/"
+                        tooltip="Upload your file to the local server"
+                        icon="sap-icon://add-photo" 
+                        uploadOnChange="false" 
+                        sendXHR="true" 
+                        useMultipart="false" 
+                        fileType="JPG,JPEG,jpeg,jpg,PNG,png"
+                    />
+            </FlexBox>
+        </FlexBox>
+        
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Button type="Accept" text="{i18n>botaoSalvar}" press=".aoClicarNoBotaoDeSalvar"/>
+                <Button type="Reject" text="{i18n>botaoCancelar}" press=".aoClicarNoBotaoDeCancelar"/>
+            </Toolbar>
+        </footer>
 
     </Page>
 </mvc:View>

@@ -1,53 +1,47 @@
-<mvc:View
-    controllerName="webapp.Controller.Detalhes"
+<mvc:View controllerName="webapp.Controller.Detalhes"
     xmlns="sap.m"
     xmlns:toolbar="sap.m.toolbar"
     xmlns:f="sap.f"
     xmlns:card="sap.f.cards"
     xmlns:mvc="sap.ui.core.mvc">
-    <Page
-        id="paginaDeDetalhes"
-		title="{i18n>tituloDetalhes}"
-        titleAlignment="Center"
-        showNavButton="true"
-        class="sapUiLargeMarginBottom">
+    <Page id="paginaDeDetalhes" title="{i18n>tituloDetalhes}" titleAlignment="Center" showNavButton="true" class="sapUiLargeMarginBottom">
         <customHeader>
-			<Toolbar>
-				<Button type="Back" press=".aoClicarBotaoVoltar" />
-				<ToolbarSpacer/>
-				<Title text="{i18n>tituloDetalhes}" level="H2"/>
-				<ToolbarSpacer/>
-				<Button icon="sap-icon://edit" type="Transparent" press="aoClicarBotaoEditar" ariaLabelledBy="editButtonLabel"/>
+            <Toolbar>
+                <Button type="Back" press=".aoClicarBotaoVoltar" />
+                <ToolbarSpacer/>
+                <Title text="{i18n>tituloDetalhes}" level="H2"/>
+                <ToolbarSpacer/>
+                <Button icon="sap-icon://edit" type="Transparent" press="aoClicarBotaoEditar" ariaLabelledBy="editButtonLabel"/>
                 <Button icon="sap-icon://delete" type="Transparent" press="aoClicarBotaoRemover" ariaLabelledBy="deleteButtonLabel"/>
-			</Toolbar>
-		</customHeader>
-        
+            </Toolbar>
+        </customHeader>
+
 
         <VBox class="sapUiLargeMarginBegin sapUiLargeMarginTop">
             <Title text="{detalhePokemon>/nome}" level="H3"/>
-                <FlexBox class="sapUiTinyMarginTop">
-                    <Image src="{
+            <FlexBox class="sapUiTinyMarginTop">
+                <Image src="{
                         path: 'detalhePokemon>/foto',
                         formatter: '.formatter.formataImagem'
                     }"/>
-                </FlexBox>
-                    <FlexBox direction="Column">
-                    <Label design="Bold" text="{i18n>colunaApelido} : {detalhePokemon>/apelido}" />
-                    <Label design="Bold" text="{i18n>colunaNivel} : {detalhePokemon>/nivel}" />
-                    <Label design="Bold" text="{i18n>colunaTipoPrincipal} : {
+            </FlexBox>
+            <FlexBox direction="Column">
+                <Label design="Bold" text="{i18n>colunaApelido} : {detalhePokemon>/apelido}" />
+                <Label design="Bold" text="{i18n>colunaNivel} : {detalhePokemon>/nivel}" />
+                <Label design="Bold" text="{i18n>colunaTipoPrincipal} : {
                         path: 'detalhePokemon>/tipoPrincipal',
                         formatter: '.formatter.formataTipo'
                     }" />
-                    <Label design="Bold" text="{i18n>colunaTipoSecundario} : {
+                <Label design="Bold" text="{i18n>colunaTipoSecundario} : {
                         path: 'detalhePokemon>/tipoSecundario',
                         formatter: '.formatter.formataTipo'
                     }" />
-                    <Label design="Bold" text="{i18n>colunaShiny} : {
+                <Label design="Bold" text="{i18n>colunaShiny} : {
                         path: 'detalhePokemon>/shiny',
                         formatter: '.formatter.formataShiny'
                     }" />
-                    <Label design="Bold" text="{i18n>colunaAltura}: {detalhePokemon>/altura}m" />
-                    <Label design="Bold" text="{i18n>colunaDataCaptura}: {
+                <Label design="Bold" text="{i18n>colunaAltura}: {detalhePokemon>/altura}m" />
+                <Label design="Bold" text="{i18n>colunaDataCaptura}: {
                         path: 'detalhePokemon>/dataDeCaptura',
                         type: 'sap.ui.model.type.Date',
                         formatOptions: {
@@ -57,8 +51,8 @@
                             }
                         }
                     }"/>
-                    <Button id="botaoVerCard" class="sapUiTinyMarginTop" type="Emphasized" press="aoClicarBotaoVerCard" text="{i18n>verCard}"/>
-                </FlexBox>
+                <Button id="botaoVerCard" class="sapUiTinyMarginTop" type="Emphasized" press="aoClicarBotaoVerCard" text="{i18n>verCard}"/>
+            </FlexBox>
         </VBox>
     </Page>
 </mvc:View>

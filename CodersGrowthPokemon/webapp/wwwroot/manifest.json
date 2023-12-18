@@ -35,6 +35,10 @@
 				"supportedLocales": [""],
             	"fallbackLocale": ""
 			  }
+			},
+			"tiposDeDados": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "ModelosJSON/TiposDeDados.json"
 			}
 		},
 		"routing": {
