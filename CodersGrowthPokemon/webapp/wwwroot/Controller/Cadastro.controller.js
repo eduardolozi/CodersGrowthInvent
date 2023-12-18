@@ -19,8 +19,6 @@ sap.ui.define([
         _salvarPokemon() {
             const urlFetch = "/pokemons"
             const dados = JSON.stringify(this.getView().getModel(nomeModeloPokemon).getData())
-            dados.
-            dados.shiny = this.getView().byId("inputShiny").getSelected();
             console.log(dados)
             fetch(urlFetch, {
                 method: "POST",

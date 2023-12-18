@@ -23,7 +23,8 @@
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaDataCaptura}*" labelFor="inputDataCaptura"/>
                 <DatePicker id="inputDataCaptura" value="{pokemon>/dataDeCaptura}" placeholder="Data de captura" width="100%" displayFormat="short" valueFormat="dd.MM.yyyy"/>
 
-                <CheckBox id="inputShiny" class="sapUiSmallMarginTop" text="Shiny"/>
+                <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaShiny}*" labelFor="inputShiny"/>
+                <CheckBox id="inputShiny" selected="{pokemon>/shiny}" class="sapUiSmallMarginTop" text="Shiny"/>
             </FlexBox>
 
             <FlexBox direction="Column">
