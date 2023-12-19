@@ -41,7 +41,10 @@
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaFoto}" labelFor="inputFoto"/>
                     <u:FileUploader 
                         id="inputFoto"
-                        value="{pokemon>/foto}"
+                        value="{
+                            path: 'pokemon>/foto',
+                            formatter: '.formatter.converteUrlParaBase64'
+                        }"
                         multiple="false" 
                         uploadUrl="upload/"
                         tooltip="Upload your file to the local server"
