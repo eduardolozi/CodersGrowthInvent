@@ -21,6 +21,10 @@ sap.ui.define([
             const urlImagemIndefinida = "https://imgur.com/M2gmRB7.gif"
 
             return (foto) ? foto : urlImagemIndefinida;
+        },
+
+        converteUrlParaBase64(url) {
+            
         }
     }
 })

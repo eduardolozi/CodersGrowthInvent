@@ -16,16 +16,36 @@ sap.ui.define([
             this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
         },
 
-        _salvarPokemon() {
-            const urlFetch = "/pokemons"
-            const dados = JSON.stringify(this.getView().getModel(nomeModeloPokemon).getData())
-            console.log(dados)
+        _salvarPokemon(oEvent) {
+            const urlFetch = "/pokemons/"
+            const dados = this.getView().getModel(nomeModeloPokemon).getData();
+            const novoPokemon = {
+                nome: dados.nome,
+                apelido: dados.apelido,
+                nivel: parseInt(dados.nivel),
+                altura: parseFloat(dados.altura),
+                dataDeCaptura: dados.dataDeCaptura,
+                tipoPrincipal: parseInt(dados.tipoPrincipal),
+                tipoSecundario: (dados.tipoSecundario === undefined) ? null : parseInt(dados.tipoSecundario),
+                shiny: (dados.shiny === undefined) ? false : true,
+                foto: null
+            }
+
+            
+            console.log(novoPokemon)
             fetch(urlFetch, {
                 method: "POST",
+                body: JSON.stringify(novoPokemon),
+                headers: {"Content-type": "application/json; charset=UTF-8"}
             }).then(response => {
                 return response.json();
-            }).then(response => {
-                console.log(response)
+            }).then(data => {
+                const nomePaginaDeDetalhes = "detalhes";
+                const idPokemon = data.id;
+                const oRouter = this.getOwnerComponent().getRouter();
+                oRouter.navTo(nomePaginaDeDetalhes, {detalhesPath: idPokemon});
+            }).catch(error => {
+                console.log(error)
             })
         },
 
@@ -51,8 +71,7 @@ sap.ui.define([
                 emphasizedAction: sim,
                 onClose: (oAction) => {
                     if (oAction === sim) {
-                        this._salvarPokemon();
-                        this.aoClicarNoBotaoDeVoltar();
+                        this._salvarPokemon(oEvent);
                     } 
                 }
             });

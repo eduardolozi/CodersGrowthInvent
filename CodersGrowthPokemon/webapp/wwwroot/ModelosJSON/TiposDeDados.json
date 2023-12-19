@@ -2,71 +2,71 @@
     "TiposDosPokemons" : [
         {
             "nome": "Agua",
-            "indice": "0"
-        },
-        {
-            "nome": "Fogo",
             "indice": "1"
         },
         {
-            "nome": "Planta",
+            "nome": "Fogo",
             "indice": "2"
         },
         {
-            "nome": "Eletrico",
+            "nome": "Planta",
             "indice": "3"
         },
         {
-            "nome": "Gelo",
+            "nome": "Eletrico",
             "indice": "4"
         },
         {
-            "nome": "Lutador",
+            "nome": "Gelo",
             "indice": "5"
         },
         {
-            "nome": "Psiquico",
+            "nome": "Lutador",
             "indice": "6"
         },
         {
-            "nome": "Terra",
+            "nome": "Psiquico",
             "indice": "7"
         },
         {
-            "nome": "Voador",
+            "nome": "Terra",
             "indice": "8"
         },
         {
-            "nome": "Veneno",
+            "nome": "Voador",
             "indice": "9"
         },
         {
-            "nome": "Rocha",
+            "nome": "Veneno",
             "indice": "10"
         },
         {
-            "nome": "Inseto",
+            "nome": "Rocha",
             "indice": "11"
         },
         {
-            "nome": "Fantasma",
+            "nome": "Inseto",
             "indice": "12"
         },
         {
-            "nome": "Noturno",
+            "nome": "Fantasma",
             "indice": "13"
         },
         {
-            "nome": "Aco",
+            "nome": "Noturno",
             "indice": "14"
         },
         {
-            "nome": "Dragao",
+            "nome": "Aco",
             "indice": "15"
         },
         {
-            "nome": "Normal",
+            "nome": "Dragao",
             "indice": "16"
+        },
+        {
+            "nome": "Normal",
+            "indice": "17"
         }
     ]
 }

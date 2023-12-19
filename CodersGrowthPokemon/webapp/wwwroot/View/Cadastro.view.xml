@@ -21,20 +21,20 @@
                 <Input id="inputAltura" value="{pokemon>/altura}" width="100%" placeholder="Altura do Pokémon" maxLength="4" type="Number"/>
     
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaDataCaptura}*" labelFor="inputDataCaptura"/>
-                <DatePicker id="inputDataCaptura" value="{pokemon>/dataDeCaptura}" placeholder="Data de captura" width="100%" displayFormat="short" valueFormat="dd.MM.yyyy"/>
+                <DatePicker id="inputDataCaptura" value="{pokemon>/dataDeCaptura}" placeholder="Data de captura" width="100%" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-ddTHH:mm:ss.mmm"/>
 
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaShiny}*" labelFor="inputShiny"/>
-                <CheckBox id="inputShiny" selected="{pokemon>/shiny}" class="sapUiSmallMarginTop" text="Shiny"/>
+                <CheckBox id="inputShiny" selected="{pokemon>/shiny}" text="Shiny"/>
             </FlexBox>
 
             <FlexBox direction="Column">
                 <Label design="Bold" text="{i18n>colunaTipoPrincipal}*" labelFor="inputTipoPrincpial"/>
-                <ComboBox id="inputTipoPrincipal" value="{pokemon>/tipoPrincipal}" placeholder="Tipo principal" width="100%" items="{tiposDeDados>/TiposDosPokemons}">
+                <ComboBox id="inputTipoPrincipal" placeholder="Tipo principal" width="100%" items="{tiposDeDados>/TiposDosPokemons}" selectedKey="{pokemon>/tipoPrincipal}">
                     <core:ListItem key="{tiposDeDados>indice}" text="{tiposDeDados>nome}"/>
                 </ComboBox>
     
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaTipoSecundario}" labelFor="inputTipoSecundario"/>
-                <ComboBox id="inputTipoSecundario" value="{pokemon>/tipoSecundario}" placeholder="Tipo secundário" width="100%" items="{tiposDeDados>/TiposDosPokemons}">
+                <ComboBox id="inputTipoSecundario" placeholder="Tipo secundário" width="100%" items="{tiposDeDados>/TiposDosPokemons}" selectedKey="{pokemon>/tipoSecundario}">
                     <core:ListItem key="{tiposDeDados>indice}" text="{tiposDeDados>nome}"/>
                 </ComboBox>
     
