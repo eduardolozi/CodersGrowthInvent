@@ -88,6 +88,10 @@ namespace Dominio.Validacoes{
             var gif = Encoding.ASCII.GetBytes("GIF");
             var png = new byte[] { 137, 80, 78, 71 };
             var jpeg = new byte[] { 255, 216, 255, 224 };
+
+            if (foto.Contains("http")) foto = foto.Substring(23);
+            if (foto.Contains("https")) foto = foto.Substring(24);
+
             byte[] imagemEmBytes = Convert.FromBase64String(foto);
 
             if (!bmp.SequenceEqual(imagemEmBytes.Take(bmp.Length)) && !gif.SequenceEqual(imagemEmBytes.Take(gif.Length)) && !png.SequenceEqual(imagemEmBytes.Take(png.Length)) && !jpeg.SequenceEqual(imagemEmBytes.Take(jpeg.Length)))

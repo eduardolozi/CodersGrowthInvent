@@ -39,21 +39,19 @@
                 </ComboBox>
     
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaFoto}" labelFor="inputFoto"/>
-                    <u:FileUploader 
-                        id="inputFoto"
-                        value="{
-                            path: 'pokemon>/foto',
-                            formatter: '.formatter.converteUrlParaBase64'
-                        }"
-                        multiple="false" 
-                        uploadUrl="upload/"
-                        tooltip="Upload your file to the local server"
-                        icon="sap-icon://add-photo" 
-                        uploadOnChange="false" 
-                        sendXHR="true" 
-                        useMultipart="false" 
-                        fileType="JPG,JPEG,jpeg,jpg,PNG,png"
-                    />
+                <u:FileUploader 
+                id="inputFoto"
+                multiple="false" 
+                uploadUrl="upload/"
+                value="{pokemon>/foto}"
+                tooltip="Upload your file to the local server"
+                icon="sap-icon://add-photo" 
+                uploadOnChange="false" 
+                change="aoCarregarImagem"
+                sendXHR="true" 
+                useMultipart="false" 
+                fileType="JPG,JPEG,jpeg,jpg,PNG,png"
+                />
             </FlexBox>
         </FlexBox>
         

@@ -18,20 +18,18 @@ sap.ui.define([
 
         _salvarPokemon(oEvent) {
             const urlFetch = "/pokemons/"
-            const dados = this.getView().getModel(nomeModeloPokemon).getData();
             const novoPokemon = {
-                nome: dados.nome,
-                apelido: dados.apelido,
-                nivel: parseInt(dados.nivel),
-                altura: parseFloat(dados.altura),
-                dataDeCaptura: dados.dataDeCaptura,
-                tipoPrincipal: parseInt(dados.tipoPrincipal),
-                tipoSecundario: (dados.tipoSecundario === undefined) ? null : parseInt(dados.tipoSecundario),
-                shiny: (dados.shiny === undefined) ? false : true,
-                foto: null
+                nome: this.getView().getModel(nomeModeloPokemon).getProperty("/nome"),
+                apelido: this.getView().getModel(nomeModeloPokemon).getProperty("/apelido"),
+                nivel: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty("/nivel")),
+                altura: parseFloat(this.getView().getModel(nomeModeloPokemon).getProperty("/altura")),
+                dataDeCaptura: this.getView().getModel(nomeModeloPokemon).getProperty("/dataDeCaptura"),
+                tipoPrincipal: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty("/tipoPrincipal")),
+                tipoSecundario: (this.getView().getModel(nomeModeloPokemon).getProperty("/tipoSecundario") === undefined) ? null : parseInt(this.getView().getModel(nomeModeloPokemon).getProperty("/tipoSecundario")),
+                shiny: (this.getView().getModel(nomeModeloPokemon).getProperty("/shiny") === undefined) ? false : true,
+                foto: (this.getView().getModel(nomeModeloPokemon).getProperty("/foto") === undefined) ? null : this.getView().byId("inputFoto").getValue()
             }
 
-            
             console.log(novoPokemon)
             fetch(urlFetch, {
                 method: "POST",
@@ -89,7 +87,22 @@ sap.ui.define([
                     } 
                 }
             });
-        }
+        },
 
+        aoCarregarImagem(oEvent) {
+            var arquivo = oEvent.getParameters("files").files[0];
+            var leitor = new FileReader();
+            leitor.readAsArrayBuffer(arquivo);
+            leitor.onload = (evt) => {
+                const arrayDeBytes = new Uint8Array(evt.target.result);
+                let stringBinaria = '';
+                for (let i = 0; i < arrayDeBytes.byteLength; i++) {
+                    stringBinaria += String.fromCharCode(arrayDeBytes[i]);
+                }
+                let base64 = window.btoa( stringBinaria );
+                this.getView().byId("inputFoto").setValue(base64);
+                this.getView().byId("fotoDoPokemon").setSrc(base64);
+            }
+        }
     });
 })
