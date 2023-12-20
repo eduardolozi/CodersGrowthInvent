@@ -49,7 +49,7 @@ namespace Infraestrutura.Repositorios
             }
         }
 
-        public void Criar(Pokemon novoPokemon)
+        public int Criar(Pokemon novoPokemon)
         {
             string textoComando = "INSERT INTO pokemons (nome, apelido, nivel, altura, shiny, data_de_captura, tipo_principal, tipo_secundario, foto)" +
                                   "VALUES (@nome, @apelido, @nivel, @altura, @shiny, @dataCaptura, @tipoPrincipal, @tipoSecundario, @foto)";
@@ -76,6 +76,8 @@ namespace Infraestrutura.Repositorios
                     throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_CRIACAO);
                 }
                 finally { conexao.Close(); }
+
+                return 1;
             }
         }
 

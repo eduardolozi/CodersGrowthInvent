@@ -29,10 +29,11 @@ namespace Infraestrutura.Repositorios
             listaDePokemons.Remove(pokemon);
         }
 
-        public void Criar(Pokemon pokemon)
+        public int Criar(Pokemon pokemon)
         {
             pokemon.Id = ListaSingleton.GeraId();
             listaDePokemons.Add(pokemon);
+            return pokemon.Id;
         }
 
         public void Atualizar(Pokemon pokemon)

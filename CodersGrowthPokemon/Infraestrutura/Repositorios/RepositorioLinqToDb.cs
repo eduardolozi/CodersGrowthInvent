@@ -61,7 +61,7 @@ namespace Infraestrutura.Repositorios
             }
         }
 
-        public void Criar(Pokemon novoPokemon)
+        public int Criar(Pokemon novoPokemon)
         {
             try
             {
@@ -74,6 +74,9 @@ namespace Infraestrutura.Repositorios
             {
                 throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_CRIACAO);
             }
+            return (from p in ObterTodos()
+                    where p.Nome == novoPokemon.Nome
+                    select p.Id).Last();
         }
 
         public void Atualizar(Pokemon pokemon)

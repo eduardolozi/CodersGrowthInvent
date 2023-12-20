@@ -51,7 +51,6 @@ namespace webapp.wwwroot.Controllers
         [HttpPost]
         public IActionResult Criar([FromBody]Pokemon pokemon)
         {
-
             try
             {
                 ValidationResult resultado = _validacao.Validate(pokemon);
@@ -60,8 +59,10 @@ namespace webapp.wwwroot.Controllers
                     var mensagemDeErro = resultado.ToString();
                     throw new Exception(mensagemDeErro);
                 }
-                _repositorio.Criar(pokemon);
-                return Created(pokemon.Id.ToString(), pokemon);
+                var idPokemon = _repositorio.Criar(pokemon);
+                pokemon.Id = idPokemon;
+                string uri = $"/pokemons/{pokemon.Id}";
+                return Created(uri, pokemon);
             }
             catch (Exception e)
             {

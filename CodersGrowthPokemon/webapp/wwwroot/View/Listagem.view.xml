@@ -1,7 +1,5 @@
-<mvc:View
-    controllerName="webapp.Controller.Listagem"
-    xmlns="sap.m"
-    displayBlock="true"
+<mvc:View controllerName="webapp.Controller.Listagem"
+    xmlns="sap.m" displayBlock="true"
     xmlns:mvc="sap.ui.core.mvc">
     <App id="app">
         <ScrollContainer height="100%" width="100%" vertical="true">
@@ -12,7 +10,7 @@
                         <ToolbarSeparator/>
                         <ToolbarSpacer/>
                         <SearchField width="30%" search=".aoFiltrarPokemons"/>
-                        <Button type="Emphasized" icon="sap-icon://add" text="{i18n>textoBotaoAdicionar}"/>
+                        <Button type="Emphasized" icon="sap-icon://add" text="{i18n>textoBotaoAdicionar}" press="aoClicarNoBotaoAdicionar"/>
                     </Toolbar>
                 </headerToolbar>
                 <columns>
@@ -77,8 +75,7 @@
                             <Text text="{
                                 path: 'pokemons>tipoSecundario',
                                 formatter: '.formatter.formataTipo'
-                            }"
-                            />
+                            }" />
                         </cells>
                     </ColumnListItem>
                 </items>
