@@ -8,7 +8,10 @@ sap.ui.define([
     "use strict"
     const sim = "Sim";
     const nao = "Não";
-    const nomeModeloPokemon = "pokemon"
+    const nomeModeloPokemon = "pokemon";
+    const idInputFoto = "inputFoto";
+
+
     return Controller.extend("webapp.Controller.Cadastro", {
         formatter: formatter,
 
@@ -17,20 +20,29 @@ sap.ui.define([
         },
 
         _salvarPokemon(oEvent) {
-            const urlFetch = "/pokemons/"
+            const urlFetch = "/pokemons/";
+            const campoNome = "/nome";
+            const campoApelido = "/apelido";
+            const campoNivel = "/nivel";
+            const campoAltura = "/altura";
+            const campoDataDeCaptura = "/dataDeCaptura";
+            const campoTipoPrincipal = "/tipoPrincipal";
+            const campoTipoSecundario = "/tipoSecundario";
+            const campoShiny = "/shiny";
+            const campoFoto = "/foto";
+
             const novoPokemon = {
-                nome: this.getView().getModel(nomeModeloPokemon).getProperty("/nome"),
-                apelido: this.getView().getModel(nomeModeloPokemon).getProperty("/apelido"),
-                nivel: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty("/nivel")),
-                altura: parseFloat(this.getView().getModel(nomeModeloPokemon).getProperty("/altura")),
-                dataDeCaptura: this.getView().getModel(nomeModeloPokemon).getProperty("/dataDeCaptura"),
-                tipoPrincipal: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty("/tipoPrincipal")),
-                tipoSecundario: (this.getView().getModel(nomeModeloPokemon).getProperty("/tipoSecundario") === undefined) ? null : parseInt(this.getView().getModel(nomeModeloPokemon).getProperty("/tipoSecundario")),
-                shiny: (this.getView().getModel(nomeModeloPokemon).getProperty("/shiny") === undefined) ? false : true,
-                foto: (this.getView().getModel(nomeModeloPokemon).getProperty("/foto") === undefined) ? null : this.getView().byId("inputFoto").getValue()
+                nome: this.getView().getModel(nomeModeloPokemon).getProperty(campoNome),
+                apelido: this.getView().getModel(nomeModeloPokemon).getProperty(campoApelido),
+                nivel: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoNivel)),
+                altura: parseFloat(this.getView().getModel(nomeModeloPokemon).getProperty(campoAltura)),
+                dataDeCaptura: this.getView().getModel(nomeModeloPokemon).getProperty(campoDataDeCaptura),
+                tipoPrincipal: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoPrincipal)),
+                tipoSecundario: (this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario) === undefined) ? null : parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario)),
+                shiny: (this.getView().getModel(nomeModeloPokemon).getProperty(campoShiny) === undefined) ? false : true,
+                foto: (this.getView().getModel(nomeModeloPokemon).getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
             }
 
-            console.log(novoPokemon)
             fetch(urlFetch, {
                 method: "POST",
                 body: JSON.stringify(novoPokemon),
@@ -49,11 +61,11 @@ sap.ui.define([
 
         aoClicarNoBotaoDeVoltar(oEvent) {
             const paginaDeListagem = "listagem";
-            const oHistory = History.getInstance();
-			const sPreviousHash = oHistory.getPreviousHash();
+            const historico = History.getInstance();
+			const hashAnterior = historico.getPreviousHash();
             const paginaAnteriorNoHistorico = -1;
 
-            if (sPreviousHash !== undefined) {
+            if (hashAnterior !== undefined) {
 				window.history.go(paginaAnteriorNoHistorico);
 			} else {
 				const oRouter = this.getOwnerComponent().getRouter();
@@ -67,8 +79,8 @@ sap.ui.define([
             MessageBox.information(mensagemAoClicarEmSalvar, {
                 actions: [sim, nao],
                 emphasizedAction: sim,
-                onClose: (oAction) => {
-                    if (oAction === sim) {
+                onClose: (acao) => {
+                    if (acao === sim) {
                         this._salvarPokemon(oEvent);
                     } 
                 }
@@ -81,8 +93,8 @@ sap.ui.define([
             MessageBox.alert(mensagemAoClicarEmCancelar, {
                 actions: [sim, nao],
                 emphasizedAction: sim,
-                onClose: (oAction) => {
-                    if (oAction === sim) {
+                onClose: (acao) => {
+                    if (acao === sim) {
                         this.aoClicarNoBotaoDeVoltar();
                     } 
                 }
@@ -90,18 +102,24 @@ sap.ui.define([
         },
 
         aoCarregarImagem(oEvent) {
-            var arquivo = oEvent.getParameters("files").files[0];
+            const posicaoDoArquivo = 0;
+            const idDoDisplayDaFoto = "fotoDoPokemon";
+            const parametroDeArquivos = "files";
+
+            var arquivo = oEvent.getParameters(parametroDeArquivos).files[posicaoDoArquivo];
             var leitor = new FileReader();
             leitor.readAsArrayBuffer(arquivo);
+
             leitor.onload = (evt) => {
                 const arrayDeBytes = new Uint8Array(evt.target.result);
                 let stringBinaria = '';
                 for (let i = 0; i < arrayDeBytes.byteLength; i++) {
                     stringBinaria += String.fromCharCode(arrayDeBytes[i]);
                 }
+
                 let base64 = window.btoa( stringBinaria );
-                this.getView().byId("inputFoto").setValue(base64);
-                this.getView().byId("fotoDoPokemon").setSrc(base64);
+                this.getView().byId(idInputFoto).setValue(base64);
+                this.getView().byId(idDoDisplayDaFoto).setSrc(base64);
             }
         }
     });

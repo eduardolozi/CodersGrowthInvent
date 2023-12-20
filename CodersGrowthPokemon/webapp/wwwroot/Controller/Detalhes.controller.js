@@ -11,9 +11,9 @@ sap.ui.define([
 
         onInit() {
             const rotaDetalhes = "detalhes";
-            const oRouter = this.getOwnerComponent().getRouter();
+            const roteador = this.getOwnerComponent().getRouter();
 
-			oRouter.getRoute(rotaDetalhes).attachPatternMatched(this.noObjetoCorrespondente, this);
+			roteador.getRoute(rotaDetalhes).attachPatternMatched(this.noObjetoCorrespondente, this);
         },
 
         noObjetoCorrespondente(oEvent) {
@@ -38,8 +38,8 @@ sap.ui.define([
                 }
                 this.getView().setModel(new JSONModel(response), nomeModeloPokemon);
             })
-            .catch(error => {
-                console.log(error);
+            .catch(erro => {
+                console.log(erro);
             })
         },
 
@@ -65,15 +65,15 @@ sap.ui.define([
 
         aoClicarBotaoVoltar() {
             const paginaDeListagem = "listagem";
-            const oHistory = History.getInstance();
-			const sPreviousHash = oHistory.getPreviousHash();
+            const historico = History.getInstance();
+			const hashAnterior = historico.getPreviousHash();
             const paginaAnteriorNoHistorico = -1;
 
-            if (sPreviousHash !== undefined) {
+            if (hashAnterior !== undefined) {
 				window.history.go(paginaAnteriorNoHistorico);
 			} else {
-				const oRouter = this.getOwnerComponent().getRouter();
-				oRouter.navTo(paginaDeListagem, {}, true);
+				const roteador = this.getOwnerComponent().getRouter();
+				roteador.navTo(paginaDeListagem, {}, true);
 			}
         },
 
@@ -83,7 +83,7 @@ sap.ui.define([
             this.pDialog ??= this.loadFragment({
                 name: caminhoCardPokemon
             });
-            this.pDialog.then((oDialog) => oDialog.open());
+            this.pDialog.then((card) => card.open());
         },
 
         aoFecharDialog() {

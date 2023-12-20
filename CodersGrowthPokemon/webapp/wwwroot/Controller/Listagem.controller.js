@@ -16,24 +16,24 @@ sap.ui.define([
 
         _carregarPokemons() {
             const urlApi = "/pokemons";
-
             fetch(urlApi)
                 .then(response => {
                     return response.json();
                 })
                 .then(response => {
                     const pokemonsResponse = Object.entries(response)
-                    for(let i=0;i<pokemonsResponse.length;i++) {
-                        if(pokemonsResponse[i][1].foto != null) {
-                            let blob = this._converteBase64ParaBlob(pokemonsResponse[i][1].foto);
-                            pokemonsResponse[i][1].foto = URL.createObjectURL(blob);
+                    const dados = 1;
+
+                    for(let posicao = 0; posicao < pokemonsResponse.length; posicao++) {
+                        if(pokemonsResponse[posicao][dados].foto != null) {
+                            let blob = this._converteBase64ParaBlob(pokemonsResponse[posicao][dados].foto);
+                            pokemonsResponse[posicao][dados].foto = URL.createObjectURL(blob);
                         }
                     }
-                    
                     this.getView().setModel(new JSONModel(response), nomeModeloPokemons);
                 })
-                .catch(error => {
-                    console.log(error);
+                .catch(erro => {
+                    console.log(erro);
                 });
         },
 
@@ -77,18 +77,18 @@ sap.ui.define([
             const nomeParametroId = "id";
             const nomePaginaDeDetalhes = "detalhes";
 
-            const oItem = oEvent.getSource();
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo(nomePaginaDeDetalhes, {
-                detalhesPath: window.encodeURIComponent(oItem.getBindingContext(nomeModeloPokemons).getProperty(nomeParametroId))
+            const items = oEvent.getSource();
+            const roteador = this.getOwnerComponent().getRouter();
+            roteador.navTo(nomePaginaDeDetalhes, {
+                detalhesPath: window.encodeURIComponent(items.getBindingContext(nomeModeloPokemons).getProperty(nomeParametroId))
             })
         },
 
         aoClicarNoBotaoAdicionar(oEvent) {
             const nomePaginaDeCadastro = "cadastro";
 
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo(nomePaginaDeCadastro, {})
+            const roteador = this.getOwnerComponent().getRouter();
+            roteador.navTo(nomePaginaDeCadastro, {})
         }
 
     });
