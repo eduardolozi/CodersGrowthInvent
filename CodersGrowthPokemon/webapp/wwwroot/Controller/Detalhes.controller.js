@@ -16,10 +16,10 @@ sap.ui.define([
 			roteador.getRoute(rotaDetalhes).attachPatternMatched(this.noObjetoCorrespondente, this);
         },
 
-        noObjetoCorrespondente(oEvent) {
+        noObjetoCorrespondente(evento) {
             const argumentos = "arguments";
 
-            let indice = window.decodeURIComponent(oEvent.getParameter(argumentos).detalhesPath)
+            let indice = window.decodeURIComponent(evento.getParameter(argumentos).detalhesPath)
             this._carregarPokemon(indice)
         },
 
@@ -77,7 +77,7 @@ sap.ui.define([
 			}
         },
 
-        aoClicarBotaoVerCard(oEvent) {
+        aoClicarBotaoVerCard(evento) {
             const caminhoCardPokemon = "webapp.View.CardPokemon";
 
             this.pDialog ??= this.loadFragment({

@@ -57,34 +57,34 @@ sap.ui.define([
             return blob;
         },
 
-        aoFiltrarPokemons(oEvent) {
+        aoFiltrarPokemons(evento) {
             const idListaDePokemons = "listaDePokemons";
             const itensDaLista = "items";
             const campoNome = "nome";
             const parametroParaConsulta = "query";
 
-            const aFilter = [];
-            const sQuery = oEvent.getParameter(parametroParaConsulta);
-            if (sQuery) {
-                aFilter.push(new Filter(campoNome, FilterOperator.Contains, sQuery));
+            const filtros = [];
+            const consulta = evento.getParameter(parametroParaConsulta);
+            if (consulta) {
+                filtros.push(new Filter(campoNome, FilterOperator.Contains, consulta));
             }
             const oList = this.byId(idListaDePokemons);
             const oBinding = oList.getBinding(itensDaLista);
-            oBinding.filter(aFilter);
+            oBinding.filter(filtros);
         },
 
-        aoClicarEmUmaLinhaDaTabela(oEvent) {
+        aoClicarEmUmaLinhaDaTabela(evento) {
             const nomeParametroId = "id";
             const nomePaginaDeDetalhes = "detalhes";
 
-            const items = oEvent.getSource();
+            const items = evento.getSource();
             const roteador = this.getOwnerComponent().getRouter();
             roteador.navTo(nomePaginaDeDetalhes, {
                 detalhesPath: window.encodeURIComponent(items.getBindingContext(nomeModeloPokemons).getProperty(nomeParametroId))
             })
         },
 
-        aoClicarNoBotaoAdicionar(oEvent) {
+        aoClicarNoBotaoAdicionar(evento) {
             const nomePaginaDeCadastro = "cadastro";
 
             const roteador = this.getOwnerComponent().getRouter();

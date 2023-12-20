@@ -3,33 +3,35 @@ sap.ui.define([
     "../model/formatter",
     "sap/ui/core/routing/History",
     "sap/m/MessageBox",
-    "sap/ui/model/json/JSONModel"
-], (Controller, formatter, History, MessageBox, JSONModel) => {
+    "sap/ui/model/json/JSONModel", 
+    "../Services/Validacoes"
+], (Controller, formatter, History, MessageBox, JSONModel, Validacoes) => {
     "use strict"
     const sim = "Sim";
     const nao = "Não";
     const nomeModeloPokemon = "pokemon";
     const idInputFoto = "inputFoto";
+    const campoNome = "/nome";
+    const campoApelido = "/apelido";
+    const campoNivel = "/nivel";
+    const campoAltura = "/altura";
+    const campoDataDeCaptura = "/dataDeCaptura";
+    const campoTipoPrincipal = "/tipoPrincipal";
+    const campoTipoSecundario = "/tipoSecundario";
+    const campoShiny = "/shiny";
+    const campoFoto = "/foto";
 
 
     return Controller.extend("webapp.Controller.Cadastro", {
         formatter: formatter,
+        Validacoes: Validacoes,
 
         onInit() {
             this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
         },
 
-        _salvarPokemon(oEvent) {
+        _salvarPokemon(evento) {
             const urlFetch = "/pokemons/";
-            const campoNome = "/nome";
-            const campoApelido = "/apelido";
-            const campoNivel = "/nivel";
-            const campoAltura = "/altura";
-            const campoDataDeCaptura = "/dataDeCaptura";
-            const campoTipoPrincipal = "/tipoPrincipal";
-            const campoTipoSecundario = "/tipoSecundario";
-            const campoShiny = "/shiny";
-            const campoFoto = "/foto";
 
             const novoPokemon = {
                 nome: this.getView().getModel(nomeModeloPokemon).getProperty(campoNome),
@@ -59,7 +61,7 @@ sap.ui.define([
             })
         },
 
-        aoClicarNoBotaoDeVoltar(oEvent) {
+        aoClicarNoBotaoDeVoltar(evento) {
             const paginaDeListagem = "listagem";
             const historico = History.getInstance();
 			const hashAnterior = historico.getPreviousHash();
@@ -73,21 +75,23 @@ sap.ui.define([
 			}
         },
 
-        aoClicarNoBotaoDeSalvar(oEvent) {
+        aoClicarNoBotaoDeSalvar(evento) {
             const mensagemAoClicarEmSalvar = "Salvar o Pokémon criado?";
-
+            
             MessageBox.information(mensagemAoClicarEmSalvar, {
                 actions: [sim, nao],
                 emphasizedAction: sim,
                 onClose: (acao) => {
                     if (acao === sim) {
-                        this._salvarPokemon(oEvent);
+                        const i18n = this.getView().getModel("i18n").getResourceBundle();
+                        Validacoes.validaNome(i18n)
+                        this._salvarPokemon(evento);
                     } 
                 }
             });
         },
 
-        aoClicarNoBotaoDeCancelar(oEvent) {
+        aoClicarNoBotaoDeCancelar(evento) {
             const mensagemAoClicarEmCancelar = "Cancelar a criação do Pokémon?"
 
             MessageBox.alert(mensagemAoClicarEmCancelar, {
@@ -101,12 +105,12 @@ sap.ui.define([
             });
         },
 
-        aoCarregarImagem(oEvent) {
+        aoCarregarImagem(evento) {
             const posicaoDoArquivo = 0;
             const idDoDisplayDaFoto = "fotoDoPokemon";
             const parametroDeArquivos = "files";
 
-            var arquivo = oEvent.getParameters(parametroDeArquivos).files[posicaoDoArquivo];
+            var arquivo = evento.getParameters(parametroDeArquivos).files[posicaoDoArquivo];
             var leitor = new FileReader();
             leitor.readAsArrayBuffer(arquivo);
 
@@ -121,6 +125,10 @@ sap.ui.define([
                 this.getView().byId(idInputFoto).setValue(base64);
                 this.getView().byId(idDoDisplayDaFoto).setSrc(base64);
             }
+        },
+
+        aoAlterarCampoNome(evento) {
+
         }
     });
 })
