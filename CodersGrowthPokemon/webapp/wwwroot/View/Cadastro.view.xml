@@ -9,32 +9,36 @@
         <FlexBox direction="Row" class="sapUiLargeMarginTop sapUiLargeMarginBegin">
             <FlexBox direction="Column" class="sapUiLargeMarginEnd">
                 <Label design="Bold" text="{i18n>colunaNome}*" labelFor="inputNome"/>
-                <Input id="inputNome" value="{pokemon>/nome}" width="100%" placeholder="Nome do Pokémon" maxLength="11" type="Text" onChange=".aoAlterarCampoNome"/>
+                <Input id="inputNome" value="{pokemon>/nome}" width="100%" placeholder="Nome do Pokémon" maxLength="11" type="Text" liveChange=".aoAlterarCampoNome"/>
     
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaApelido}*" labelFor="inputApelido" />
-                <Input id="inputApelido" value="{pokemon>/apelido}" width="100%" placeholder="Apelido do Pokémon" maxLength="11" type="Text" onChange=".aoAlterarCampoApelido"/>
+                <Input id="inputApelido" value="{pokemon>/apelido}" width="100%" placeholder="Apelido do Pokémon" maxLength="11" type="Text" liveChange=".aoAlterarCampoApelido"/>
     
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaNivel}*" labelFor="inputNivel"/>
-                <Input id="inputNivel" value="{pokemon>/nivel}" width="100%" placeholder="Nivel do Pokémon" maxLength="3" type="Number" onChange=".aoAlterarCampoNivel"/>
+                <Input id="inputNivel" value="{pokemon>/nivel}" width="100%" placeholder="Nível (apenas digitos)" maxLength="3" type="Text" liveChange=".aoAlterarCampoNivel"/>
     
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaAltura}*" labelFor="inputAltura" />
-                <Input id="inputAltura" value="{pokemon>/altura}" width="100%" placeholder="Altura do Pokémon" maxLength="4" type="Number" onChange=".aoAlterarCampoAltura"/>
+                <MaskInput id="inputAltura" mask="9.99" placeHolderSymbol="_" placeholder="Altura (apenas dígitos)" liveChange=".aoAlterarCampoAltura">
+                    <rules>
+						<MaskInputRule/>
+					</rules>
+                </MaskInput>
     
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaDataCaptura}*" labelFor="inputDataCaptura" />
-                <DatePicker id="inputDataCaptura" value="{pokemon>/dataDeCaptura}" placeholder="Data de captura" width="100%" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-ddTHH:mm:ss.mmm" onChange=".aoAlterarCampoDataDeCaptura"/>
+                <DatePicker id="inputDataCaptura" value="{pokemon>/dataDeCaptura}" placeholder="Data de captura" width="100%" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-ddTHH:mm:ss.mmm" liveChange=".aoAlterarCampoDataDeCaptura"/>
 
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaShiny}*" labelFor="inputShiny" />
-                <CheckBox id="inputShiny" selected="{pokemon>/shiny}" text="Shiny" onChange=".aoAlterarCampoShiny"/>
+                <CheckBox id="inputShiny" selected="{pokemon>/shiny}" text="Shiny"/>
             </FlexBox>
 
             <FlexBox direction="Column">
                 <Label design="Bold" text="{i18n>colunaTipoPrincipal}*" labelFor="inputTipoPrincpial" />
-                <ComboBox id="inputTipoPrincipal" placeholder="Tipo principal" width="100%" items="{tiposDeDados>/TiposDosPokemons}" selectedKey="{pokemon>/tipoPrincipal}" onChange=".aoAlterarCampoTipoPrincipal">
+                <ComboBox id="inputTipoPrincipal" placeholder="Tipo principal" width="100%" items="{tiposDeDados>/TiposDosPokemons}" selectedKey="{pokemon>/tipoPrincipal}" liveChange=".aoAlterarCampoTipoPrincipal">
                     <core:ListItem key="{tiposDeDados>indice}" text="{tiposDeDados>nome}"/>
                 </ComboBox>
     
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaTipoSecundario}" labelFor="inputTipoSecundario" />
-                <ComboBox id="inputTipoSecundario" placeholder="Tipo secundário" width="100%" items="{tiposDeDados>/TiposDosPokemons}" selectedKey="{pokemon>/tipoSecundario}" onChange=".aoAlterarCampoSecundario">
+                <ComboBox id="inputTipoSecundario" placeholder="Tipo secundário" width="100%" items="{tiposDeDados>/TiposDosPokemons}" selectedKey="{pokemon>/tipoSecundario}" liveChange=".aoAlterarCampoSecundario">
                     <core:ListItem key="{tiposDeDados>indice}" text="{tiposDeDados>nome}"/>
                 </ComboBox>
     
@@ -47,12 +51,11 @@
                     value="{pokemon>/foto}"
                     tooltip="Upload your file to the local server"
                     icon="sap-icon://add-photo" 
-                    uploadOnChange="false" 
+                    uploadliveChange="false" 
                     change="aoCarregarImagem"
                     sendXHR="true" 
                     useMultipart="false" 
                     fileType="JPG,JPEG,jpeg,jpg,PNG,png"
-                    onChange=".aoAlterarCampoFoto"
                     />
                     <Image src="data:image/png;base64,{pokemon>/foto}" width="80px" height="80px"/>
                 </FlexBox>

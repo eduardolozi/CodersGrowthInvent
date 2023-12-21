@@ -21,40 +21,11 @@ sap.ui.define([
                     return response.json();
                 })
                 .then(response => {
-                    const pokemonsResponse = Object.entries(response)
-                    const dados = 1;
-
-                    for(let posicao = 0; posicao < pokemonsResponse.length; posicao++) {
-                        if(pokemonsResponse[posicao][dados].foto != null) {
-                            let blob = this._converteBase64ParaBlob(pokemonsResponse[posicao][dados].foto);
-                            pokemonsResponse[posicao][dados].foto = URL.createObjectURL(blob);
-                        }
-                    }
                     this.getView().setModel(new JSONModel(response), nomeModeloPokemons);
                 })
                 .catch(erro => {
                     console.log(erro);
                 });
-        },
-
-        _converteBase64ParaBlob(stringBase64, tipoConteudo='', tamanhoDoPedaco=512) {
-            const caracteresEmBytes = atob(stringBase64);
-            const bytesArquivo = [];
-          
-            for (let offset = 0; offset < caracteresEmBytes.length; offset += tamanhoDoPedaco) {
-              const pedaco = caracteresEmBytes.slice(offset, offset + tamanhoDoPedaco);
-          
-              const numerosDosBytes = new Array(pedaco.length);
-              for (let i = 0; i < pedaco.length; i++) {
-                numerosDosBytes[i] = pedaco.charCodeAt(i);
-              }
-          
-              const byteArray = new Uint8Array(numerosDosBytes);
-              bytesArquivo.push(byteArray);
-            }
-          
-            const blob = new Blob(bytesArquivo, {type: tipoConteudo});
-            return blob;
         },
 
         aoFiltrarPokemons(evento) {

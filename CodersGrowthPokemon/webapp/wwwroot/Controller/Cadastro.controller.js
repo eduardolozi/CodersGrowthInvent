@@ -4,7 +4,7 @@ sap.ui.define([
     "sap/ui/core/routing/History",
     "sap/m/MessageBox",
     "sap/ui/model/json/JSONModel", 
-    "../Services/Validacoes"
+    "../Services/Validacoes",
 ], (Controller, formatter, History, MessageBox, JSONModel, Validacoes) => {
     "use strict"
     const sim = "Sim";
@@ -20,6 +20,7 @@ sap.ui.define([
     const campoTipoSecundario = "/tipoSecundario";
     const campoShiny = "/shiny";
     const campoFoto = "/foto";
+    // const i18n = this.getView().getModel("i18n").getResourceBundle();
 
 
     return Controller.extend("webapp.Controller.Cadastro", {
@@ -73,6 +74,7 @@ sap.ui.define([
 				const oRouter = this.getOwnerComponent().getRouter();
 				oRouter.navTo(paginaDeListagem, {}, true);
 			}
+            
         },
 
         aoClicarNoBotaoDeSalvar(evento) {
@@ -83,8 +85,6 @@ sap.ui.define([
                 emphasizedAction: sim,
                 onClose: (acao) => {
                     if (acao === sim) {
-                        const i18n = this.getView().getModel("i18n").getResourceBundle();
-                        Validacoes.validaNome(i18n)
                         this._salvarPokemon(evento);
                     } 
                 }
@@ -127,8 +127,29 @@ sap.ui.define([
             }
         },
 
-        aoAlterarCampoNome(evento) {
+        aoAlterarCampoNome(evento) {    
+            Validacoes.validaNome(evento)
+        },
 
+        aoAlterarCampoApelido(evento) {
+            Validacoes.validaApelido(evento)
+        },
+        aoAlterarCampoNivel(evento) {
+            Validacoes.validaNivel(evento)
+        },
+        aoAlterarCampoAltura(evento) {
+            Validacoes.validaAltura(evento)
+        },
+        aoAlterarCampoDataDeCaptura(evento) {
+            Validacoes.validarDataDeCaptura(evento)
+        },
+        aoAlterarCampoTipoPrincipal(evento) {
+            let novoValor = evento.getParameters("value");
+            evento.getSource().setValueState("Error");
+        },
+        aoAlterarCampoSecundario(evento) {
+            let novoValor = evento.getParameters("value");
+            evento.getSource().setValueState("Error");
         }
     });
 })

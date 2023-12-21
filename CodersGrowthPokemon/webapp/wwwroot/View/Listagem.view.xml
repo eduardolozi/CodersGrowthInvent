@@ -49,7 +49,7 @@
                                 <Image src="{
                                     path: 'pokemons>foto',
                                     formatter: '.formatter.formataImagem'
-                                }"/>
+                                }" width="80px" height="80px"/>
                             </FlexBox>
                             <Text text="{pokemons>nome}"/>
                             <Text text="{pokemons>apelido}"/>

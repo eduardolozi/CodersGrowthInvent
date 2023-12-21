@@ -42,9 +42,9 @@ namespace webapp.wwwroot.Controllers
                 var pokemon = _repositorio.ObterPorId(id);
                 return Ok(pokemon);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(ex.Message);
             }
         }
 

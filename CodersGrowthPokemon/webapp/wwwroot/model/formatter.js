@@ -18,9 +18,9 @@ sap.ui.define([
         },
 
         formataImagem(foto) {
+            const cabecalhoImagem = "data:image/png;base64,";
             const urlImagemIndefinida = "https://imgur.com/M2gmRB7.gif"
-
-            return (foto) ? foto : urlImagemIndefinida;
+            return (foto ? (cabecalhoImagem + foto) : urlImagemIndefinida)
         }
     }
 })

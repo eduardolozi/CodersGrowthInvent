@@ -42,7 +42,7 @@ namespace Infraestrutura.Repositorios
             }
             catch (Exception)
             {
-                throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_OBTER_POR_ID);
+                throw new Exception(string.Format(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_OBTER_POR_ID, id));
             }
         }
 

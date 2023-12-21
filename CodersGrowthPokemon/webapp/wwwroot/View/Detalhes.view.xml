@@ -20,10 +20,7 @@
         <VBox class="sapUiLargeMarginBegin sapUiLargeMarginTop">
             <Title text="{detalhePokemon>/nome}" level="H3"/>
             <FlexBox class="sapUiTinyMarginTop">
-                <Image src="{
-                        path: 'detalhePokemon>/foto',
-                        formatter: '.formatter.formataImagem'
-                    }"/>
+                <Image src="{detalhePokemon>/foto}" width="80px" height="80px"/>
             </FlexBox>
             <FlexBox direction="Column">
                 <Label design="Bold" text="{i18n>colunaApelido} : {detalhePokemon>/apelido}" />
