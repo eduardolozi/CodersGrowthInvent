@@ -55,7 +55,7 @@ sap.ui.define([
             })
         },
 
-        aoClicarNoBotaoAdicionar(evento) {
+        aoClicarNoBotaoAdicionar() {
             const nomePaginaDeCadastro = "cadastro";
 
             const roteador = this.getOwnerComponent().getRouter();

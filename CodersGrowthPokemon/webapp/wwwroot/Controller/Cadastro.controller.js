@@ -5,7 +5,8 @@ sap.ui.define([
     "sap/m/MessageBox",
     "sap/ui/model/json/JSONModel", 
     "../Services/Validacoes",
-], (Controller, formatter, History, MessageBox, JSONModel, Validacoes) => {
+    "sap/ui/core/date/UI5Date"
+], (Controller, formatter, History, MessageBox, JSONModel, Validacoes, UI5Date) => {
     "use strict"
     const sim = "Sim";
     const nao = "Não";
@@ -20,6 +21,7 @@ sap.ui.define([
     const campoTipoSecundario = "/tipoSecundario";
     const campoShiny = "/shiny";
     const campoFoto = "/foto";
+    let mensagemDeErro = [];
     // const i18n = this.getView().getModel("i18n").getResourceBundle();
 
 
@@ -29,9 +31,11 @@ sap.ui.define([
 
         onInit() {
             this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
+            this.byId("inputDataCaptura").setMinDate(UI5Date.getInstance(1996, 1, 27));
+			this.byId("inputDataCaptura").setMaxDate(UI5Date.getInstance());
         },
 
-        _salvarPokemon(evento) {
+        _salvarPokemon() {
             const urlFetch = "/pokemons/";
 
             const novoPokemon = {
@@ -45,6 +49,8 @@ sap.ui.define([
                 shiny: (this.getView().getModel(nomeModeloPokemon).getProperty(campoShiny) === undefined) ? false : true,
                 foto: (this.getView().getModel(nomeModeloPokemon).getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
             }
+
+            console.log(novoPokemon.tipoPrincipal)
 
             fetch(urlFetch, {
                 method: "POST",
@@ -62,7 +68,7 @@ sap.ui.define([
             })
         },
 
-        aoClicarNoBotaoDeVoltar(evento) {
+        aoClicarNoBotaoDeVoltar() {
             const paginaDeListagem = "listagem";
             const historico = History.getInstance();
 			const hashAnterior = historico.getPreviousHash();
@@ -79,13 +85,19 @@ sap.ui.define([
 
         aoClicarNoBotaoDeSalvar(evento) {
             const mensagemAoClicarEmSalvar = "Salvar o Pokémon criado?";
+            let mensagemDeValidacao;
             
             MessageBox.information(mensagemAoClicarEmSalvar, {
                 actions: [sim, nao],
                 emphasizedAction: sim,
                 onClose: (acao) => {
                     if (acao === sim) {
-                        this._salvarPokemon(evento);
+                        debugger
+                        if(mensagemDeErro.length!=0) {
+                            this._salvarPokemon(evento);
+                        } else {
+                            
+                        }
                     } 
                 }
             });
@@ -127,29 +139,54 @@ sap.ui.define([
             }
         },
 
-        aoAlterarCampoNome(evento) {    
-            Validacoes.validaNome(evento)
+        aoMudarCampoNome(evento) {
+            let erroNome = Validacoes.validaCampoNomePreenchido(evento)
+            mensagemDeErro[0] = erroNome;
         },
 
-        aoAlterarCampoApelido(evento) {
-            Validacoes.validaApelido(evento)
+        aoDigitarEmCampoNome(evento) {    
+            Validacoes.validaNomeAoEscrever(evento)
         },
-        aoAlterarCampoNivel(evento) {
-            Validacoes.validaNivel(evento)
+
+        aoMudarCampoApelido(evento) {
+            let erroApelido = Validacoes.validaCampoApelidoPreenchido(evento)
+            mensagemDeErro[1] = erroApelido;
         },
-        aoAlterarCampoAltura(evento) {
-            Validacoes.validaAltura(evento)
+
+        aoMudarCampoNivel(evento) {
+            let erroNivel = Validacoes.validaCampoNivelPreenchido(evento)
+            mensagemDeErro[2] = erroNivel;
         },
-        aoAlterarCampoDataDeCaptura(evento) {
-            Validacoes.validarDataDeCaptura(evento)
+
+        aoDigitarEmCampoNivel(evento){
+            Validacoes.validaNivelAoEscrever(evento)
         },
-        aoAlterarCampoTipoPrincipal(evento) {
-            let novoValor = evento.getParameters("value");
-            evento.getSource().setValueState("Error");
+
+        aoMudarCampoAltura(evento) {
+            let erroAltura = Validacoes.validaCampoAlturaPreenchido(evento)
+            mensagemDeErro[3] = erroAltura;
         },
-        aoAlterarCampoSecundario(evento) {
-            let novoValor = evento.getParameters("value");
-            evento.getSource().setValueState("Error");
+
+        aoMudarCampoDataDeCaptura(evento) {
+            let erroDataDeCaptura = Validacoes.validaCampoDataDeCapturaPreenchido(evento)
+            mensagemDeErro[4] = erroDataDeCaptura;
+        },
+
+        aoMudarCampoTipoPrincipal(evento) {
+            let inputTipoSecundrio = this.byId("inputTipoSecundario");
+            let erroTipoPrincipal = Validacoes.validaCampoTipoPrincipalPreenchido(evento, inputTipoSecundrio)
+            mensagemDeErro[5] = erroTipoPrincipal;
+        },
+
+        aoMudarCampoTipoSecundario(evento) {
+            let primeiroTipo = this.byId("inputTipoPrincipal").getSelectedKey();
+            let erroTipoSecundario = Validacoes.validaCampoTipoSecundarioPreenchido(evento, primeiroTipo)
+            mensagemDeErro[6] = erroTipoSecundario;
+        },
+
+        aoMudarCampoFoto(evento) {
+            let erroFoto = Validacoes.validaCampoFotoPreenchido(evento);
+            mensagemDeErro[7] = erroFoto;
         }
     });
 })
