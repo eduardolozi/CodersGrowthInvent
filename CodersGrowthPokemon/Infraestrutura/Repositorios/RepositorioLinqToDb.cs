@@ -14,13 +14,17 @@ namespace Infraestrutura.Repositorios
             return new DataContext(new DataOptions().UseSqlServer(StringDeConexao));
         }
 
-        public List<Pokemon> ObterTodos()
+        public List<Pokemon> ObterTodos(string? nome)
         {
             try
             {
                 using (var db = CriaConexao())
                 {
-                    return db.GetTable<Pokemon>().ToList();
+                    if(string.IsNullOrEmpty(nome)) return db.GetTable<Pokemon>().ToList();
+                    return (from p in db.GetTable<Pokemon>()
+                            where p.Nome.ToLower().Contains(nome.ToLower())
+                            select p).ToList();
+
                 }
             }
             catch (Exception)
@@ -35,7 +39,7 @@ namespace Infraestrutura.Repositorios
             {
                 using (var db = CriaConexao())
                 {
-                    return (from p in ObterTodos()
+                    return (from p in db.GetTable<Pokemon>()
                             where p.Id == id
                             select p).First();
                 }
@@ -74,9 +78,9 @@ namespace Infraestrutura.Repositorios
             {
                 throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_CRIACAO);
             }
-            return (from p in ObterTodos()
-                    where p.Nome == novoPokemon.Nome
-                    select p.Id).Last();
+                    return (from p in ObterTodos(null)
+                            where p.Nome == novoPokemon.Nome
+                            select p.Id).Last();
         }
 
         public void Atualizar(Pokemon pokemon)

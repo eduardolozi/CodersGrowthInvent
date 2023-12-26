@@ -105,7 +105,7 @@ namespace Infraestrutura.Repositorios
             return null;
         }
 
-        public List<Pokemon> ObterTodos()
+        public List<Pokemon> ObterTodos(string? nome)
         {
             List<Pokemon> listaPokemon = new List<Pokemon>();
             string textoComando = "SELECT * FROM pokemons";

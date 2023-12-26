@@ -21,11 +21,14 @@ namespace webapp.wwwroot.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Pokemon>> ObterTodos()
+        public ActionResult<List<Pokemon>> ObterTodos([FromQuery] string? nome)
         {
             try
             {
-                var pokemons = _repositorio.ObterTodos();
+                List<Pokemon> pokemons;
+                if (string.IsNullOrEmpty(nome))  _repositorio.ObterTodos(null);
+                pokemons = _repositorio.ObterTodos(nome);
+
                 return Ok(pokemons);
                 
             }catch(Exception)
