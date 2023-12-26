@@ -33,15 +33,33 @@ sap.ui.define([
             const itensDaLista = "items";
             const campoNome = "nome";
             const parametroParaConsulta = "query";
-
             const filtros = [];
             const consulta = evento.getParameter(parametroParaConsulta);
+
             if (consulta) {
-                filtros.push(new Filter(campoNome, FilterOperator.Contains, consulta));
+                this._obterPokemonPeloNome(consulta)
+                    .then(pokemons => {
+                        pokemons.forEach(() => {
+                            filtros.push(new Filter(campoNome, FilterOperator.Contains, consulta));
+                        })
+                        
+                        const oList = this.byId(idListaDePokemons);
+                        const oBinding = oList.getBinding(itensDaLista);
+                        oBinding.filter(filtros);
+                    })
             }
-            const oList = this.byId(idListaDePokemons);
-            const oBinding = oList.getBinding(itensDaLista);
-            oBinding.filter(filtros);
+            else {
+                const oList = this.byId(idListaDePokemons);
+                const oBinding = oList.getBinding(itensDaLista);
+                oBinding.filter(filtros);
+            }
+        },
+
+        _obterPokemonPeloNome(nome) {
+            const urlApi = `/pokemons?nome=${nome}`
+            return fetch(urlApi)
+            .then(response => response.json())
+            .catch(erro => console.log(erro))
         },
 
         aoClicarEmUmaLinhaDaTabela(evento) {
