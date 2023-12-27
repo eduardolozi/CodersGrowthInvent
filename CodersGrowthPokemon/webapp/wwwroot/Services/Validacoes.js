@@ -1,17 +1,52 @@
 sap.ui.define([
 ], () => {
 "use strict";
+    var _i18n; 
+    let idInputNome = "inputNome";
+    let idInputApelido = "inputApelido";
+    let idInputNivel = "inputNivel";
+    let idInputAltura = "inputAltura";
+    let idInputDataDeCaptura = "inputDataCaptura";
+    let idInputTipoPrincipal = "inputTipoPrincipal";
+    const erro = "Error";
+    const sucesso = "Success"
     return {
+        Validacoes(i18n) {
+            _i18n = i18n;
+        },
+
+        verificaCamposVazios(view) {
+            let camposVazios = [
+                view.byId(idInputNome),
+                view.byId(idInputApelido),
+                view.byId(idInputNivel),
+                view.byId(idInputAltura),
+                view.byId(idInputDataDeCaptura),
+                view.byId(idInputTipoPrincipal)
+            ]
+            const mensagemCampoVazio = "Este campo não pode ser vazio!"
+            let qtdCamposVazios = 0;
+            
+            camposVazios.map((campo) => {
+                if(!campo.getValue()) {
+                    qtdCamposVazios++;
+                    campo.setValueState("Error");
+                    campo.setValueStateText(mensagemCampoVazio);
+                }
+            });
+
+            if(qtdCamposVazios > 0) return true;
+        },
 
         validaCampoNomePreenchido(evento) {
             const tamanhoMinimo = 3;
+            const mensagemDeErro = _i18n.getText("campoNomeTamanhoMinimo");
 
-            evento.getSource().setValueState(sap.ui.core.ValueState.Success);
-            
+            evento.getSource().setValueState(sucesso);
             if(evento.getSource().getValue().length < tamanhoMinimo ) {
-                evento.getSource().setValueState(sap.ui.core.ValueState.Error);
-                evento.getSource().setValueStateText("Este campo precisa ter no mínimo 3 letras!");
-                return("NOME: Este campo precisa ter no mínimo 3 letras!\n");
+                evento.getSource().setValueState(erro);
+                evento.getSource().setValueStateText(mensagemDeErro);
+                return(mensagemDeErro);
             }
         },
 
@@ -28,23 +63,25 @@ sap.ui.define([
         }, 
 
         validaCampoApelidoPreenchido(evento) {
-            evento.getSource().setValueState(sap.ui.core.ValueState.Success);
+            const mensagemDeErro = _i18n.getText("campoApelidoTamanhoMinimo");
+            evento.getSource().setValueState("Success");
             if(evento.getSource().getValue().length < 1) {
-                evento.getSource().setValueState(sap.ui.core.ValueState.Error);
-                evento.getSource().setValueStateText("Este campo não pode ser vazio!");
-                return("APELIDO: Este campo não pode ser vazio!\n");
+                evento.getSource().setValueState("Error");
+                evento.getSource().setValueStateText(mensagemDeErro);
+                return(mensagemDeErro);
             }
         },
 
         validaCampoNivelPreenchido(evento) {
             const nivelMinimo = 1;
             const nivelMaximo = 100;
+            const mensagemDeErro = _i18n.getText("campoNivelNumeroInvalido")
 
-            evento.getSource().setValueState(sap.ui.core.ValueState.Success);
+            evento.getSource().setValueState(sucesso);
             if(evento.getSource().getValue() < nivelMinimo || evento.getSource().getValue() > nivelMaximo) {
-                evento.getSource().setValueState(sap.ui.core.ValueState.Error);
-                evento.getSource().setValueStateText("Este campo deve ser um número inteiro entre 1 e 100!");
-                return("NÍVEL: Este campo deve ser um número inteiro entre 1 e 100!\n")
+                evento.getSource().setValueState(erro);
+                evento.getSource().setValueStateText(mensagemDeErro);
+                return(mensagemDeErro)
             }
         },
 
@@ -62,28 +99,26 @@ sap.ui.define([
         validaCampoAlturaPreenchido(evento) {
             const alturaMinima = 0;
             const alturaMaxima = 7;
+            const mensagemDeErro = _i18n.getText("campoAlturaNumeroInvalido")
             let valor = parseFloat(evento.getSource().getValue())
             
-            evento.getSource().setValueState(sap.ui.core.ValueState.Success);
+            evento.getSource().setValueState(sucesso);
             if(valor <= alturaMinima || valor >= alturaMaxima) {
-                evento.getSource().setValueState(sap.ui.core.ValueState.Error);
-                evento.getSource().setValueStateText("Este campo deve ser um número entre 0.01 e 6.99!");
-                return("ALTURA: Este campo deve ser um número entre 0.01 e 6.99!\n")
+                evento.getSource().setValueState(erro);
+                evento.getSource().setValueStateText(mensagemDeErro);
+                return(mensagemDeErro)
             }
         },
 
         validaCampoDataDeCapturaPreenchido(evento) {
             let valorValido = evento.getParameter("valid");
-            let dataAtual = new Date();
-            let diaAtual = dataAtual.getUTCDate();
-            let mesAtual = dataAtual.getUTCMonth() + 1;
-            let anoAtual = dataAtual.getUTCFullYear();
+            const mensagemDeErro = _i18n.getText("campoDataDeCapturaInvalida");
 
-            evento.getSource().setValueState(sap.ui.core.ValueState.Success);
+            evento.getSource().setValueState(sucesso);
             if(!valorValido) {
-                evento.getSource().setValueState(sap.ui.core.ValueState.Error);
-                evento.getSource().setValueStateText(`Este campo deve ter uma data entre 27/02/1996 e ${diaAtual}/${mesAtual}/${anoAtual}!`);
-                return (`DATA DE CAPTURA: Este campo deve ter uma data entre 27/02/1996 e ${diaAtual}/${mesAtual}/${anoAtual}!\n`)
+                evento.getSource().setValueState(erro);
+                evento.getSource().setValueStateText(mensagemDeErro);
+                return (mensagemDeErro)
             }
         },
 
@@ -91,22 +126,23 @@ sap.ui.define([
             let chaveSelecionada = evento.getSource().getSelectedKey();
             let chaveSelecionadaInt = (chaveSelecionada === "") ? 0 : parseInt(chaveSelecionada);
             let segundoTipo = parseInt(inputTipoSecundario.getSelectedKey());
-            let primeiraChave = 1;
+            let primeiraChave = 1
             let ultimaChave = 17;
+            const mensagemDeErro = _i18n.getText("campoTipoPrincipalChaveInvalida")
+            const mensagemTiposRepetidos = _i18n.getText("mensagemTiposRepetidos")
 
-            evento.getSource().setValueState(sap.ui.core.ValueState.Success);
+            evento.getSource().setValueState(sucesso);
             if(chaveSelecionadaInt < primeiraChave || chaveSelecionadaInt > ultimaChave) {
-                evento.getSource().setValueState(sap.ui.core.ValueState.Error);
-                evento.getSource().setValueStateText("Selecione um tipo existente!");
-                return("TIPO PRINCIPAL: Selecione um tipo existente!\n")
+                evento.getSource().setValueState(erro);
+                evento.getSource().setValueStateText(mensagemDeErro);
+                return(mensagemDeErro) 
             }
 
-            if(!isNaN(segundoTipo) && chaveSelecionadaInt != segundoTipo) inputTipoSecundario.setValueState(sap.ui.core.ValueState.Success);
+            if(!isNaN(segundoTipo) && chaveSelecionadaInt != segundoTipo) inputTipoSecundario.setValueState(sucesso);
             
             if(!isNaN(segundoTipo) && chaveSelecionadaInt === segundoTipo) {
-                inputTipoSecundario.setValueState(sap.ui.core.ValueState.Error);
-                inputTipoSecundario.setValueStateText("Este campo não aceita tipos repetidos!");
-                return("TIPO SECUNDARIO: OS TIPOS NÃO PODEM SER IGUAIS!\n");
+                inputTipoSecundario.setValueState(erro);
+                inputTipoSecundario.setValueStateText(mensagemTiposRepetidos);
             }
 
         },
@@ -115,31 +151,33 @@ sap.ui.define([
             let chaveSelecionada = evento.getSource().getSelectedKey()
             let primeiroTipo = parseInt(chaveDoTipoPrincipal)
             let chaveSelecionadaInt = (chaveSelecionada === "") ? 0 : parseInt(chaveSelecionada);
-            let primeiraChave = 1;
+            const mensagemDeErro = _i18n.getText("campoTipoSecundarioChaveInvalida")
+            let primeiraChave = 1
             let ultimaChave = 17;
-            
-            evento.getSource().setValueState(sap.ui.core.ValueState.Success);
+            const mensagemTiposRepetidos = _i18n.getText("campoTipoSecundarioTiposRepetidos")
+
+            evento.getSource().setValueState(sucesso);
             if(chaveSelecionadaInt < primeiraChave || chaveSelecionadaInt > ultimaChave) {                
                 let valorDoCampo = evento.getParameter("value");
                 if(valorDoCampo.length != 0) {
-                    evento.getSource().setValueState(sap.ui.core.ValueState.Error)
-                    evento.getSource().setValueStateText("Selecione um tipo existente");
-                    return("TIPO PRINCIPAL: Selecione um tipo existente!\n")
+                    evento.getSource().setValueState(erro)
+                    evento.getSource().setValueStateText(mensagemDeErro);
+                    return(mensagemDeErro)
                 }
-                else evento.getSource().setValueState(sap.ui.core.ValueState.Success);
+                else evento.getSource().setValueState(sucesso);
             }
             
             if (chaveSelecionadaInt === primeiroTipo) {
-                evento.getSource().setValueState(sap.ui.core.ValueState.Error);
-                evento.getSource().setValueStateText("Este campo não aceita tipos repetidos!");
-                return("TIPO SECUNDÁRIO: OS TIPOS NÃO PODEM SER IGUAIS!\n");
+                evento.getSource().setValueState(erro);
+                evento.getSource().setValueStateText(mensagemTiposRepetidos);
+                return(mensagemTiposRepetidos);
             }
         },
 
         validaCampoFotoPreenchido(evento) {
             let arquivo = evento.getSource().getValue();
             console.log(arquivo)
-            evento.getSource().setValueState(sap.ui.core.ValueState.Success);
+            evento.getSource().setValueState(sucesso);
         }
     }
 })

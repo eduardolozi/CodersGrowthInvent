@@ -32,35 +32,11 @@ sap.ui.define([
                 return response.json()
             })
             .then(response => {
-                if(response.foto != null) {
-                    let blob = this._converteBase64ParaBlob(response.foto);
-                    response.foto = URL.createObjectURL(blob);
-                }
                 this.getView().setModel(new JSONModel(response), nomeModeloPokemon);
             })
             .catch(erro => {
                 console.log(erro);
             })
-        },
-
-        _converteBase64ParaBlob(stringBase64, tipoConteudo='', tamanhoDoPedaco=512) {
-            const caracteresEmBytes = atob(stringBase64);
-            const bytesArquivo = [];
-          
-            for (let offset = 0; offset < caracteresEmBytes.length; offset += tamanhoDoPedaco) {
-              const pedaco = caracteresEmBytes.slice(offset, offset + tamanhoDoPedaco);
-          
-              const numerosDosBytes = new Array(pedaco.length);
-              for (let i = 0; i < pedaco.length; i++) {
-                numerosDosBytes[i] = pedaco.charCodeAt(i);
-              }
-          
-              const byteArray = new Uint8Array(numerosDosBytes);
-              bytesArquivo.push(byteArray);
-            }
-          
-            const blob = new Blob(bytesArquivo, {type: tipoConteudo});
-            return blob;
         },
 
         aoClicarBotaoVoltar() {
@@ -77,7 +53,7 @@ sap.ui.define([
 			}
         },
 
-        aoClicarBotaoVerCard(evento) {
+        aoClicarBotaoVerCard() {
             const caminhoCardPokemon = "webapp.View.CardPokemon";
 
             this.pDialog ??= this.loadFragment({

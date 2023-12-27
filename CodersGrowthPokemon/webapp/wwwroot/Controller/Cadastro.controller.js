@@ -11,7 +11,6 @@ sap.ui.define([
     const sim = "Sim";
     const nao = "Não";
     const nomeModeloPokemon = "pokemon";
-    const idInputFoto = "inputFoto";
     const campoNome = "/nome";
     const campoApelido = "/apelido";
     const campoNivel = "/nivel";
@@ -21,18 +20,41 @@ sap.ui.define([
     const campoTipoSecundario = "/tipoSecundario";
     const campoShiny = "/shiny";
     const campoFoto = "/foto";
+    const idInputNome = "inputNome";
+    const idInputApelido = "inputApelido";
+    const idInputNivel = "inputNivel";
+    const idInputAltura = "inputAltura";
+    const idInputDataDeCaptura = "inputDataCaptura";
+    const idInputShiny = "inputShiny";
+    const idInputTipoPrincipal = "inputTipoPrincipal";
+    const idInputTipoSecundario = "inputTipoSecundario";
+    const idInputFoto = "inputFoto";
     let mensagemDeErro = [];
-    // const i18n = this.getView().getModel("i18n").getResourceBundle();
-
-
+    
     return Controller.extend("webapp.Controller.Cadastro", {
         formatter: formatter,
         Validacoes: Validacoes,
-
+        
         onInit() {
+            let rota = this.getOwnerComponent().getRouter();
+            rota.getRoute("cadastro").attachMatched(this._aoCoincidirRota, this);
+
+            const dataMinima = UI5Date.getInstance(1996, 1, 27)
+            const dataMaxima = UI5Date.getInstance()
+            const modeloi18n = "i18n"
+            const i18n = this.getOwnerComponent().getModel(modeloi18n).getResourceBundle();
+            Validacoes.Validacoes(i18n)
+
             this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
-            this.byId("inputDataCaptura").setMinDate(UI5Date.getInstance(1996, 1, 27));
-			this.byId("inputDataCaptura").setMaxDate(UI5Date.getInstance());
+            this.byId(idInputDataDeCaptura).setMinDate(dataMinima);
+			this.byId(idInputDataDeCaptura).setMaxDate(dataMaxima);
+        },
+
+        _aoCoincidirRota(evt) {
+            let argumentos, views;
+            argumentos = evt.getParameter("arguments"); 
+            this._limpaOsCampos()
+            views = this.getView();
         },
 
         _salvarPokemon() {
@@ -50,8 +72,6 @@ sap.ui.define([
                 foto: (this.getView().getModel(nomeModeloPokemon).getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
             }
 
-            console.log(novoPokemon.tipoPrincipal)
-
             fetch(urlFetch, {
                 method: "POST",
                 body: JSON.stringify(novoPokemon),
@@ -62,6 +82,7 @@ sap.ui.define([
                 const nomePaginaDeDetalhes = "detalhes";
                 const idPokemon = data.id;
                 const oRouter = this.getOwnerComponent().getRouter();
+
                 oRouter.navTo(nomePaginaDeDetalhes, {detalhesPath: idPokemon});
             }).catch(error => {
                 console.log(error)
@@ -83,27 +104,66 @@ sap.ui.define([
             
         },
 
+        _limpaOsCampos() {
+            const stringVazia = "";
+            const statusDoInputRedefinido = "None";
+
+            this.getView().byId(idInputNome).setValue(stringVazia)
+            this.getView().byId(idInputNome).setValueState(statusDoInputRedefinido)
+
+            this.getView().byId(idInputApelido).setValue(stringVazia)
+            this.getView().byId(idInputApelido).setValueState(statusDoInputRedefinido)
+
+            this.getView().byId(idInputNivel).setValue(stringVazia)
+            this.getView().byId(idInputNivel).setValueState(statusDoInputRedefinido)
+
+            this.getView().byId(idInputAltura).setValue(stringVazia)
+            this.getView().byId(idInputAltura).setValueState(statusDoInputRedefinido)
+
+            this.getView().byId(idInputDataDeCaptura).setValue(stringVazia)
+            this.getView().byId(idInputDataDeCaptura).setValueState(statusDoInputRedefinido)
+
+            this.getView().byId(idInputShiny).setSelected(false)
+            this.getView().byId(idInputShiny).setValueState(statusDoInputRedefinido)
+
+            this.getView().byId(idInputTipoPrincipal).setValue(stringVazia)
+            this.getView().byId(idInputTipoPrincipal).setValueState(statusDoInputRedefinido)
+
+            this.getView().byId(idInputTipoSecundario).setValue(stringVazia)
+            this.getView().byId(idInputTipoSecundario).setValueState(statusDoInputRedefinido)
+
+            this.getView().byId(idInputFoto).setValue(stringVazia)
+            this.getView().byId(idInputFoto).setValueState(statusDoInputRedefinido)
+        },
+
         aoClicarNoBotaoDeSalvar(evento) {
             const mensagemAoClicarEmSalvar = "Salvar o Pokémon criado?";
-            let mensagemDeValidacao;
             
             MessageBox.information(mensagemAoClicarEmSalvar, {
                 actions: [sim, nao],
                 emphasizedAction: sim,
                 onClose: (acao) => {
                     if (acao === sim) {
-                        debugger
-                        if(mensagemDeErro.length!=0) {
+                        if(Validacoes.verificaCamposVazios(this.getView()) === true) {
+                            MessageBox.error("Preencha os campos vazios marcados!");
+                            return;
+                        };
+                        
+                        if(mensagemDeErro.length==0) {
                             this._salvarPokemon(evento);
                         } else {
-                            
+                            mensagemDeErro = mensagemDeErro.filter((item) => {
+                                if(item!= undefined) return item;
+                            })
+                            MessageBox.error(mensagemDeErro.join('\n'))
+                            mensagemDeErro = null
                         }
                     } 
                 }
             });
         },
 
-        aoClicarNoBotaoDeCancelar(evento) {
+        aoClicarNoBotaoDeCancelar() {
             const mensagemAoClicarEmCancelar = "Cancelar a criação do Pokémon?"
 
             MessageBox.alert(mensagemAoClicarEmCancelar, {
@@ -112,6 +172,7 @@ sap.ui.define([
                 onClose: (acao) => {
                     if (acao === sim) {
                         this.aoClicarNoBotaoDeVoltar();
+                        this._limpaOsCampos()
                     } 
                 }
             });
@@ -173,13 +234,13 @@ sap.ui.define([
         },
 
         aoMudarCampoTipoPrincipal(evento) {
-            let inputTipoSecundrio = this.byId("inputTipoSecundario");
+            let inputTipoSecundrio = this.byId(idInputTipoSecundario);
             let erroTipoPrincipal = Validacoes.validaCampoTipoPrincipalPreenchido(evento, inputTipoSecundrio)
             mensagemDeErro[5] = erroTipoPrincipal;
         },
 
         aoMudarCampoTipoSecundario(evento) {
-            let primeiroTipo = this.byId("inputTipoPrincipal").getSelectedKey();
+            let primeiroTipo = this.byId(idInputTipoPrincipal).getSelectedKey();
             let erroTipoSecundario = Validacoes.validaCampoTipoSecundarioPreenchido(evento, primeiroTipo)
             mensagemDeErro[6] = erroTipoSecundario;
         },
