@@ -30,31 +30,34 @@ sap.ui.define([
     const idInputTipoSecundario = "inputTipoSecundario";
     const idInputFoto = "inputFoto";
     let mensagemDeErro = [];
-    
+    const modeloi18n = "i18n"
+
     return Controller.extend("webapp.Controller.Cadastro", {
         formatter: formatter,
         Validacoes: Validacoes,
+
+        _retornai18n() {
+            return this.getOwnerComponent().getModel(modeloi18n).getResourceBundle();
+        },
         
         onInit() {
             let rota = this.getOwnerComponent().getRouter();
             rota.getRoute("cadastro").attachMatched(this._aoCoincidirRota, this);
-
+            
             const dataMinima = UI5Date.getInstance(1996, 1, 27)
             const dataMaxima = UI5Date.getInstance()
-            const modeloi18n = "i18n"
-            const i18n = this.getOwnerComponent().getModel(modeloi18n).getResourceBundle();
+            
+            let i18n = this._retornai18n()
             Validacoes.Validacoes(i18n)
-
             this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
             this.byId(idInputDataDeCaptura).setMinDate(dataMinima);
 			this.byId(idInputDataDeCaptura).setMaxDate(dataMaxima);
         },
 
         _aoCoincidirRota(evt) {
-            let argumentos, views;
-            argumentos = evt.getParameter("arguments"); 
+            let argumentos = evt.getParameter("arguments"); 
             this._limpaOsCampos()
-            views = this.getView();
+            let views = this.getView();
         },
 
         _salvarPokemon() {
@@ -137,7 +140,8 @@ sap.ui.define([
         },
 
         aoClicarNoBotaoDeSalvar(evento) {
-            const mensagemAoClicarEmSalvar = "Salvar o Pokémon criado?";
+            let i18n = this._retornai18n()
+            const mensagemAoClicarEmSalvar = i18n.getText("mensagemSalvar");
             
             MessageBox.information(mensagemAoClicarEmSalvar, {
                 actions: [sim, nao],
@@ -145,7 +149,8 @@ sap.ui.define([
                 onClose: (acao) => {
                     if (acao === sim) {
                         if(Validacoes.verificaCamposVazios(this.getView()) === true) {
-                            MessageBox.error("Preencha os campos vazios marcados!");
+                            const mensagemPreencherCamposVazios = i18n.getText("mensagemPreencherCamposVazios")
+                            MessageBox.error(mensagemPreencherCamposVazios);
                             return;
                         };
                         
@@ -164,7 +169,8 @@ sap.ui.define([
         },
 
         aoClicarNoBotaoDeCancelar() {
-            const mensagemAoClicarEmCancelar = "Cancelar a criação do Pokémon?"
+            let i18n = this._retornai18n();
+            const mensagemAoClicarEmCancelar = i18n.getText("mensagemAoClicarEmCancelar");
 
             MessageBox.alert(mensagemAoClicarEmCancelar, {
                 actions: [sim, nao],

@@ -24,7 +24,7 @@ sap.ui.define([
                 view.byId(idInputDataDeCaptura),
                 view.byId(idInputTipoPrincipal)
             ]
-            const mensagemCampoVazio = "Este campo não pode ser vazio!"
+            const mensagemCampoVazio = _i18n.getText("campoVazio")
             let qtdCamposVazios = 0;
             
             camposVazios.map((campo) => {
