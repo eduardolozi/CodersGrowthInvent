@@ -32,79 +32,37 @@ sap.ui.define([
     let mensagemDeErro = [];
     const modeloi18n = "i18n"
 
+
     return Controller.extend("webapp.Controller.Cadastro", {
         formatter: formatter,
         Validacoes: Validacoes,
+        
+        onInit() {
+            const nomeRotaCadastro = "cadastro";
+            const rota = this.getOwnerComponent().getRouter();
+
+            rota.getRoute(nomeRotaCadastro).attachMatched(this._aoCoincidirRota, this);  
+            this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
+        },
 
         _retornai18n() {
             return this.getOwnerComponent().getModel(modeloi18n).getResourceBundle();
         },
-        
-        onInit() {
-            let rota = this.getOwnerComponent().getRouter();
-            rota.getRoute("cadastro").attachMatched(this._aoCoincidirRota, this);
-            
-            const dataMinima = UI5Date.getInstance(1996, 1, 27)
-            const dataMaxima = UI5Date.getInstance()
-            
+
+        _injetaI18nNaValidcao() {
             let i18n = this._retornai18n()
             Validacoes.Validacoes(i18n)
-            this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
+        },
+
+        _defineDatasLimitesDoCampoDeData() {
+            const diaMinimo = 27;
+            const mesMinimo = 1;
+            const anoMinimo = 1996;
+            const dataMinima = UI5Date.getInstance(anoMinimo, mesMinimo, diaMinimo)
+            const dataMaxima = UI5Date.getInstance()
+
             this.byId(idInputDataDeCaptura).setMinDate(dataMinima);
-			this.byId(idInputDataDeCaptura).setMaxDate(dataMaxima);
-        },
-
-        _aoCoincidirRota(evt) {
-            let argumentos = evt.getParameter("arguments"); 
-            this._limpaOsCampos()
-            let views = this.getView();
-        },
-
-        _salvarPokemon() {
-            const urlFetch = "/pokemons/";
-
-            const novoPokemon = {
-                nome: this.getView().getModel(nomeModeloPokemon).getProperty(campoNome),
-                apelido: this.getView().getModel(nomeModeloPokemon).getProperty(campoApelido),
-                nivel: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoNivel)),
-                altura: parseFloat(this.getView().getModel(nomeModeloPokemon).getProperty(campoAltura)),
-                dataDeCaptura: this.getView().getModel(nomeModeloPokemon).getProperty(campoDataDeCaptura),
-                tipoPrincipal: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoPrincipal)),
-                tipoSecundario: (this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario) === undefined) ? null : parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario)),
-                shiny: (this.getView().getModel(nomeModeloPokemon).getProperty(campoShiny) === undefined) ? false : true,
-                foto: (this.getView().getModel(nomeModeloPokemon).getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
-            }
-
-            fetch(urlFetch, {
-                method: "POST",
-                body: JSON.stringify(novoPokemon),
-                headers: {"Content-type": "application/json; charset=UTF-8"}
-            }).then(response => {
-                return response.json();
-            }).then(data => {
-                const nomePaginaDeDetalhes = "detalhes";
-                const idPokemon = data.id;
-                const oRouter = this.getOwnerComponent().getRouter();
-
-                oRouter.navTo(nomePaginaDeDetalhes, {detalhesPath: idPokemon});
-            }).catch(error => {
-                console.log(error)
-            })
-        },
-
-        aoClicarNoBotaoDeVoltar() {
-            const paginaDeListagem = "listagem";
-            const historico = History.getInstance();
-			const hashAnterior = historico.getPreviousHash();
-            const paginaAnteriorNoHistorico = -1;
-
-            if (hashAnterior !== undefined) {
-				window.history.go(paginaAnteriorNoHistorico);
-			} else {
-				const oRouter = this.getOwnerComponent().getRouter();
-				oRouter.navTo(paginaDeListagem, {}, true);
-			}
-            
+            this.byId(idInputDataDeCaptura).setMaxDate(dataMaxima);
         },
 
         _limpaOsCampos() {
@@ -139,9 +97,62 @@ sap.ui.define([
             this.getView().byId(idInputFoto).setValueState(statusDoInputRedefinido)
         },
 
+        _salvarPokemon() {
+            const urlFetch = "/pokemons/";
+            const metodoDoFetch = "POST";
+
+            const novoPokemon = {
+                nome: this.getView().getModel(nomeModeloPokemon).getProperty(campoNome),
+                apelido: this.getView().getModel(nomeModeloPokemon).getProperty(campoApelido),
+                nivel: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoNivel)),
+                altura: parseFloat(this.getView().getModel(nomeModeloPokemon).getProperty(campoAltura)),
+                dataDeCaptura: this.getView().getModel(nomeModeloPokemon).getProperty(campoDataDeCaptura),
+                tipoPrincipal: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoPrincipal)),
+                tipoSecundario: (this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario) === undefined) ? null : parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario)),
+                shiny: (this.getView().getModel(nomeModeloPokemon).getProperty(campoShiny) === undefined) ? true : false,
+                foto: (this.getView().getModel(nomeModeloPokemon).getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
+            }
+
+            fetch(urlFetch, {
+                method: metodoDoFetch,
+                body: JSON.stringify(novoPokemon),
+                headers: {"Content-type": "application/json; charset=UTF-8"}
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                const nomePaginaDeDetalhes = "detalhes";
+                const idPokemon = data.id;
+                const oRouter = this.getOwnerComponent().getRouter();
+
+                oRouter.navTo(nomePaginaDeDetalhes, {detalhesPath: idPokemon});
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        _aoCoincidirRota(evt) {
+            this._limpaOsCampos()
+        },
+
+        aoClicarNoBotaoDeVoltar() {
+            const paginaDeListagem = "listagem";
+            const historico = History.getInstance();
+			const hashAnterior = historico.getPreviousHash();
+            const paginaAnteriorNoHistorico = -1;
+
+            if (hashAnterior !== undefined) {
+				window.history.go(paginaAnteriorNoHistorico);
+			} else {
+				const oRouter = this.getOwnerComponent().getRouter();
+				oRouter.navTo(paginaDeListagem, {}, true);
+			}
+        },
+
         aoClicarNoBotaoDeSalvar(evento) {
-            let i18n = this._retornai18n()
-            const mensagemAoClicarEmSalvar = i18n.getText("mensagemSalvar");
+            const mensagemDeConfirmacao = "mensagemSalvar";
+            let i18n = this._retornai18n();
+            const mensagemAoClicarEmSalvar = i18n.getText(mensagemDeConfirmacao);
+            const mensagemPreencherCamposVazios = "mensagemPreencherCamposVazios"
             
             MessageBox.information(mensagemAoClicarEmSalvar, {
                 actions: [sim, nao],
@@ -149,8 +160,8 @@ sap.ui.define([
                 onClose: (acao) => {
                     if (acao === sim) {
                         if(Validacoes.verificaCamposVazios(this.getView()) === true) {
-                            const mensagemPreencherCamposVazios = i18n.getText("mensagemPreencherCamposVazios")
-                            MessageBox.error(mensagemPreencherCamposVazios);
+                            const mensagemErroCamposVazios = i18n.getText(mensagemPreencherCamposVazios)
+                            MessageBox.error(mensagemErroCamposVazios);
                             return;
                         };
                         
@@ -169,8 +180,9 @@ sap.ui.define([
         },
 
         aoClicarNoBotaoDeCancelar() {
+            const mensagemDeCancelar = "mensagemAoClicarEmCancelar";
             let i18n = this._retornai18n();
-            const mensagemAoClicarEmCancelar = i18n.getText("mensagemAoClicarEmCancelar");
+            const mensagemAoClicarEmCancelar = i18n.getText(mensagemDeCancelar);
 
             MessageBox.alert(mensagemAoClicarEmCancelar, {
                 actions: [sim, nao],
@@ -207,8 +219,10 @@ sap.ui.define([
         },
 
         aoMudarCampoNome(evento) {
+            const posicaoPropriedadeNome = 0;
             let erroNome = Validacoes.validaCampoNomePreenchido(evento)
-            mensagemDeErro[0] = erroNome;
+
+            mensagemDeErro[posicaoPropriedadeNome] = erroNome;
         },
 
         aoDigitarEmCampoNome(evento) {    
@@ -216,13 +230,17 @@ sap.ui.define([
         },
 
         aoMudarCampoApelido(evento) {
+            const posicaoPropriedadeApelido = 1;
             let erroApelido = Validacoes.validaCampoApelidoPreenchido(evento)
-            mensagemDeErro[1] = erroApelido;
+
+            mensagemDeErro[posicaoPropriedadeApelido] = erroApelido;
         },
 
         aoMudarCampoNivel(evento) {
+            const posicaoPropriedadeNivel = 2;
             let erroNivel = Validacoes.validaCampoNivelPreenchido(evento)
-            mensagemDeErro[2] = erroNivel;
+
+            mensagemDeErro[posicaoPropriedadeNivel] = erroNivel;
         },
 
         aoDigitarEmCampoNivel(evento){
@@ -230,30 +248,40 @@ sap.ui.define([
         },
 
         aoMudarCampoAltura(evento) {
+            const posicaoPropriedadeAltura = 3;
             let erroAltura = Validacoes.validaCampoAlturaPreenchido(evento)
-            mensagemDeErro[3] = erroAltura;
+
+            mensagemDeErro[posicaoPropriedadeAltura] = erroAltura;
         },
 
         aoMudarCampoDataDeCaptura(evento) {
+            const posicaoPropriedadeDataDeCaptura = 4;
             let erroDataDeCaptura = Validacoes.validaCampoDataDeCapturaPreenchido(evento)
-            mensagemDeErro[4] = erroDataDeCaptura;
+
+            mensagemDeErro[posicaoPropriedadeDataDeCaptura] = erroDataDeCaptura;
         },
 
         aoMudarCampoTipoPrincipal(evento) {
+            const posicaoPropriedadeTipoPrincipal = 5;
             let inputTipoSecundrio = this.byId(idInputTipoSecundario);
             let erroTipoPrincipal = Validacoes.validaCampoTipoPrincipalPreenchido(evento, inputTipoSecundrio)
-            mensagemDeErro[5] = erroTipoPrincipal;
+
+            mensagemDeErro[posicaoPropriedadeTipoPrincipal] = erroTipoPrincipal;
         },
 
         aoMudarCampoTipoSecundario(evento) {
+            const posicaoPropriedadeTipoSecundario = 6;
             let primeiroTipo = this.byId(idInputTipoPrincipal).getSelectedKey();
             let erroTipoSecundario = Validacoes.validaCampoTipoSecundarioPreenchido(evento, primeiroTipo)
-            mensagemDeErro[6] = erroTipoSecundario;
+
+            mensagemDeErro[posicaoPropriedadeTipoSecundario] = erroTipoSecundario;
         },
 
         aoMudarCampoFoto(evento) {
+            const posicaoPropriedadeFoto = 7;
             let erroFoto = Validacoes.validaCampoFotoPreenchido(evento);
-            mensagemDeErro[7] = erroFoto;
+
+            mensagemDeErro[posicaoPropriedadeFoto] = erroFoto;
         }
     });
 })

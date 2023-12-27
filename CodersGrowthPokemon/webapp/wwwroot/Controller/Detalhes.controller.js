@@ -6,6 +6,7 @@ sap.ui.define([
 
 ], (Controller, JSONModel, formatter, History) => {
     "use strict"
+    const nomeModeloPokemon = "detalhePokemon";
     return Controller.extend("webapp.Controller.Detalhes", {
         formatter: formatter,
 
@@ -25,7 +26,6 @@ sap.ui.define([
 
         _carregarPokemon(indice) {
             const rotaApi = `/pokemons/${indice}`;
-            const nomeModeloPokemon = "detalhePokemon";
 
             fetch(rotaApi)
             .then(response => {
@@ -36,6 +36,17 @@ sap.ui.define([
             })
             .catch(erro => {
                 console.log(erro);
+            })
+        },
+
+        aoClicarBotaoEditar() {
+            const nomePaginaDeCadastro = "cadastro";
+            const nomeParametroId = "id";
+            const parametroId = this.getView().getModel(nomeModeloPokemon).getProperty(nomeParametroId)
+            const roteador = this.getOwnerComponent().getRouter();
+            
+            roteador.navTo(nomePaginaDeCadastro, {
+                id: window.encodeURIComponent(parametroId)
             })
         },
 

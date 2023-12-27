@@ -65,6 +65,11 @@
 					"pattern": "cadastro",
 					"name": "cadastro",
 					"target": "cadastro"
+				},
+				{
+					"pattern": "cadastro/:id:",
+					"name": "cadastro",
+					"target": "cadastro"
 				}
 
 			],
