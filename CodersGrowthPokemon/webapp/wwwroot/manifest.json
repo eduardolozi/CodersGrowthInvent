@@ -71,7 +71,6 @@
 					"name": "cadastro",
 					"target": "cadastro"
 				}
-
 			],
 			"targets": {
 				"listagem": {
@@ -85,6 +84,10 @@
 				"cadastro": {
 					"id":"cadastro",
 					"name": "Cadastro"
+				},
+				"edicao":{
+					"id":"cadastro",
+					"name": "cadastro"
 				}
 			}
 		}

@@ -25,7 +25,14 @@
                 </MaskInput>
     
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaDataCaptura}" required="true" labelFor="inputDataCaptura" />
-                <DatePicker id="inputDataCaptura" value="{pokemon>/dataDeCaptura}" placeholder="Data de captura" width="100%" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-ddTHH:mm:ss.mmm" change=".aoMudarCampoDataDeCaptura"/>
+                <DatePicker id="inputDataCaptura" value="{path: 'pokemon>/dataDeCaptura',
+                    type: 'sap.ui.model.type.Date',
+                    formatOptions: {
+                        source: {
+                            pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
+                        }
+                    }
+                }" placeholder="Data de captura" width="100%" displayFormat="dd/MM/YYYY" valueFormat="yyyy-MM-ddTHH:mm:ss.mmm" change=".aoMudarCampoDataDeCaptura"/>
 
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaShiny}" required="true" labelFor="inputShiny" />
                 <CheckBox id="inputShiny" selected="{pokemon>/shiny}" text="Shiny"/>

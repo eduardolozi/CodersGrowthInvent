@@ -31,7 +31,9 @@ sap.ui.define([
     const idInputFoto = "inputFoto";
     const modeloi18n = "i18n"
     const stringVazia = "";
+    const argumentos = "arguments";
     const mensagemDeErro = []
+    const semIdNaUrl = 0;
     let roteador;
 
 
@@ -42,7 +44,6 @@ sap.ui.define([
         onInit() {
             const nomeRotaCadastro = "cadastro";
             const rota = this.getOwnerComponent().getRouter();
-
 
             rota.getRoute(nomeRotaCadastro).attachMatched(this._aoCoincidirRota, this);  
             this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
@@ -106,6 +107,10 @@ sap.ui.define([
             this.getView().byId(idInputFoto).setValueState(statusDoInputRedefinido)
         },
 
+        _verificaSeEhCadastroOuAtualizacao() {
+            console.log(this.getView().getModel(nomeModeloPokemon).getData())
+        },
+
         _salvarPokemon() {
             const urlFetch = "/pokemons/";
             const metodoDoFetch = "POST";
@@ -139,8 +144,43 @@ sap.ui.define([
             })
         },
 
-        _aoCoincidirRota(evt) {
+        _atualizarPokemon() {
+            const urlFetch = "/pokemons/";
+            const metodoDoFetch = "POST";
+
+            const novoPokemon = {
+                nome: this.getView().getModel(nomeModeloPokemon).getProperty(campoNome),
+                apelido: this.getView().getModel(nomeModeloPokemon).getProperty(campoApelido),
+                nivel: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoNivel)),
+                altura: parseFloat(this.getView().getModel(nomeModeloPokemon).getProperty(campoAltura)),
+                dataDeCaptura: this.getView().getModel(nomeModeloPokemon).getProperty(campoDataDeCaptura),
+                tipoPrincipal: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoPrincipal)),
+                tipoSecundario: (this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario) === undefined) ? null : parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario)),
+                shiny: (this.getView().getModel(nomeModeloPokemon).getProperty(campoShiny) === undefined) ? true : false,
+                foto: (this.getView().getModel(nomeModeloPokemon).getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
+            }
+        },
+
+        _carregarPokemon(indice) {
+            const rotaApi = `/pokemons/${indice}`;
+
+            fetch(rotaApi)
+            .then(response => {
+                return response.json()
+            })
+            .then(response => {
+                this.getView().setModel(new JSONModel(response), nomeModeloPokemon);
+            })
+            .catch(erro => {
+                console.log(erro);
+            })
+        },
+
+        _aoCoincidirRota(evento) {
+            const idPokemon = evento.getParameter(argumentos).id;
+
             this._limpaOsCampos()
+            if(idPokemon != undefined) this._carregarPokemon(idPokemon)
         },
 
         aoClicarNoBotaoDeVoltar() {
@@ -167,6 +207,7 @@ sap.ui.define([
             const quebraDeLinha = "\n";
             let quantidadeDeErros = 0;
             let mensagemDeErroNaTela;
+            let verificacaoDeAcao;
             
             MessageBox.information(mensagemAoClicarEmSalvar, {
                 actions: [sim, nao],
@@ -182,7 +223,9 @@ sap.ui.define([
                         })
                         const verificacaoDeErros = quantidadeDeErros;
                         if(verificacaoDeErros === mensagemDeErroVazia) {
-                            this._salvarPokemon(evento);
+                            verificacaoDeAcao = this._verificaSeEhCadastroOuAtualizacao()
+                            if(verificacaoDeAcao === semIdNaUrl) this._salvarPokemon(evento);
+                            else this._atualizarPokemon(evento)
                         } else {
                             mensagemDeErroNaTela = mensagemDeErro.filter((item) => {
                                 if(item!= undefined) return item;

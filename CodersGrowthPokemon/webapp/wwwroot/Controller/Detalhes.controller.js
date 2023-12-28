@@ -61,7 +61,7 @@ sap.ui.define([
 
         aoClicarBotaoEditar() {
             const nomePaginaDeCadastro = "cadastro";
-            const nomeParametroId = "id";
+            const nomeParametroId = "/id";
             const parametroId = this.getView().getModel(nomeModeloPokemon).getProperty(nomeParametroId)
             roteador = this._retornaRoteador();
             
