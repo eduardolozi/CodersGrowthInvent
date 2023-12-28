@@ -45,8 +45,7 @@ sap.ui.define([
             const nomeRotaCadastro = "cadastro";
             const rota = this.getOwnerComponent().getRouter();
 
-            rota.getRoute(nomeRotaCadastro).attachMatched(this._aoCoincidirRota, this);  
-            this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
+            rota.getRoute(nomeRotaCadastro).attachMatched(this._aoCoincidirRota, this);              
             this._injetaI18nNaValidcao();
             this._defineDatasLimitesDoCampoDeData()
         },
@@ -73,6 +72,10 @@ sap.ui.define([
 
             this.getView().byId(idInputDataDeCaptura).setMinDate(dataMinima);
             this.getView().byId(idInputDataDeCaptura).setMaxDate(dataMaxima);
+        },
+
+        _verificaSeEhCadastroOuAtualizacao() {
+            console.log(this.getView().getModel(nomeModeloPokemon).getData())
         },
 
         _limpaOsCampos() {
@@ -105,10 +108,6 @@ sap.ui.define([
 
             this.getView().byId(idInputFoto).setValue(stringVazia)
             this.getView().byId(idInputFoto).setValueState(statusDoInputRedefinido)
-        },
-
-        _verificaSeEhCadastroOuAtualizacao() {
-            console.log(this.getView().getModel(nomeModeloPokemon).getData())
         },
 
         _salvarPokemon() {
@@ -181,6 +180,7 @@ sap.ui.define([
 
             this._limpaOsCampos()
             if(idPokemon != undefined) this._carregarPokemon(idPokemon)
+            else this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
         },
 
         aoClicarNoBotaoDeVoltar() {
