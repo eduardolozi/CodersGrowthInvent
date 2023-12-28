@@ -52,12 +52,12 @@
                     tooltip="Upload your file to the local server"
                     icon="sap-icon://add-photo" 
                     uploadliveChange="false"
-                    change=".aoMudarCampoFoto" 
+                    change="aoCarregarImagem"
                     sendXHR="true" 
                     useMultipart="false" 
                     fileType="JPG,JPEG,jpeg,jpg,PNG,png"
                     />
-                    <Image src="data:image/png;base64,{pokemon>/foto}" width="80px" height="80px"/>
+                    <Image id="fotoDoPokemon" src="data:image/png;base64,{pokemon>/foto}" width="80px" height="80px"/>
                 </FlexBox>
             </FlexBox>
         </FlexBox>

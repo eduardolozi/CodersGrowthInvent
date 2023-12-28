@@ -1,21 +1,29 @@
 sap.ui.define([
 ], () => {
 "use strict";
-    var _i18n; 
-    let idInputNome = "inputNome";
-    let idInputApelido = "inputApelido";
-    let idInputNivel = "inputNivel";
-    let idInputAltura = "inputAltura";
-    let idInputDataDeCaptura = "inputDataCaptura";
-    let idInputTipoPrincipal = "inputTipoPrincipal";
+    const idInputNome = "inputNome";
+    const idInputApelido = "inputApelido";
+    const idInputNivel = "inputNivel";
+    const idInputAltura = "inputAltura";
+    const idInputDataDeCaptura = "inputDataCaptura";
+    const idInputTipoPrincipal = "inputTipoPrincipal";
     const erro = "Error";
     const sucesso = "Success"
+    const valor = "value"
+    const campoSemSelecionar = 0;
+    const stringVazia = ""
+    let _i18n; 
+    
     return {
         Validacoes(i18n) {
             _i18n = i18n;
         },
 
         verificaCamposVazios(view) {
+            const mensagemDeErroCampoVazio = "campoVazio"
+            const mensagemCampoVazio = _i18n.getText(mensagemDeErroCampoVazio)
+            const maximoDeCamposObrigatoriosVazios = 0;
+            let qtdCamposVazios = 0;
             let camposVazios = [
                 view.byId(idInputNome),
                 view.byId(idInputApelido),
@@ -24,23 +32,23 @@ sap.ui.define([
                 view.byId(idInputDataDeCaptura),
                 view.byId(idInputTipoPrincipal)
             ]
-            const mensagemCampoVazio = _i18n.getText("campoVazio")
-            let qtdCamposVazios = 0;
             
             camposVazios.map((campo) => {
                 if(!campo.getValue()) {
                     qtdCamposVazios++;
-                    campo.setValueState("Error");
+                    campo.setValueState(erro);
                     campo.setValueStateText(mensagemCampoVazio);
                 }
             });
 
-            if(qtdCamposVazios > 0) return true;
+            if(qtdCamposVazios > maximoDeCamposObrigatoriosVazios) return true;
+            return false;
         },
 
         validaCampoNomePreenchido(evento) {
+            const mensagemNomeTamanhoMinimo = "campoNomeTamanhoMinimo"
             const tamanhoMinimo = 3;
-            const mensagemDeErro = _i18n.getText("campoNomeTamanhoMinimo");
+            const mensagemDeErro = _i18n.getText(mensagemNomeTamanhoMinimo);
 
             evento.getSource().setValueState(sucesso);
             if(evento.getSource().getValue().length < tamanhoMinimo ) {
@@ -52,9 +60,7 @@ sap.ui.define([
 
         validaNomeAoEscrever(evento) {
             const regexNaoPermitido = /[\d!@?,"¨|´`<>/\\[\]{};#\$%\^\&*\)\(+=._-]/
-            const stringVazia = "";
-            let valorDigitado = evento.getParameter('value');
-            
+            let valorDigitado = evento.getParameter(valor);
             
             if(regexNaoPermitido.test(valorDigitado)){
                 valorDigitado = valorDigitado.replace(regexNaoPermitido, stringVazia);
@@ -63,10 +69,13 @@ sap.ui.define([
         }, 
 
         validaCampoApelidoPreenchido(evento) {
-            const mensagemDeErro = _i18n.getText("campoApelidoTamanhoMinimo");
-            evento.getSource().setValueState("Success");
-            if(evento.getSource().getValue().length < 1) {
-                evento.getSource().setValueState("Error");
+            const mensagemApelidoTamanhoMinimo = "campoApelidoTamanhoMinimo"
+            const mensagemDeErro = _i18n.getText(mensagemApelidoTamanhoMinimo);
+            const tamanhoDeApelidoMinimo = 1;
+
+            evento.getSource().setValueState(sucesso);
+            if(evento.getSource().getValue().length < tamanhoDeApelidoMinimo) {
+                evento.getSource().setValueState(erro);
                 evento.getSource().setValueStateText(mensagemDeErro);
                 return(mensagemDeErro);
             }
@@ -75,7 +84,8 @@ sap.ui.define([
         validaCampoNivelPreenchido(evento) {
             const nivelMinimo = 1;
             const nivelMaximo = 100;
-            const mensagemDeErro = _i18n.getText("campoNivelNumeroInvalido")
+            const mensagemNivelNumeroInvalido = "campoNivelNumeroInvalido"
+            const mensagemDeErro = _i18n.getText(mensagemNivelNumeroInvalido)
 
             evento.getSource().setValueState(sucesso);
             if(evento.getSource().getValue() < nivelMinimo || evento.getSource().getValue() > nivelMaximo) {
@@ -87,8 +97,7 @@ sap.ui.define([
 
         validaNivelAoEscrever(evento) {
             const regexNaoPermitido = /[\D!@?,"¨|´`<>/\\[\]{};#\$%\^\&*\)\(+=._-]/;
-            const stringVazia = "";
-            let valorDigitado = evento.getParameter('value');
+            let valorDigitado = evento.getParameter(valor);
 
             if(regexNaoPermitido.test(valorDigitado)){
                 valorDigitado = valorDigitado.replace(regexNaoPermitido, stringVazia);
@@ -99,7 +108,8 @@ sap.ui.define([
         validaCampoAlturaPreenchido(evento) {
             const alturaMinima = 0;
             const alturaMaxima = 7;
-            const mensagemDeErro = _i18n.getText("campoAlturaNumeroInvalido")
+            const mensagemAlturaNumeroInvalido = "campoAlturaNumeroInvalido";
+            const mensagemDeErro = _i18n.getText(mensagemAlturaNumeroInvalido)
             let valor = parseFloat(evento.getSource().getValue())
             
             evento.getSource().setValueState(sucesso);
@@ -111,8 +121,10 @@ sap.ui.define([
         },
 
         validaCampoDataDeCapturaPreenchido(evento) {
-            let valorValido = evento.getParameter("valid");
-            const mensagemDeErro = _i18n.getText("campoDataDeCapturaInvalida");
+            const valido = "valid"
+            const valorValido = evento.getParameter(valido);
+            const mensagemDataCapturaInvalida = "campoDataDeCapturaInvalida";
+            const mensagemDeErro = _i18n.getText(mensagemDataCapturaInvalida);
 
             evento.getSource().setValueState(sucesso);
             if(!valorValido) {
@@ -123,13 +135,15 @@ sap.ui.define([
         },
 
         validaCampoTipoPrincipalPreenchido(evento, inputTipoSecundario) {
-            let chaveSelecionada = evento.getSource().getSelectedKey();
-            let chaveSelecionadaInt = (chaveSelecionada === "") ? 0 : parseInt(chaveSelecionada);
-            let segundoTipo = parseInt(inputTipoSecundario.getSelectedKey());
-            let primeiraChave = 1
-            let ultimaChave = 17;
-            const mensagemDeErro = _i18n.getText("campoTipoPrincipalChaveInvalida")
-            const mensagemTiposRepetidos = _i18n.getText("mensagemTiposRepetidos")
+            const chaveSelecionada = evento.getSource().getSelectedKey();
+            const chaveSelecionadaInt = (chaveSelecionada === stringVazia) ? campoSemSelecionar : parseInt(chaveSelecionada);
+            const segundoTipo = parseInt(inputTipoSecundario.getSelectedKey());
+            const primeiraChave = 1
+            const ultimaChave = 17;
+            const mensagemTipoPrincipalInvalido = "campoTipoPrincipalChaveInvalida"
+            const mensagemErroTiposRepetidos = "mensagemTiposRepetidos"
+            const mensagemDeErro = _i18n.getText(mensagemTipoPrincipalInvalido)
+            const mensagemTiposRepetidos = _i18n.getText(mensagemErroTiposRepetidos)
 
             evento.getSource().setValueState(sucesso);
             if(chaveSelecionadaInt < primeiraChave || chaveSelecionadaInt > ultimaChave) {
@@ -148,18 +162,20 @@ sap.ui.define([
         },
         
         validaCampoTipoSecundarioPreenchido(evento, chaveDoTipoPrincipal) {
-            let chaveSelecionada = evento.getSource().getSelectedKey()
-            let primeiroTipo = parseInt(chaveDoTipoPrincipal)
-            let chaveSelecionadaInt = (chaveSelecionada === "") ? 0 : parseInt(chaveSelecionada);
-            const mensagemDeErro = _i18n.getText("campoTipoSecundarioChaveInvalida")
-            let primeiraChave = 1
-            let ultimaChave = 17;
-            const mensagemTiposRepetidos = _i18n.getText("campoTipoSecundarioTiposRepetidos")
+            const chaveSelecionada = evento.getSource().getSelectedKey()
+            const primeiroTipo = parseInt(chaveDoTipoPrincipal)
+            const chaveSelecionadaInt = (chaveSelecionada === stringVazia) ? campoSemSelecionar : parseInt(chaveSelecionada);
+            const mensagemTipoSecundarioInvalido = "campoTipoSecundarioChaveInvalida"
+            const mensagemDeErro = _i18n.getText(mensagemTipoSecundarioInvalido)
+            const primeiraChave = 1
+            const ultimaChave = 17;
+            const mensagemTipoSecundarioIgualAoPrincipal = "campoTipoSecundarioTiposRepetidos"
+            const mensagemTiposRepetidos = _i18n.getText(mensagemTipoSecundarioIgualAoPrincipal)
+            const valorDoCampo = evento.getParameter(valor);
 
             evento.getSource().setValueState(sucesso);
             if(chaveSelecionadaInt < primeiraChave || chaveSelecionadaInt > ultimaChave) {                
-                let valorDoCampo = evento.getParameter("value");
-                if(valorDoCampo.length != 0) {
+                if(valorDoCampo.length != campoSemSelecionar) {
                     evento.getSource().setValueState(erro)
                     evento.getSource().setValueStateText(mensagemDeErro);
                     return(mensagemDeErro)
@@ -172,12 +188,6 @@ sap.ui.define([
                 evento.getSource().setValueStateText(mensagemTiposRepetidos);
                 return(mensagemTiposRepetidos);
             }
-        },
-
-        validaCampoFotoPreenchido(evento) {
-            let arquivo = evento.getSource().getValue();
-            console.log(arquivo)
-            evento.getSource().setValueState(sucesso);
         }
     }
 })

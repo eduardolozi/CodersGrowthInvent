@@ -7,21 +7,20 @@ sap.ui.define([
 ], (Controller, JSONModel, formatter, History) => {
     "use strict"
     const nomeModeloPokemon = "detalhePokemon";
+    let roteador;
+
     return Controller.extend("webapp.Controller.Detalhes", {
         formatter: formatter,
 
         onInit() {
             const rotaDetalhes = "detalhes";
-            const roteador = this.getOwnerComponent().getRouter();
+            roteador = this._retornaRoteador();
 
-			roteador.getRoute(rotaDetalhes).attachPatternMatched(this.noObjetoCorrespondente, this);
+			roteador.getRoute(rotaDetalhes).attachPatternMatched(this.aoCoincidirRota, this);
         },
 
-        noObjetoCorrespondente(evento) {
-            const argumentos = "arguments";
-
-            let indice = window.decodeURIComponent(evento.getParameter(argumentos).detalhesPath)
-            this._carregarPokemon(indice)
+        _retornaRoteador() {
+            return this.getOwnerComponent().getRouter();
         },
 
         _carregarPokemon(indice) {
@@ -39,15 +38,11 @@ sap.ui.define([
             })
         },
 
-        aoClicarBotaoEditar() {
-            const nomePaginaDeCadastro = "cadastro";
-            const nomeParametroId = "id";
-            const parametroId = this.getView().getModel(nomeModeloPokemon).getProperty(nomeParametroId)
-            const roteador = this.getOwnerComponent().getRouter();
-            
-            roteador.navTo(nomePaginaDeCadastro, {
-                id: window.encodeURIComponent(parametroId)
-            })
+        aoCoincidirRota(evento) {
+            const argumentos = "arguments";
+            let indice = window.decodeURIComponent(evento.getParameter(argumentos).detalhesPath)
+
+            this._carregarPokemon(indice)
         },
 
         aoClicarBotaoVoltar() {
@@ -55,14 +50,25 @@ sap.ui.define([
             const historico = History.getInstance();
 			const hashAnterior = historico.getPreviousHash();
             const paginaAnteriorNoHistorico = -1;
+            roteador = this._retornaRoteador();
 
             if (hashAnterior !== undefined) {
 				window.history.go(paginaAnteriorNoHistorico);
 			} else {
-				const roteador = this.getOwnerComponent().getRouter();
 				roteador.navTo(paginaDeListagem, {}, true);
 			}
         },
+
+        aoClicarBotaoEditar() {
+            const nomePaginaDeCadastro = "cadastro";
+            const nomeParametroId = "id";
+            const parametroId = this.getView().getModel(nomeModeloPokemon).getProperty(nomeParametroId)
+            roteador = this._retornaRoteador();
+            
+            roteador.navTo(nomePaginaDeCadastro, {
+                id: window.encodeURIComponent(parametroId)
+            })
+        },   
 
         aoClicarBotaoVerCard() {
             const caminhoCardPokemon = "webapp.View.CardPokemon";

@@ -29,8 +29,10 @@ sap.ui.define([
     const idInputTipoPrincipal = "inputTipoPrincipal";
     const idInputTipoSecundario = "inputTipoSecundario";
     const idInputFoto = "inputFoto";
-    let mensagemDeErro = [];
     const modeloi18n = "i18n"
+    const stringVazia = "";
+    const mensagemDeErro = []
+    let roteador;
 
 
     return Controller.extend("webapp.Controller.Cadastro", {
@@ -41,16 +43,23 @@ sap.ui.define([
             const nomeRotaCadastro = "cadastro";
             const rota = this.getOwnerComponent().getRouter();
 
+
             rota.getRoute(nomeRotaCadastro).attachMatched(this._aoCoincidirRota, this);  
             this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
+            this._injetaI18nNaValidcao();
+            this._defineDatasLimitesDoCampoDeData()
         },
 
         _retornai18n() {
             return this.getOwnerComponent().getModel(modeloi18n).getResourceBundle();
         },
 
+        _retornaRoteador() {
+            return this.getOwnerComponent().getRouter();
+        },
+
         _injetaI18nNaValidcao() {
-            let i18n = this._retornai18n()
+            const i18n = this._retornai18n()
             Validacoes.Validacoes(i18n)
         },
 
@@ -61,8 +70,8 @@ sap.ui.define([
             const dataMinima = UI5Date.getInstance(anoMinimo, mesMinimo, diaMinimo)
             const dataMaxima = UI5Date.getInstance()
 
-            this.byId(idInputDataDeCaptura).setMinDate(dataMinima);
-            this.byId(idInputDataDeCaptura).setMaxDate(dataMaxima);
+            this.getView().byId(idInputDataDeCaptura).setMinDate(dataMinima);
+            this.getView().byId(idInputDataDeCaptura).setMaxDate(dataMaxima);
         },
 
         _limpaOsCampos() {
@@ -122,9 +131,9 @@ sap.ui.define([
             }).then(data => {
                 const nomePaginaDeDetalhes = "detalhes";
                 const idPokemon = data.id;
-                const oRouter = this.getOwnerComponent().getRouter();
+                roteador = this._retornaRoteador();
 
-                oRouter.navTo(nomePaginaDeDetalhes, {detalhesPath: idPokemon});
+                roteador.navTo(nomePaginaDeDetalhes, {detalhesPath: idPokemon});
             }).catch(error => {
                 console.log(error)
             })
@@ -139,20 +148,25 @@ sap.ui.define([
             const historico = History.getInstance();
 			const hashAnterior = historico.getPreviousHash();
             const paginaAnteriorNoHistorico = -1;
+            roteador = this._retornaRoteador();
 
             if (hashAnterior !== undefined) {
 				window.history.go(paginaAnteriorNoHistorico);
 			} else {
-				const oRouter = this.getOwnerComponent().getRouter();
-				oRouter.navTo(paginaDeListagem, {}, true);
+				roteador.navTo(paginaDeListagem, {}, true);
 			}
         },
 
         aoClicarNoBotaoDeSalvar(evento) {
+            const i18n = this._retornai18n();
             const mensagemDeConfirmacao = "mensagemSalvar";
-            let i18n = this._retornai18n();
             const mensagemAoClicarEmSalvar = i18n.getText(mensagemDeConfirmacao);
             const mensagemPreencherCamposVazios = "mensagemPreencherCamposVazios"
+            const mensagemErroCamposVazios = i18n.getText(mensagemPreencherCamposVazios)
+            const mensagemDeErroVazia = 0;
+            const quebraDeLinha = "\n";
+            let quantidadeDeErros = 0;
+            let mensagemDeErroNaTela;
             
             MessageBox.information(mensagemAoClicarEmSalvar, {
                 actions: [sim, nao],
@@ -160,19 +174,20 @@ sap.ui.define([
                 onClose: (acao) => {
                     if (acao === sim) {
                         if(Validacoes.verificaCamposVazios(this.getView()) === true) {
-                            const mensagemErroCamposVazios = i18n.getText(mensagemPreencherCamposVazios)
                             MessageBox.error(mensagemErroCamposVazios);
                             return;
                         };
-                        
-                        if(mensagemDeErro.length==0) {
+                        mensagemDeErro.map(mensagem => {
+                            if(mensagem !== stringVazia)  quantidadeDeErros++;
+                        })
+                        const verificacaoDeErros = quantidadeDeErros;
+                        if(verificacaoDeErros === mensagemDeErroVazia) {
                             this._salvarPokemon(evento);
                         } else {
-                            mensagemDeErro = mensagemDeErro.filter((item) => {
+                            mensagemDeErroNaTela = mensagemDeErro.filter((item) => {
                                 if(item!= undefined) return item;
                             })
-                            MessageBox.error(mensagemDeErro.join('\n'))
-                            mensagemDeErro = null
+                            MessageBox.error(mensagemDeErroNaTela.join(quebraDeLinha))
                         }
                     } 
                 }
@@ -181,7 +196,7 @@ sap.ui.define([
 
         aoClicarNoBotaoDeCancelar() {
             const mensagemDeCancelar = "mensagemAoClicarEmCancelar";
-            let i18n = this._retornai18n();
+            const i18n = this._retornai18n();
             const mensagemAoClicarEmCancelar = i18n.getText(mensagemDeCancelar);
 
             MessageBox.alert(mensagemAoClicarEmCancelar, {
@@ -200,14 +215,15 @@ sap.ui.define([
             const posicaoDoArquivo = 0;
             const idDoDisplayDaFoto = "fotoDoPokemon";
             const parametroDeArquivos = "files";
+            const arquivo = evento.getParameters(parametroDeArquivos).files[posicaoDoArquivo];
 
-            var arquivo = evento.getParameters(parametroDeArquivos).files[posicaoDoArquivo];
-            var leitor = new FileReader();
+            let leitor = new FileReader();
             leitor.readAsArrayBuffer(arquivo);
 
             leitor.onload = (evt) => {
                 const arrayDeBytes = new Uint8Array(evt.target.result);
                 let stringBinaria = '';
+
                 for (let i = 0; i < arrayDeBytes.byteLength; i++) {
                     stringBinaria += String.fromCharCode(arrayDeBytes[i]);
                 }
@@ -221,8 +237,7 @@ sap.ui.define([
         aoMudarCampoNome(evento) {
             const posicaoPropriedadeNome = 0;
             let erroNome = Validacoes.validaCampoNomePreenchido(evento)
-
-            mensagemDeErro[posicaoPropriedadeNome] = erroNome;
+            mensagemDeErro[posicaoPropriedadeNome] = (erroNome) ?  erroNome : stringVazia;
         },
 
         aoDigitarEmCampoNome(evento) {    
@@ -232,15 +247,13 @@ sap.ui.define([
         aoMudarCampoApelido(evento) {
             const posicaoPropriedadeApelido = 1;
             let erroApelido = Validacoes.validaCampoApelidoPreenchido(evento)
-
-            mensagemDeErro[posicaoPropriedadeApelido] = erroApelido;
+            mensagemDeErro[posicaoPropriedadeApelido] = (erroApelido) ?  erroApelido : stringVazia;
         },
 
         aoMudarCampoNivel(evento) {
             const posicaoPropriedadeNivel = 2;
             let erroNivel = Validacoes.validaCampoNivelPreenchido(evento)
-
-            mensagemDeErro[posicaoPropriedadeNivel] = erroNivel;
+            mensagemDeErro[posicaoPropriedadeNivel] = (erroNivel) ?  erroNivel : stringVazia;
         },
 
         aoDigitarEmCampoNivel(evento){
@@ -250,38 +263,27 @@ sap.ui.define([
         aoMudarCampoAltura(evento) {
             const posicaoPropriedadeAltura = 3;
             let erroAltura = Validacoes.validaCampoAlturaPreenchido(evento)
-
-            mensagemDeErro[posicaoPropriedadeAltura] = erroAltura;
+            mensagemDeErro[posicaoPropriedadeAltura] = (erroAltura) ?  erroAltura : stringVazia;
         },
 
         aoMudarCampoDataDeCaptura(evento) {
             const posicaoPropriedadeDataDeCaptura = 4;
             let erroDataDeCaptura = Validacoes.validaCampoDataDeCapturaPreenchido(evento)
-
-            mensagemDeErro[posicaoPropriedadeDataDeCaptura] = erroDataDeCaptura;
+            mensagemDeErro[posicaoPropriedadeDataDeCaptura] = (erroDataDeCaptura) ?  erroDataDeCaptura : stringVazia;
         },
 
         aoMudarCampoTipoPrincipal(evento) {
             const posicaoPropriedadeTipoPrincipal = 5;
             let inputTipoSecundrio = this.byId(idInputTipoSecundario);
             let erroTipoPrincipal = Validacoes.validaCampoTipoPrincipalPreenchido(evento, inputTipoSecundrio)
-
-            mensagemDeErro[posicaoPropriedadeTipoPrincipal] = erroTipoPrincipal;
+            mensagemDeErro[posicaoPropriedadeTipoPrincipal] = (erroTipoPrincipal) ?  erroTipoPrincipal : stringVazia;
         },
 
         aoMudarCampoTipoSecundario(evento) {
             const posicaoPropriedadeTipoSecundario = 6;
             let primeiroTipo = this.byId(idInputTipoPrincipal).getSelectedKey();
             let erroTipoSecundario = Validacoes.validaCampoTipoSecundarioPreenchido(evento, primeiroTipo)
-
-            mensagemDeErro[posicaoPropriedadeTipoSecundario] = erroTipoSecundario;
-        },
-
-        aoMudarCampoFoto(evento) {
-            const posicaoPropriedadeFoto = 7;
-            let erroFoto = Validacoes.validaCampoFotoPreenchido(evento);
-
-            mensagemDeErro[posicaoPropriedadeFoto] = erroFoto;
+            mensagemDeErro[posicaoPropriedadeTipoSecundario] = (erroTipoSecundario) ?  erroTipoSecundario : stringVazia;
         }
     });
 })
