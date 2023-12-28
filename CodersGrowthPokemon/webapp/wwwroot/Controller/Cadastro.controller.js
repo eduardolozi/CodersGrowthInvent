@@ -161,23 +161,23 @@ sap.ui.define([
             const urlFetch = `/pokemons/${idPokemon}`;
             const metodoDoFetch = "PUT";
 
-            const novoPokemon = {
-                nome: this.getView().getModel(nomeModeloPokemon).getProperty(campoNome),
-                apelido: this.getView().getModel(nomeModeloPokemon).getProperty(campoApelido),
-                nivel: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoNivel)),
-                altura: parseFloat(this.getView().getModel(nomeModeloPokemon).getProperty(campoAltura)),
-                dataDeCaptura: this.getView().getModel(nomeModeloPokemon).getProperty(campoDataDeCaptura),
-                tipoPrincipal: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoPrincipal)),
-                tipoSecundario: (this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario) === undefined) ? null : parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario)),
-                shiny: (this.getView().getModel(nomeModeloPokemon).getProperty(campoShiny) === undefined) ? true : false,
-                foto: (this.getView().getModel(nomeModeloPokemon).getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
-            }
+            const pokemonAtualizado = this._insereCamposNoModeloPokemon()
+            pokemonAtualizado.id = this._retornaIdDoPokemon()
 
             fetch(urlFetch, {
                 method: metodoDoFetch,
-                body: JSON.stringify(novoPokemon),
+                body: JSON.stringify(pokemonAtualizado),
                 headers: {"Content-type": "application/json; charset=UTF-8"}
-            }) 
+            }).then(response => {
+                return response.json();
+            }).then(() => {
+                const nomePaginaDeDetalhes = "detalhes";
+
+                roteador = this._retornaRoteador();
+                roteador.navTo(nomePaginaDeDetalhes, {detalhesPath: pokemonAtualizado.id});
+            }).catch(error => {
+                console.log(error)
+            })
         },
 
         _carregarPokemon(indice) {
