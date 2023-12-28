@@ -50,12 +50,21 @@ sap.ui.define([
             this._defineDatasLimitesDoCampoDeData()
         },
 
+        _retornaModeloPokemon() {
+            return this.getView().getModel(nomeModeloPokemon);
+        },
+
         _retornai18n() {
             return this.getOwnerComponent().getModel(modeloi18n).getResourceBundle();
         },
 
         _retornaRoteador() {
             return this.getOwnerComponent().getRouter();
+        },
+
+        _retornaIdDoPokemon() {
+            const propriedadeId = "/id";
+            return this._retornaModeloPokemon().getProperty(propriedadeId);
         },
 
         _injetaI18nNaValidcao() {
@@ -75,13 +84,13 @@ sap.ui.define([
         },
 
         _verificaSeEhCadastroOuAtualizacao() {
-            console.log(this.getView().getModel(nomeModeloPokemon).getData())
+            const idPokemon = this._retornaIdDoPokemon()
+            return (idPokemon) ? idPokemon : undefined;
         },
 
         _limpaOsCampos() {
             const stringVazia = "";
             const statusDoInputRedefinido = "None";
-
             this.getView().byId(idInputNome).setValue(stringVazia)
             this.getView().byId(idInputNome).setValueState(statusDoInputRedefinido)
 
@@ -110,11 +119,8 @@ sap.ui.define([
             this.getView().byId(idInputFoto).setValueState(statusDoInputRedefinido)
         },
 
-        _salvarPokemon() {
-            const urlFetch = "/pokemons/";
-            const metodoDoFetch = "POST";
-
-            const novoPokemon = {
+        _insereCamposNoModeloPokemon() {
+            return {
                 nome: this.getView().getModel(nomeModeloPokemon).getProperty(campoNome),
                 apelido: this.getView().getModel(nomeModeloPokemon).getProperty(campoApelido),
                 nivel: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoNivel)),
@@ -125,6 +131,13 @@ sap.ui.define([
                 shiny: (this.getView().getModel(nomeModeloPokemon).getProperty(campoShiny) === undefined) ? true : false,
                 foto: (this.getView().getModel(nomeModeloPokemon).getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
             }
+        },
+
+        _salvarPokemon() {
+            const urlFetch = "/pokemons/";
+            const metodoDoFetch = "POST";
+
+            const novoPokemon = this._insereCamposNoModeloPokemon()
 
             fetch(urlFetch, {
                 method: metodoDoFetch,
@@ -144,8 +157,9 @@ sap.ui.define([
         },
 
         _atualizarPokemon() {
-            const urlFetch = "/pokemons/";
-            const metodoDoFetch = "POST";
+            const idPokemon = this._retornaIdDoPokemon()
+            const urlFetch = `/pokemons/${idPokemon}`;
+            const metodoDoFetch = "PUT";
 
             const novoPokemon = {
                 nome: this.getView().getModel(nomeModeloPokemon).getProperty(campoNome),
@@ -158,6 +172,12 @@ sap.ui.define([
                 shiny: (this.getView().getModel(nomeModeloPokemon).getProperty(campoShiny) === undefined) ? true : false,
                 foto: (this.getView().getModel(nomeModeloPokemon).getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
             }
+
+            fetch(urlFetch, {
+                method: metodoDoFetch,
+                body: JSON.stringify(novoPokemon),
+                headers: {"Content-type": "application/json; charset=UTF-8"}
+            }) 
         },
 
         _carregarPokemon(indice) {
@@ -224,7 +244,7 @@ sap.ui.define([
                         const verificacaoDeErros = quantidadeDeErros;
                         if(verificacaoDeErros === mensagemDeErroVazia) {
                             verificacaoDeAcao = this._verificaSeEhCadastroOuAtualizacao()
-                            if(verificacaoDeAcao === semIdNaUrl) this._salvarPokemon(evento);
+                            if(verificacaoDeAcao === undefined) this._salvarPokemon(evento);
                             else this._atualizarPokemon(evento)
                         } else {
                             mensagemDeErroNaTela = mensagemDeErro.filter((item) => {
