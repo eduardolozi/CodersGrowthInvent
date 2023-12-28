@@ -52,6 +52,7 @@ namespace Infraestrutura.Repositorios
         public int Criar(Pokemon novoPokemon)
         {
             string textoComando = "INSERT INTO pokemons (nome, apelido, nivel, altura, shiny, data_de_captura, tipo_principal, tipo_secundario, foto)" +
+                                  "OUTPUT INSERTED.ID" +
                                   "VALUES (@nome, @apelido, @nivel, @altura, @shiny, @dataCaptura, @tipoPrincipal, @tipoSecundario, @foto)";
             using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
@@ -105,7 +106,7 @@ namespace Infraestrutura.Repositorios
             return null;
         }
 
-        public List<Pokemon> ObterTodos()
+        public List<Pokemon> ObterTodos(string? nome)
         {
             List<Pokemon> listaPokemon = new List<Pokemon>();
             string textoComando = "SELECT * FROM pokemons";
@@ -114,11 +115,12 @@ namespace Infraestrutura.Repositorios
                 try
                 {
                     conexao.Open();
+                    if (nome is null) textoComando = "SELECT * FROM POKEMON WHERE nome LIKE '%@nome%'";
                     SqlCommand comando = new SqlCommand(textoComando, conexao);
                     SqlDataReader dr = comando.ExecuteReader();
                     while (dr.Read())
                     {
-                        Pokemon pokemon = new Pokemon();
+                        Pokemon pokemon = new ();
                         listaPokemon.Add(_conversao.AtribuiLinhaAoPokemon(dr, pokemon));
                     }
                 }

@@ -6,36 +6,31 @@ sap.ui.define([
 
 ], (Controller, JSONModel, formatter, History) => {
     "use strict"
+    const nomeModeloPokemon = "detalhePokemon";
+    let roteador;
+
     return Controller.extend("webapp.Controller.Detalhes", {
         formatter: formatter,
 
         onInit() {
             const rotaDetalhes = "detalhes";
-            const roteador = this.getOwnerComponent().getRouter();
+            roteador = this._retornaRoteador();
 
-			roteador.getRoute(rotaDetalhes).attachPatternMatched(this.noObjetoCorrespondente, this);
+			roteador.getRoute(rotaDetalhes).attachPatternMatched(this.aoCoincidirRota, this);
         },
 
-        noObjetoCorrespondente(oEvent) {
-            const argumentos = "arguments";
-
-            let indice = window.decodeURIComponent(oEvent.getParameter(argumentos).detalhesPath)
-            this._carregarPokemon(indice)
+        _retornaRoteador() {
+            return this.getOwnerComponent().getRouter();
         },
 
         _carregarPokemon(indice) {
             const rotaApi = `/pokemons/${indice}`;
-            const nomeModeloPokemon = "detalhePokemon";
 
             fetch(rotaApi)
             .then(response => {
                 return response.json()
             })
             .then(response => {
-                if(response.foto != null) {
-                    let blob = this._converteBase64ParaBlob(response.foto);
-                    response.foto = URL.createObjectURL(blob);
-                }
                 this.getView().setModel(new JSONModel(response), nomeModeloPokemon);
             })
             .catch(erro => {
@@ -43,24 +38,11 @@ sap.ui.define([
             })
         },
 
-        _converteBase64ParaBlob(stringBase64, tipoConteudo='', tamanhoDoPedaco=512) {
-            const caracteresEmBytes = atob(stringBase64);
-            const bytesArquivo = [];
-          
-            for (let offset = 0; offset < caracteresEmBytes.length; offset += tamanhoDoPedaco) {
-              const pedaco = caracteresEmBytes.slice(offset, offset + tamanhoDoPedaco);
-          
-              const numerosDosBytes = new Array(pedaco.length);
-              for (let i = 0; i < pedaco.length; i++) {
-                numerosDosBytes[i] = pedaco.charCodeAt(i);
-              }
-          
-              const byteArray = new Uint8Array(numerosDosBytes);
-              bytesArquivo.push(byteArray);
-            }
-          
-            const blob = new Blob(bytesArquivo, {type: tipoConteudo});
-            return blob;
+        aoCoincidirRota(evento) {
+            const argumentos = "arguments";
+            let indice = window.decodeURIComponent(evento.getParameter(argumentos).detalhesPath)
+
+            this._carregarPokemon(indice)
         },
 
         aoClicarBotaoVoltar() {
@@ -68,16 +50,27 @@ sap.ui.define([
             const historico = History.getInstance();
 			const hashAnterior = historico.getPreviousHash();
             const paginaAnteriorNoHistorico = -1;
+            roteador = this._retornaRoteador();
 
             if (hashAnterior !== undefined) {
 				window.history.go(paginaAnteriorNoHistorico);
 			} else {
-				const roteador = this.getOwnerComponent().getRouter();
 				roteador.navTo(paginaDeListagem, {}, true);
 			}
         },
 
-        aoClicarBotaoVerCard(oEvent) {
+        aoClicarBotaoEditar() {
+            const nomePaginaDeCadastro = "cadastro";
+            const nomeParametroId = "id";
+            const parametroId = this.getView().getModel(nomeModeloPokemon).getProperty(nomeParametroId)
+            roteador = this._retornaRoteador();
+            
+            roteador.navTo(nomePaginaDeCadastro, {
+                id: window.encodeURIComponent(parametroId)
+            })
+        },   
+
+        aoClicarBotaoVerCard() {
             const caminhoCardPokemon = "webapp.View.CardPokemon";
 
             this.pDialog ??= this.loadFragment({

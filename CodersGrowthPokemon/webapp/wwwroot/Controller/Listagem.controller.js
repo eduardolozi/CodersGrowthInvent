@@ -7,29 +7,27 @@ sap.ui.define([
 ], (Controller, JSONModel, formatter, Filter, FilterOperator) => {
     "use strict"
     const nomeModeloPokemons = "pokemons";
+    let roteador;
 
     return Controller.extend("webapp.Controller.Listagem", {
         formatter: formatter,
+
         onInit() {
             this._carregarPokemons();
         },
 
+        _retornaRoteador() {
+            return this.getOwnerComponent().getRouter();
+        },
+
         _carregarPokemons() {
             const urlApi = "/pokemons";
+
             fetch(urlApi)
                 .then(response => {
                     return response.json();
                 })
                 .then(response => {
-                    const pokemonsResponse = Object.entries(response)
-                    const dados = 1;
-
-                    for(let posicao = 0; posicao < pokemonsResponse.length; posicao++) {
-                        if(pokemonsResponse[posicao][dados].foto != null) {
-                            let blob = this._converteBase64ParaBlob(pokemonsResponse[posicao][dados].foto);
-                            pokemonsResponse[posicao][dados].foto = URL.createObjectURL(blob);
-                        }
-                    }
                     this.getView().setModel(new JSONModel(response), nomeModeloPokemons);
                 })
                 .catch(erro => {
@@ -37,57 +35,57 @@ sap.ui.define([
                 });
         },
 
-        _converteBase64ParaBlob(stringBase64, tipoConteudo='', tamanhoDoPedaco=512) {
-            const caracteresEmBytes = atob(stringBase64);
-            const bytesArquivo = [];
-          
-            for (let offset = 0; offset < caracteresEmBytes.length; offset += tamanhoDoPedaco) {
-              const pedaco = caracteresEmBytes.slice(offset, offset + tamanhoDoPedaco);
-          
-              const numerosDosBytes = new Array(pedaco.length);
-              for (let i = 0; i < pedaco.length; i++) {
-                numerosDosBytes[i] = pedaco.charCodeAt(i);
-              }
-          
-              const byteArray = new Uint8Array(numerosDosBytes);
-              bytesArquivo.push(byteArray);
-            }
-          
-            const blob = new Blob(bytesArquivo, {type: tipoConteudo});
-            return blob;
-        },
-
-        aoFiltrarPokemons(oEvent) {
+        aoFiltrarPokemons(evento) {
             const idListaDePokemons = "listaDePokemons";
             const itensDaLista = "items";
             const campoNome = "nome";
             const parametroParaConsulta = "query";
+            const filtros = [];
+            const consulta = evento.getParameter(parametroParaConsulta);
+            let listaDePokemons;
+            let pokemonsDaLista;
 
-            const aFilter = [];
-            const sQuery = oEvent.getParameter(parametroParaConsulta);
-            if (sQuery) {
-                aFilter.push(new Filter(campoNome, FilterOperator.Contains, sQuery));
+            if (consulta) {
+                this._obterPokemonPeloNome(consulta)
+                    .then(pokemons => {
+                        pokemons.forEach(() => {
+                            filtros.push(new Filter(campoNome, FilterOperator.Contains, consulta));
+                        })
+                        listaDePokemons = this.byId(idListaDePokemons);
+                        pokemonsDaLista = listaDePokemons.getBinding(itensDaLista);
+                        pokemonsDaLista.filter(filtros);
+                    })
             }
-            const oList = this.byId(idListaDePokemons);
-            const oBinding = oList.getBinding(itensDaLista);
-            oBinding.filter(aFilter);
+            else {
+                listaDePokemons = this.byId(idListaDePokemons);
+                pokemonsDaLista = listaDePokemons.getBinding(itensDaLista);
+                pokemonsDaLista.filter(filtros);
+            }
         },
 
-        aoClicarEmUmaLinhaDaTabela(oEvent) {
+        _obterPokemonPeloNome(nome) {
+            const urlApi = `/pokemons?nome=${nome}`
+
+            return fetch(urlApi)
+            .then(response => response.json())
+            .catch(erro => console.log(erro))
+        },
+
+        aoClicarEmUmaLinhaDaTabela(evento) {
             const nomeParametroId = "id";
             const nomePaginaDeDetalhes = "detalhes";
+            const items = evento.getSource();
+            roteador = this._retornaRoteador();
 
-            const items = oEvent.getSource();
-            const roteador = this.getOwnerComponent().getRouter();
             roteador.navTo(nomePaginaDeDetalhes, {
                 detalhesPath: window.encodeURIComponent(items.getBindingContext(nomeModeloPokemons).getProperty(nomeParametroId))
             })
         },
 
-        aoClicarNoBotaoAdicionar(oEvent) {
+        aoClicarNoBotaoAdicionar() {
             const nomePaginaDeCadastro = "cadastro";
+            roteador = this._retornaRoteador();
 
-            const roteador = this.getOwnerComponent().getRouter();
             roteador.navTo(nomePaginaDeCadastro, {})
         }
 
