@@ -134,8 +134,11 @@ sap.ui.define([
         },
 
         _salvarPokemon() {
+            const i18n = this._retornai18n();
             const urlFetch = "/pokemons/";
             const metodoDoFetch = "POST";
+            const sucessoAoSalvar = "sucessoAoSalvar"
+            const mensagemSucessoAoSalvar = i18n.getText(sucessoAoSalvar);
 
             const novoPokemon = this._insereCamposNoModeloPokemon()
 
@@ -148,18 +151,26 @@ sap.ui.define([
             }).then(data => {
                 const nomePaginaDeDetalhes = "detalhes";
                 const idPokemon = data.id;
-                roteador = this._retornaRoteador();
 
-                roteador.navTo(nomePaginaDeDetalhes, {detalhesPath: idPokemon});
+                MessageBox.success(mensagemSucessoAoSalvar, {
+                    actions: [MessageBox.Action.OK],
+                    onClose: () => {
+                        roteador = this._retornaRoteador();
+                        roteador.navTo(nomePaginaDeDetalhes, {detalhesPath: idPokemon});
+                    }
+                })
             }).catch(error => {
                 console.log(error)
             })
         },
 
         _atualizarPokemon() {
+            const i18n = this._retornai18n();
             const idPokemon = this._retornaIdDoPokemon()
             const urlFetch = `/pokemons/${idPokemon}`;
             const metodoDoFetch = "PUT";
+            const sucessoAoAtualizar = "sucessoAoAtualizar"
+            const mensagemSucessoAoAtualizar = i18n.getText(sucessoAoAtualizar);
 
             const pokemonAtualizado = this._insereCamposNoModeloPokemon()
             pokemonAtualizado.id = this._retornaIdDoPokemon()
@@ -173,8 +184,14 @@ sap.ui.define([
             }).then(() => {
                 const nomePaginaDeDetalhes = "detalhes";
 
-                roteador = this._retornaRoteador();
-                roteador.navTo(nomePaginaDeDetalhes, {detalhesPath: pokemonAtualizado.id});
+                MessageBox.success(mensagemSucessoAoAtualizar, {
+                    actions: [MessageBox.Action.OK],
+                    onClose: () => {
+                        roteador = this._retornaRoteador();
+                        roteador.navTo(nomePaginaDeDetalhes, {detalhesPath: pokemonAtualizado.id});
+                    }
+                })
+                
             }).catch(error => {
                 console.log(error)
             })
@@ -223,6 +240,7 @@ sap.ui.define([
             const mensagemAoClicarEmSalvar = i18n.getText(mensagemDeConfirmacao);
             const mensagemPreencherCamposVazios = "mensagemPreencherCamposVazios"
             const mensagemErroCamposVazios = i18n.getText(mensagemPreencherCamposVazios)
+            
             const mensagemDeErroVazia = 0;
             const quebraDeLinha = "\n";
             let quantidadeDeErros = 0;
@@ -244,8 +262,14 @@ sap.ui.define([
                         const verificacaoDeErros = quantidadeDeErros;
                         if(verificacaoDeErros === mensagemDeErroVazia) {
                             verificacaoDeAcao = this._verificaSeEhCadastroOuAtualizacao()
-                            if(verificacaoDeAcao === undefined) this._salvarPokemon(evento);
-                            else this._atualizarPokemon(evento)
+                            if(verificacaoDeAcao === undefined) {
+                                
+                                this._salvarPokemon(evento);
+                            }
+                            else {
+                                this._atualizarPokemon(evento)
+                                MessageBox.success(mensagemSucessoAoAtualizar)
+                            }
                         } else {
                             mensagemDeErroNaTela = mensagemDeErro.filter((item) => {
                                 if(item!= undefined) return item;
