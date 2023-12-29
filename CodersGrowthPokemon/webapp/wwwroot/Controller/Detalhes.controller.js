@@ -47,21 +47,14 @@ sap.ui.define([
 
         aoClicarBotaoVoltar() {
             const paginaDeListagem = "listagem";
-            const historico = History.getInstance();
-			const hashAnterior = historico.getPreviousHash();
-            const paginaAnteriorNoHistorico = -1;
+            
             roteador = this._retornaRoteador();
-
-            if (hashAnterior !== undefined) {
-				window.history.go(paginaAnteriorNoHistorico);
-			} else {
-				roteador.navTo(paginaDeListagem, {}, true);
-			}
+            roteador.navTo(paginaDeListagem, {}, true);
         },
 
         aoClicarBotaoEditar() {
             const nomePaginaDeCadastro = "cadastro";
-            const nomeParametroId = "id";
+            const nomeParametroId = "/id";
             const parametroId = this.getView().getModel(nomeModeloPokemon).getProperty(nomeParametroId)
             roteador = this._retornaRoteador();
             

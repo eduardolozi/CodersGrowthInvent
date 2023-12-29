@@ -71,7 +71,6 @@
 					"name": "cadastro",
 					"target": "cadastro"
 				}
-
 			],
 			"targets": {
 				"listagem": {

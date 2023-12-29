@@ -31,7 +31,9 @@ sap.ui.define([
     const idInputFoto = "inputFoto";
     const modeloi18n = "i18n"
     const stringVazia = "";
+    const argumentos = "arguments";
     const mensagemDeErro = []
+    const semIdNaUrl = 0;
     let roteador;
 
 
@@ -43,11 +45,13 @@ sap.ui.define([
             const nomeRotaCadastro = "cadastro";
             const rota = this.getOwnerComponent().getRouter();
 
-
-            rota.getRoute(nomeRotaCadastro).attachMatched(this._aoCoincidirRota, this);  
-            this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
+            rota.getRoute(nomeRotaCadastro).attachMatched(this._aoCoincidirRota, this);              
             this._injetaI18nNaValidcao();
             this._defineDatasLimitesDoCampoDeData()
+        },
+
+        _retornaModeloPokemon() {
+            return this.getView().getModel(nomeModeloPokemon);
         },
 
         _retornai18n() {
@@ -56,6 +60,11 @@ sap.ui.define([
 
         _retornaRoteador() {
             return this.getOwnerComponent().getRouter();
+        },
+
+        _retornaIdDoPokemon() {
+            const propriedadeId = "/id";
+            return this._retornaModeloPokemon().getProperty(propriedadeId);
         },
 
         _injetaI18nNaValidcao() {
@@ -74,10 +83,14 @@ sap.ui.define([
             this.getView().byId(idInputDataDeCaptura).setMaxDate(dataMaxima);
         },
 
+        _verificaSeEhCadastroOuAtualizacao() {
+            const idPokemon = this._retornaIdDoPokemon()
+            return (idPokemon) ? idPokemon : undefined;
+        },
+
         _limpaOsCampos() {
             const stringVazia = "";
             const statusDoInputRedefinido = "None";
-
             this.getView().byId(idInputNome).setValue(stringVazia)
             this.getView().byId(idInputNome).setValueState(statusDoInputRedefinido)
 
@@ -106,21 +119,26 @@ sap.ui.define([
             this.getView().byId(idInputFoto).setValueState(statusDoInputRedefinido)
         },
 
+        _insereCamposNoModeloPokemon() {
+            const modeloPokemon = this._retornaModeloPokemon();
+            return {
+                nome: modeloPokemon.getProperty(campoNome),
+                apelido: modeloPokemon.getProperty(campoApelido),
+                nivel: parseInt(modeloPokemon.getProperty(campoNivel)),
+                altura: parseFloat(modeloPokemon.getProperty(campoAltura)),
+                dataDeCaptura: modeloPokemon.getProperty(campoDataDeCaptura),
+                tipoPrincipal: parseInt(modeloPokemon.getProperty(campoTipoPrincipal)),
+                tipoSecundario: (modeloPokemon.getProperty(campoTipoSecundario) === undefined) ? null : parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario)),
+                shiny: (modeloPokemon.getProperty(campoShiny) === false) ? false : true,
+                foto: (modeloPokemon.getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
+            }
+        },
+
         _salvarPokemon() {
             const urlFetch = "/pokemons/";
             const metodoDoFetch = "POST";
 
-            const novoPokemon = {
-                nome: this.getView().getModel(nomeModeloPokemon).getProperty(campoNome),
-                apelido: this.getView().getModel(nomeModeloPokemon).getProperty(campoApelido),
-                nivel: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoNivel)),
-                altura: parseFloat(this.getView().getModel(nomeModeloPokemon).getProperty(campoAltura)),
-                dataDeCaptura: this.getView().getModel(nomeModeloPokemon).getProperty(campoDataDeCaptura),
-                tipoPrincipal: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoPrincipal)),
-                tipoSecundario: (this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario) === undefined) ? null : parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario)),
-                shiny: (this.getView().getModel(nomeModeloPokemon).getProperty(campoShiny) === undefined) ? true : false,
-                foto: (this.getView().getModel(nomeModeloPokemon).getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
-            }
+            const novoPokemon = this._insereCamposNoModeloPokemon()
 
             fetch(urlFetch, {
                 method: metodoDoFetch,
@@ -139,8 +157,51 @@ sap.ui.define([
             })
         },
 
-        _aoCoincidirRota(evt) {
+        _atualizarPokemon() {
+            const idPokemon = this._retornaIdDoPokemon()
+            const urlFetch = `/pokemons/${idPokemon}`;
+            const metodoDoFetch = "PUT";
+
+            const pokemonAtualizado = this._insereCamposNoModeloPokemon()
+            pokemonAtualizado.id = this._retornaIdDoPokemon()
+
+            fetch(urlFetch, {
+                method: metodoDoFetch,
+                body: JSON.stringify(pokemonAtualizado),
+                headers: {"Content-type": "application/json; charset=UTF-8"}
+            }).then(response => {
+                return response.json();
+            }).then(() => {
+                const nomePaginaDeDetalhes = "detalhes";
+
+                roteador = this._retornaRoteador();
+                roteador.navTo(nomePaginaDeDetalhes, {detalhesPath: pokemonAtualizado.id});
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        _carregarPokemon(indice) {
+            const rotaApi = `/pokemons/${indice}`;
+
+            fetch(rotaApi)
+            .then(response => {
+                return response.json()
+            })
+            .then(response => {
+                this.getView().setModel(new JSONModel(response), nomeModeloPokemon);
+            })
+            .catch(erro => {
+                console.log(erro);
+            })
+        },
+
+        _aoCoincidirRota(evento) {
+            const idPokemon = evento.getParameter(argumentos).id;
+
             this._limpaOsCampos()
+            if(idPokemon != undefined) this._carregarPokemon(idPokemon)
+            else this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
         },
 
         aoClicarNoBotaoDeVoltar() {
@@ -167,6 +228,7 @@ sap.ui.define([
             const quebraDeLinha = "\n";
             let quantidadeDeErros = 0;
             let mensagemDeErroNaTela;
+            let verificacaoDeAcao;
             
             MessageBox.information(mensagemAoClicarEmSalvar, {
                 actions: [sim, nao],
@@ -182,7 +244,9 @@ sap.ui.define([
                         })
                         const verificacaoDeErros = quantidadeDeErros;
                         if(verificacaoDeErros === mensagemDeErroVazia) {
-                            this._salvarPokemon(evento);
+                            verificacaoDeAcao = this._verificaSeEhCadastroOuAtualizacao()
+                            if(verificacaoDeAcao === undefined) this._salvarPokemon(evento);
+                            else this._atualizarPokemon(evento)
                         } else {
                             mensagemDeErroNaTela = mensagemDeErro.filter((item) => {
                                 if(item!= undefined) return item;
