@@ -13,7 +13,11 @@ sap.ui.define([
         formatter: formatter,
 
         onInit() {
-            this._carregarPokemons();
+            const paginaDeListagem = "listagem";
+
+            roteador = this._retornaRoteador();
+            roteador.getRoute(paginaDeListagem).attachMatched(this._aoCoincidirRota, this); 
+            
         },
 
         _retornaRoteador() {
@@ -69,6 +73,10 @@ sap.ui.define([
             return fetch(urlApi)
             .then(response => response.json())
             .catch(erro => console.log(erro))
+        },
+
+        _aoCoincidirRota() {
+            this._carregarPokemons();
         },
 
         aoClicarEmUmaLinhaDaTabela(evento) {
