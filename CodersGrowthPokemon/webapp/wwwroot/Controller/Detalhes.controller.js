@@ -47,16 +47,9 @@ sap.ui.define([
 
         aoClicarBotaoVoltar() {
             const paginaDeListagem = "listagem";
-            const historico = History.getInstance();
-			const hashAnterior = historico.getPreviousHash();
-            const paginaAnteriorNoHistorico = -1;
+            
             roteador = this._retornaRoteador();
-
-            if (hashAnterior !== undefined) {
-				window.history.go(paginaAnteriorNoHistorico);
-			} else {
-				roteador.navTo(paginaDeListagem, {}, true);
-			}
+            roteador.navTo(paginaDeListagem, {}, true);
         },
 
         aoClicarBotaoEditar() {

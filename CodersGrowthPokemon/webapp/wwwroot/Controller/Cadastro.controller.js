@@ -120,16 +120,17 @@ sap.ui.define([
         },
 
         _insereCamposNoModeloPokemon() {
+            const modeloPokemon = this._retornaModeloPokemon();
             return {
-                nome: this.getView().getModel(nomeModeloPokemon).getProperty(campoNome),
-                apelido: this.getView().getModel(nomeModeloPokemon).getProperty(campoApelido),
-                nivel: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoNivel)),
-                altura: parseFloat(this.getView().getModel(nomeModeloPokemon).getProperty(campoAltura)),
-                dataDeCaptura: this.getView().getModel(nomeModeloPokemon).getProperty(campoDataDeCaptura),
-                tipoPrincipal: parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoPrincipal)),
-                tipoSecundario: (this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario) === undefined) ? null : parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario)),
-                shiny: (this.getView().getModel(nomeModeloPokemon).getProperty(campoShiny) === undefined) ? true : false,
-                foto: (this.getView().getModel(nomeModeloPokemon).getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
+                nome: modeloPokemon.getProperty(campoNome),
+                apelido: modeloPokemon.getProperty(campoApelido),
+                nivel: parseInt(modeloPokemon.getProperty(campoNivel)),
+                altura: parseFloat(modeloPokemon.getProperty(campoAltura)),
+                dataDeCaptura: modeloPokemon.getProperty(campoDataDeCaptura),
+                tipoPrincipal: parseInt(modeloPokemon.getProperty(campoTipoPrincipal)),
+                tipoSecundario: (modeloPokemon.getProperty(campoTipoSecundario) === undefined) ? null : parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario)),
+                shiny: (modeloPokemon.getProperty(campoShiny) === false) ? false : true,
+                foto: (modeloPokemon.getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
             }
         },
 

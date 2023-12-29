@@ -16,8 +16,11 @@
                     <List class="sapUiSmallMarginBottom" showSeparators="None">
                         <CustomListItem>
                             <VBox alignItems="Center" justifyContent="Center">
-                                <FlexBox class="sapUiSmallMarginTopBottom">
-                                    <Image src="{detalhePokemon>/foto}"/>
+                                <FlexBox class="sapUiSmallMarginTop">
+                                    <Image src="{
+                                        path: 'detalhePokemon>/foto',
+                                        formatter: '.formatter.formataImagem' 
+                                    }" width="80px" height="80px"/>
                                 </FlexBox>
                                 <VBox class="sapUiSmallMarginBegin">
                                     <FlexBox direction="Column" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom">
