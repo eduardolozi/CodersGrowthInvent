@@ -33,7 +33,6 @@ sap.ui.define([
     const stringVazia = "";
     const argumentos = "arguments";
     const mensagemDeErro = []
-    const semIdNaUrl = 0;
     let roteador;
 
 
