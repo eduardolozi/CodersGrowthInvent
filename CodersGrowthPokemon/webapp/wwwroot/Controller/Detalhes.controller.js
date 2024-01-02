@@ -3,8 +3,9 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "../model/formatter",
     "sap/m/MessageBox",
-    "../Repositorios/RepositorioFetch"
-], (Controller, JSONModel, formatter, MessageBox, RepositorioFetch) => {
+    "../Repositorios/PokemonRepository",
+    "../Services/ProcessarEventos"
+], (Controller, JSONModel, formatter, MessageBox, PokemonRepository, ProcessarEventos) => {
     "use strict"
     const nomeModeloPokemon = "detalhePokemon";
     const paginaDeListagem = "listagem";
@@ -40,8 +41,8 @@ sap.ui.define([
         _carregarPokemon(indice) {
             const paginaNaoEncontrada =  "notFound";
             const roteador = this._retornaRoteador();
-            
-            RepositorioFetch.obterPokemonPorId(indice)
+
+            PokemonRepository.obterPokemonPorId(indice)
                 .then(response => {
                     if(!response.id) {
                         roteador.navTo(paginaNaoEncontrada, {})
@@ -51,24 +52,11 @@ sap.ui.define([
         },
 
         _removePokemon(indice) {
-            RepositorioFetch.removerPokemon(indice);
-        },
-
-        _processarEvento: function(action){
-            const tipoDaPromise = "catch",
-                       tipoBuscado = "function";
-            try {
-                    var promise = action();
-                    if(promise && typeof(promise[tipoDaPromise]) == tipoBuscado){
-                            promise.catch(error => MessageBox.error(error.message));
-                    }
-            } catch (error) {
-                    MessageBox.error(error.message);
-            }
+            PokemonRepository.removerPokemon(indice);
         },
 
         aoCoincidirRota(evento) {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const argumentos = "arguments";
                 let indice = window.decodeURIComponent(evento.getParameter(argumentos).detalhesPath)
     
@@ -77,14 +65,14 @@ sap.ui.define([
         },
 
         aoClicarBotaoVoltar() {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 roteador = this._retornaRoteador();
                 roteador.navTo(paginaDeListagem, {}, true);
             })
         },
 
         aoClicarBotaoEditar() {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const nomePaginaDeCadastro = "cadastro";
                 const nomeParametroId = "/id";
                 const parametroId = this.getView().getModel(nomeModeloPokemon).getProperty(nomeParametroId)
@@ -97,7 +85,7 @@ sap.ui.define([
         },   
 
         aoClicarBotaoRemover() {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const i18n = this._retornai18n();
                 const nomeDoPokemon = this._retornaNomeDoPokemon();
                 const mensagemDeConfirmacao = `Deseja mesmo remover o pokemon ${nomeDoPokemon}`
@@ -127,7 +115,7 @@ sap.ui.define([
         },
 
         aoClicarBotaoVerCard() {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const caminhoCardPokemon = "webapp.View.CardPokemon";
     
                 this.pDialog ??= this.loadFragment({
@@ -138,7 +126,7 @@ sap.ui.define([
         },
 
         aoFecharDialog() {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const idCardPokemon = "cardPokemon";
     
                 this.byId(idCardPokemon).close();

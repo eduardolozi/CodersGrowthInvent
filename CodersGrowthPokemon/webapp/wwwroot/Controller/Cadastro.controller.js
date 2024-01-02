@@ -6,8 +6,9 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel", 
     "../Services/Validacoes",
     "sap/ui/core/date/UI5Date",
-    "../Repositorios/RepositorioFetch"
-], (Controller, formatter, History, MessageBox, JSONModel, Validacoes, UI5Date, RepositorioFetch) => {
+    "../Repositorios/PokemonRepository", 
+    "../Services/ProcessarEventos"
+], (Controller, formatter, History, MessageBox, JSONModel, Validacoes, UI5Date, PokemonRepository, ProcessarEventos) => {
     "use strict"
     const sim = "Sim";
     const nao = "Não";
@@ -140,7 +141,7 @@ sap.ui.define([
             const mensagemSucessoAoSalvar = i18n.getText(sucessoAoSalvar);
             const novoPokemon = this._insereCamposNoModeloPokemon()
 
-            RepositorioFetch.criarPokemon(novoPokemon)
+            PokemonRepository.criarPokemon(novoPokemon)
             .then(response => {
                 const nomePaginaDeDetalhes = "detalhes";
                 const idPokemon = response.id;
@@ -163,7 +164,7 @@ sap.ui.define([
             const pokemonAtualizado = this._insereCamposNoModeloPokemon()
             pokemonAtualizado.id = this._retornaIdDoPokemon();
 
-            RepositorioFetch.atualizarPokemon(pokemonAtualizado)
+            PokemonRepository.atualizarPokemon(pokemonAtualizado)
             .then(() => {
                 const nomePaginaDeDetalhes = "detalhes";
 
@@ -180,7 +181,7 @@ sap.ui.define([
         _carregarPokemon(indice) {
             const paginaNaoEncontrada =  "notFound";
             const roteador = this._retornaRoteador()
-            RepositorioFetch.obterPokemonPorId(indice)
+            PokemonRepository.obterPokemonPorId(indice)
             .then(response => {
                 if(!response.id) {
                     roteador.navTo(paginaNaoEncontrada, {})
@@ -189,21 +190,8 @@ sap.ui.define([
             })
         },
 
-        _processarEvento: function(action){
-            const tipoDaPromise = "catch",
-                       tipoBuscado = "function";
-            try {
-                    var promise = action();
-                    if(promise && typeof(promise[tipoDaPromise]) == tipoBuscado){
-                            promise.catch(error => MessageBox.error(error.message));
-                    }
-            } catch (error) {
-                    MessageBox.error(error.message);
-            }
-        },
-
         _aoCoincidirRota(evento) {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const idPokemon = evento.getParameter(argumentos).id;
     
                 this._limpaOsCampos()
@@ -213,7 +201,7 @@ sap.ui.define([
         },
 
         aoClicarNoBotaoDeVoltar() {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const paginaDeListagem = "listagem";
                 const historico = History.getInstance();
                 const hashAnterior = historico.getPreviousHash();
@@ -229,7 +217,7 @@ sap.ui.define([
         },
 
         aoClicarNoBotaoDeSalvar(evento) {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const i18n = this._retornai18n();
                 const mensagemDeConfirmacao = "mensagemSalvar";
                 const mensagemAoClicarEmSalvar = i18n.getText(mensagemDeConfirmacao);
@@ -277,7 +265,7 @@ sap.ui.define([
         },
 
         aoClicarNoBotaoDeCancelar() {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const i18n = this._retornai18n();
                 const aoClicarEmCancelarNaAdicao = "mensagemAoClicarEmCancelarNaAdicao";
                 const mensagemAoClicarEmCancelarNaAdicao = i18n.getText(aoClicarEmCancelarNaAdicao);
@@ -300,7 +288,7 @@ sap.ui.define([
         },
 
         aoCarregarImagem(evento) {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const posicaoDoArquivo = 0;
                 const idDoDisplayDaFoto = "fotoDoPokemon";
                 const parametroDeArquivos = "files";
@@ -327,7 +315,7 @@ sap.ui.define([
         },
 
         aoMudarCampoNome(evento) {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const posicaoPropriedadeNome = 0;
                 let erroNome = Validacoes.validaCampoNomePreenchido(evento)
                 mensagemDeErro[posicaoPropriedadeNome] = (erroNome) ?  erroNome : stringVazia;
@@ -335,13 +323,13 @@ sap.ui.define([
         },
 
         aoDigitarEmCampoNome(evento) {    
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 Validacoes.validaNomeAoEscrever(evento)
             })
         },
 
         aoMudarCampoApelido(evento) {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const posicaoPropriedadeApelido = 1;
                 let erroApelido = Validacoes.validaCampoApelidoPreenchido(evento)
                 mensagemDeErro[posicaoPropriedadeApelido] = (erroApelido) ?  erroApelido : stringVazia;
@@ -349,7 +337,7 @@ sap.ui.define([
         },
 
         aoMudarCampoNivel(evento) {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const posicaoPropriedadeNivel = 2;
                 let erroNivel = Validacoes.validaCampoNivelPreenchido(evento)
                 mensagemDeErro[posicaoPropriedadeNivel] = (erroNivel) ?  erroNivel : stringVazia;
@@ -357,13 +345,13 @@ sap.ui.define([
         },
 
         aoDigitarEmCampoNivel(evento){
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 Validacoes.validaNivelAoEscrever(evento)
             })
         },
 
         aoMudarCampoAltura(evento) {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const posicaoPropriedadeAltura = 3;
                 let erroAltura = Validacoes.validaCampoAlturaPreenchido(evento)
                 mensagemDeErro[posicaoPropriedadeAltura] = (erroAltura) ?  erroAltura : stringVazia;
@@ -371,7 +359,7 @@ sap.ui.define([
         },
 
         aoMudarCampoDataDeCaptura(evento) {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const posicaoPropriedadeDataDeCaptura = 4;
                 let erroDataDeCaptura = Validacoes.validaCampoDataDeCapturaPreenchido(evento)
                 mensagemDeErro[posicaoPropriedadeDataDeCaptura] = (erroDataDeCaptura) ?  erroDataDeCaptura : stringVazia;
@@ -379,7 +367,7 @@ sap.ui.define([
         },
 
         aoMudarCampoTipoPrincipal(evento) {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const posicaoPropriedadeTipoPrincipal = 5;
                 let inputTipoSecundrio = this.byId(idInputTipoSecundario);
                 let erroTipoPrincipal = Validacoes.validaCampoTipoPrincipalPreenchido(evento, inputTipoSecundrio)
@@ -388,7 +376,7 @@ sap.ui.define([
         },
 
         aoMudarCampoTipoSecundario(evento) {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const posicaoPropriedadeTipoSecundario = 6;
                 let primeiroTipo = this.byId(idInputTipoPrincipal).getSelectedKey();
                 let erroTipoSecundario = Validacoes.validaCampoTipoSecundarioPreenchido(evento, primeiroTipo)

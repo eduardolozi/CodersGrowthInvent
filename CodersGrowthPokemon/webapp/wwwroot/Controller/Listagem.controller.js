@@ -4,9 +4,10 @@ sap.ui.define([
     "../model/formatter",
     "sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
-    "../Repositorios/RepositorioFetch",
-    "sap/m/MessageBox"
-], (Controller, JSONModel, formatter, Filter, FilterOperator, RepositorioFetch, MessageBox) => {
+    "../Repositorios/PokemonRepository",
+    "sap/m/MessageBox", 
+    "../Services/ProcessarEventos"
+], (Controller, JSONModel, formatter, Filter, FilterOperator, PokemonRepository, MessageBox, ProcessarEventos) => {
     "use strict"
 
     const nomeModeloPokemons = "pokemons";
@@ -28,14 +29,14 @@ sap.ui.define([
         },
 
         _carregarPokemons() {
-            RepositorioFetch.obterTodosOsPokemons()
+            PokemonRepository.obterTodosOsPokemons()
                 .then(response => {
                     this.getView().setModel(new JSONModel(response), nomeModeloPokemons);
                 })
         },
 
         aoFiltrarPokemons(evento) {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const idListaDePokemons = "listaDePokemons";
                 const itensDaLista = "items";
                 const campoNome = "nome";
@@ -46,7 +47,7 @@ sap.ui.define([
                 let pokemonsDaLista;
     
                 if (consulta) {
-                    RepositorioFetch.obterPokemonPorNome(consulta)
+                    PokemonRepository.obterTodosOsPokemons(consulta)
                         .then(pokemons => {
                             pokemons.forEach(() => {
                                 filtros.push(new Filter(campoNome, FilterOperator.Contains, consulta));
@@ -64,27 +65,14 @@ sap.ui.define([
             })
         },
 
-        _processarEvento: function(action){
-            const tipoDaPromise = "catch",
-                       tipoBuscado = "function";
-            try {
-                    var promise = action();
-                    if(promise && typeof(promise[tipoDaPromise]) == tipoBuscado){
-                            promise.catch(error => MessageBox.error(error.message));
-                    }
-            } catch (error) {
-                    MessageBox.error(error.message);
-            }
-        },
-
         _aoCoincidirRota() {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 this._carregarPokemons();
             })
         },
 
         aoClicarEmUmaLinhaDaTabela(evento) {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const nomeParametroId = "id";
                 const nomePaginaDeDetalhes = "detalhes";
                 const items = evento.getSource();
@@ -97,7 +85,7 @@ sap.ui.define([
         },
 
         aoClicarNoBotaoAdicionar() {
-            this._processarEvento(() => {
+            ProcessarEventos.processarEvento(() => {
                 const nomePaginaDeCadastro = "cadastro";
                 roteador = this._retornaRoteador();
     

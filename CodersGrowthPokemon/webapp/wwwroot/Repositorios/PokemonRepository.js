@@ -3,17 +3,9 @@ sap.ui.define([
 "use strict";
 
     return {
-        obterTodosOsPokemons() {
-            const urlApi = "/pokemons";
-
-            return fetch(urlApi)
-            .then(response => response.json())
-            .catch(erro => console.log(erro))
-        },
-        
-        obterPokemonPorNome(nome) {
+        obterTodosOsPokemons(nome = null) {
             const urlApi = `/pokemons?nome=${nome}`
-            
+
             return fetch(urlApi)
             .then(response => response.json())
             .catch(erro => console.log(erro))
@@ -23,9 +15,7 @@ sap.ui.define([
             const urlApi = `/pokemons/${indice}`;
 
             return fetch(urlApi)
-            .then(response => {
-                return response.json()
-            })
+            .then(response => response.json())
             .catch(erro => console.log(erro))
         },
 
