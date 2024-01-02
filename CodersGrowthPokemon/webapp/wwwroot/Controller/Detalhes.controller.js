@@ -62,71 +62,95 @@ sap.ui.define([
             .catch(erro => console.log(erro))
         },
 
-        aoCoincidirRota(evento) {
-            const argumentos = "arguments";
-            let indice = window.decodeURIComponent(evento.getParameter(argumentos).detalhesPath)
+        _processarEvento: function(action){
+            const tipoDaPromise = "catch",
+                       tipoBuscado = "function";
+            try {
+                    var promise = action();
+                    if(promise && typeof(promise[tipoDaPromise]) == tipoBuscado){
+                            promise.catch(error => MessageBox.error(error.message));
+                    }
+            } catch (error) {
+                    MessageBox.error(error.message);
+            }
+        },
 
-            this._carregarPokemon(indice)
+        aoCoincidirRota(evento) {
+            this._processarEvento(() => {
+                const argumentos = "arguments";
+                let indice = window.decodeURIComponent(evento.getParameter(argumentos).detalhesPath)
+    
+                this._carregarPokemon(indice)
+            })
         },
 
         aoClicarBotaoVoltar() {
-            
-            roteador = this._retornaRoteador();
-            roteador.navTo(paginaDeListagem, {}, true);
+            this._processarEvento(() => {
+                roteador = this._retornaRoteador();
+                roteador.navTo(paginaDeListagem, {}, true);
+            })
         },
 
         aoClicarBotaoEditar() {
-            const nomePaginaDeCadastro = "cadastro";
-            const nomeParametroId = "/id";
-            const parametroId = this.getView().getModel(nomeModeloPokemon).getProperty(nomeParametroId)
-            
-            roteador = this._retornaRoteador();
-            roteador.navTo(nomePaginaDeCadastro, {
-                id: window.encodeURIComponent(parametroId)
+            this._processarEvento(() => {
+                const nomePaginaDeCadastro = "cadastro";
+                const nomeParametroId = "/id";
+                const parametroId = this.getView().getModel(nomeModeloPokemon).getProperty(nomeParametroId)
+                
+                roteador = this._retornaRoteador();
+                roteador.navTo(nomePaginaDeCadastro, {
+                    id: window.encodeURIComponent(parametroId)
+                })
             })
         },   
 
         aoClicarBotaoRemover() {
-            const i18n = this._retornai18n();
-            const nomeDoPokemon = this._retornaNomeDoPokemon();
-            const mensagemDeConfirmacao = `Deseja mesmo remover o pokemon ${nomeDoPokemon}`
-            const idDoPokemon = this._retornaIdDoPokemon();
-            const sim = "Sim";
-            const nao = "Não";
-            const sucessoAoRemover = "sucessoAoRemover";
-            const mensagemDeSucessoAoRemover = i18n.getText(sucessoAoRemover);
-
-            MessageBox.information(mensagemDeConfirmacao, {
-                actions: [sim, nao],
-                emphasizedAction: sim,
-                onClose: (acao) => {
-                    if (acao === sim) {
-                        this._removePokemon(idDoPokemon);
-                        MessageBox.success(mensagemDeSucessoAoRemover, {
-                            actions: [MessageBox.Action.OK],
-                            onClose: () => {
-                                roteador = this._retornaRoteador();
-                                roteador.navTo(paginaDeListagem, {});
-                            }
-                        })
-                    } 
-                }
-            });
+            this._processarEvento(() => {
+                const i18n = this._retornai18n();
+                const nomeDoPokemon = this._retornaNomeDoPokemon();
+                const mensagemDeConfirmacao = `Deseja mesmo remover o pokemon ${nomeDoPokemon}`
+                const idDoPokemon = this._retornaIdDoPokemon();
+                const sim = "Sim";
+                const nao = "Não";
+                const sucessoAoRemover = "sucessoAoRemover";
+                const mensagemDeSucessoAoRemover = i18n.getText(sucessoAoRemover);
+    
+                MessageBox.information(mensagemDeConfirmacao, {
+                    actions: [sim, nao],
+                    emphasizedAction: sim,
+                    onClose: (acao) => {
+                        if (acao === sim) {
+                            this._removePokemon(idDoPokemon);
+                            MessageBox.success(mensagemDeSucessoAoRemover, {
+                                actions: [MessageBox.Action.OK],
+                                onClose: () => {
+                                    roteador = this._retornaRoteador();
+                                    roteador.navTo(paginaDeListagem, {});
+                                }
+                            })
+                        } 
+                    }
+                });
+            })
         },
 
         aoClicarBotaoVerCard() {
-            const caminhoCardPokemon = "webapp.View.CardPokemon";
-
-            this.pDialog ??= this.loadFragment({
-                name: caminhoCardPokemon
-            });
-            this.pDialog.then((card) => card.open());
+            this._processarEvento(() => {
+                const caminhoCardPokemon = "webapp.View.CardPokemon";
+    
+                this.pDialog ??= this.loadFragment({
+                    name: caminhoCardPokemon
+                });
+                this.pDialog.then((card) => card.open());
+            })
         },
 
         aoFecharDialog() {
-            const idCardPokemon = "cardPokemon";
-
-            this.byId(idCardPokemon).close();
+            this._processarEvento(() => {
+                const idCardPokemon = "cardPokemon";
+    
+                this.byId(idCardPokemon).close();
+            })
         }
     })
 })

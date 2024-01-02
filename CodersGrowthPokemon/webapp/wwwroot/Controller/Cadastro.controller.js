@@ -212,168 +212,212 @@ sap.ui.define([
             })
         },
 
-        _aoCoincidirRota(evento) {
-            const idPokemon = evento.getParameter(argumentos).id;
-
-            this._limpaOsCampos()
-            if(idPokemon != undefined) this._carregarPokemon(idPokemon)
-            else this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
-        },
-
-        aoClicarNoBotaoDeVoltar() {
-            const paginaDeListagem = "listagem";
-            const historico = History.getInstance();
-			const hashAnterior = historico.getPreviousHash();
-            const paginaAnteriorNoHistorico = -1;
-            roteador = this._retornaRoteador();
-
-            if (hashAnterior !== undefined) {
-				window.history.go(paginaAnteriorNoHistorico);
-			} else {
-				roteador.navTo(paginaDeListagem, {}, true);
-			}
-        },
-
-        aoClicarNoBotaoDeSalvar(evento) {
-            const i18n = this._retornai18n();
-            const mensagemDeConfirmacao = "mensagemSalvar";
-            const mensagemAoClicarEmSalvar = i18n.getText(mensagemDeConfirmacao);
-            const mensagemPreencherCamposVazios = "mensagemPreencherCamposVazios"
-            const mensagemErroCamposVazios = i18n.getText(mensagemPreencherCamposVazios)
-            
-            const mensagemDeErroVazia = 0;
-            const quebraDeLinha = "\n";
-            let quantidadeDeErros = 0;
-            let mensagemDeErroNaTela;
-            let verificacaoDeAcao;
-            
-            MessageBox.information(mensagemAoClicarEmSalvar, {
-                actions: [sim, nao],
-                emphasizedAction: sim,
-                onClose: (acao) => {
-                    if (acao === sim) {
-                        if(Validacoes.verificaCamposVazios(this.getView()) === true) {
-                            MessageBox.error(mensagemErroCamposVazios);
-                            return;
-                        };
-                        mensagemDeErro.map(mensagem => {
-                            if(mensagem !== stringVazia)  quantidadeDeErros++;
-                        })
-                        const verificacaoDeErros = quantidadeDeErros;
-                        if(verificacaoDeErros === mensagemDeErroVazia) {
-                            verificacaoDeAcao = this._verificaSeEhCadastroOuAtualizacao()
-                            if(verificacaoDeAcao === undefined) {
-                                
-                                this._salvarPokemon(evento);
-                            }
-                            else {
-                                this._atualizarPokemon(evento)
-                            }
-                        } else {
-                            mensagemDeErroNaTela = mensagemDeErro.filter((item) => {
-                                if(item!= undefined) return item;
-                            })
-                            MessageBox.error(mensagemDeErroNaTela.join(quebraDeLinha))
-                        }
-                    } 
-                }
-            });
-        },
-
-        aoClicarNoBotaoDeCancelar() {
-            const i18n = this._retornai18n();
-            const aoClicarEmCancelarNaAdicao = "mensagemAoClicarEmCancelarNaAdicao";
-            const mensagemAoClicarEmCancelarNaAdicao = i18n.getText(aoClicarEmCancelarNaAdicao);
-            const aoClicarEmCancelarNaAtualizacao = "mensagemAoClicarEmCancelarNaAtualizacao";
-            const mensagemAoClicarEmCancelarNaAtualizacao = i18n.getText(aoClicarEmCancelarNaAtualizacao);
-            const hash = this._retornaRoteador().getHashChanger().getHash();
-            const mensagemAoClicarEmCancelar = (hash === "cadastro") ?  mensagemAoClicarEmCancelarNaAdicao : mensagemAoClicarEmCancelarNaAtualizacao;
-            
-            MessageBox.alert(mensagemAoClicarEmCancelar, {
-                actions: [sim, nao],
-                emphasizedAction: sim,
-                onClose: (acao) => {
-                    if (acao === sim) {
-                        this.aoClicarNoBotaoDeVoltar();
-                        this._limpaOsCampos()
-                    } 
-                }
-            });
-        },
-
-        aoCarregarImagem(evento) {
-            const posicaoDoArquivo = 0;
-            const idDoDisplayDaFoto = "fotoDoPokemon";
-            const parametroDeArquivos = "files";
-            const arquivo = evento.getParameters(parametroDeArquivos).files[posicaoDoArquivo];
-
-            let leitor = new FileReader();
-            leitor.readAsArrayBuffer(arquivo);
-
-            leitor.onload = (evt) => {
-                const arrayDeBytes = new Uint8Array(evt.target.result);
-                let stringBinaria = '';
-
-                for (let i = 0; i < arrayDeBytes.byteLength; i++) {
-                    stringBinaria += String.fromCharCode(arrayDeBytes[i]);
-                }
-
-                let base64 = window.btoa( stringBinaria );
-                this.getView().byId(idInputFoto).setValue(base64);
-                this.getView().byId(idDoDisplayDaFoto).setSrc(base64);
+        _processarEvento: function(action){
+            const tipoDaPromise = "catch",
+                       tipoBuscado = "function";
+            try {
+                    var promise = action();
+                    if(promise && typeof(promise[tipoDaPromise]) == tipoBuscado){
+                            promise.catch(error => MessageBox.error(error.message));
+                    }
+            } catch (error) {
+                    MessageBox.error(error.message);
             }
         },
 
+        _aoCoincidirRota(evento) {
+
+            this._processarEvento(() => {
+                const idPokemon = evento.getParameter(argumentos).id;
+    
+                this._limpaOsCampos()
+                if(idPokemon != undefined) this._carregarPokemon(idPokemon)
+                else this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
+            })
+        },
+
+        aoClicarNoBotaoDeVoltar() {
+            this._processarEvento(() => {
+                const paginaDeListagem = "listagem";
+                const historico = History.getInstance();
+                const hashAnterior = historico.getPreviousHash();
+                const paginaAnteriorNoHistorico = -1;
+                roteador = this._retornaRoteador();
+    
+                if (hashAnterior !== undefined) {
+                    window.history.go(paginaAnteriorNoHistorico);
+                } else {
+                    roteador.navTo(paginaDeListagem, {}, true);
+                }
+            })
+        },
+
+        aoClicarNoBotaoDeSalvar(evento) {
+            this._processarEvento(() => {
+                const i18n = this._retornai18n();
+                const mensagemDeConfirmacao = "mensagemSalvar";
+                const mensagemAoClicarEmSalvar = i18n.getText(mensagemDeConfirmacao);
+                const mensagemPreencherCamposVazios = "mensagemPreencherCamposVazios"
+                const mensagemErroCamposVazios = i18n.getText(mensagemPreencherCamposVazios)
+                
+                const mensagemDeErroVazia = 0;
+                const quebraDeLinha = "\n";
+                let quantidadeDeErros = 0;
+                let mensagemDeErroNaTela;
+                let verificacaoDeAcao;
+                
+                MessageBox.information(mensagemAoClicarEmSalvar, {
+                    actions: [sim, nao],
+                    emphasizedAction: sim,
+                    onClose: (acao) => {
+                        if (acao === sim) {
+                            if(Validacoes.verificaCamposVazios(this.getView()) === true) {
+                                MessageBox.error(mensagemErroCamposVazios);
+                                return;
+                            };
+                            mensagemDeErro.map(mensagem => {
+                                if(mensagem !== stringVazia)  quantidadeDeErros++;
+                            })
+                            const verificacaoDeErros = quantidadeDeErros;
+                            if(verificacaoDeErros === mensagemDeErroVazia) {
+                                verificacaoDeAcao = this._verificaSeEhCadastroOuAtualizacao()
+                                if(verificacaoDeAcao === undefined) {
+                                    
+                                    this._salvarPokemon(evento);
+                                }
+                                else {
+                                    this._atualizarPokemon(evento)
+                                }
+                            } else {
+                                mensagemDeErroNaTela = mensagemDeErro.filter((item) => {
+                                    if(item!= undefined) return item;
+                                })
+                                MessageBox.error(mensagemDeErroNaTela.join(quebraDeLinha))
+                            }
+                        } 
+                    }
+                });
+            })
+        },
+
+        aoClicarNoBotaoDeCancelar() {
+            this._processarEvento(() => {
+                const i18n = this._retornai18n();
+                const aoClicarEmCancelarNaAdicao = "mensagemAoClicarEmCancelarNaAdicao";
+                const mensagemAoClicarEmCancelarNaAdicao = i18n.getText(aoClicarEmCancelarNaAdicao);
+                const aoClicarEmCancelarNaAtualizacao = "mensagemAoClicarEmCancelarNaAtualizacao";
+                const mensagemAoClicarEmCancelarNaAtualizacao = i18n.getText(aoClicarEmCancelarNaAtualizacao);
+                const hash = this._retornaRoteador().getHashChanger().getHash();
+                const mensagemAoClicarEmCancelar = (hash === "cadastro") ?  mensagemAoClicarEmCancelarNaAdicao : mensagemAoClicarEmCancelarNaAtualizacao;
+                
+                MessageBox.alert(mensagemAoClicarEmCancelar, {
+                    actions: [sim, nao],
+                    emphasizedAction: sim,
+                    onClose: (acao) => {
+                        if (acao === sim) {
+                            this.aoClicarNoBotaoDeVoltar();
+                            this._limpaOsCampos()
+                        } 
+                    }
+                });
+            })
+        },
+
+        aoCarregarImagem(evento) {
+            this._processarEvento(() => {
+                const posicaoDoArquivo = 0;
+                const idDoDisplayDaFoto = "fotoDoPokemon";
+                const parametroDeArquivos = "files";
+                const arquivo = evento.getParameters(parametroDeArquivos).files[posicaoDoArquivo];
+    
+                let leitor = new FileReader();
+                leitor.readAsArrayBuffer(arquivo);
+    
+                leitor.onload = (evt) => {
+                    const arrayDeBytes = new Uint8Array(evt.target.result);
+                    let stringBinaria = '';
+    
+                    for (let i = 0; i < arrayDeBytes.byteLength; i++) {
+                        stringBinaria += String.fromCharCode(arrayDeBytes[i]);
+                    }
+    
+                    let base64 = window.btoa( stringBinaria );
+                    this.getView().byId(idInputFoto).setValue(base64);
+                    this.getView().byId(idDoDisplayDaFoto).setSrc(base64);
+            
+                }
+            })
+            
+        },
+
         aoMudarCampoNome(evento) {
-            const posicaoPropriedadeNome = 0;
-            let erroNome = Validacoes.validaCampoNomePreenchido(evento)
-            mensagemDeErro[posicaoPropriedadeNome] = (erroNome) ?  erroNome : stringVazia;
+            this._processarEvento(() => {
+                const posicaoPropriedadeNome = 0;
+                let erroNome = Validacoes.validaCampoNomePreenchido(evento)
+                mensagemDeErro[posicaoPropriedadeNome] = (erroNome) ?  erroNome : stringVazia;
+            })
         },
 
         aoDigitarEmCampoNome(evento) {    
-            Validacoes.validaNomeAoEscrever(evento)
+            this._processarEvento(() => {
+                Validacoes.validaNomeAoEscrever(evento)
+            })
         },
 
         aoMudarCampoApelido(evento) {
-            const posicaoPropriedadeApelido = 1;
-            let erroApelido = Validacoes.validaCampoApelidoPreenchido(evento)
-            mensagemDeErro[posicaoPropriedadeApelido] = (erroApelido) ?  erroApelido : stringVazia;
+            this._processarEvento(() => {
+                const posicaoPropriedadeApelido = 1;
+                let erroApelido = Validacoes.validaCampoApelidoPreenchido(evento)
+                mensagemDeErro[posicaoPropriedadeApelido] = (erroApelido) ?  erroApelido : stringVazia;
+            })
         },
 
         aoMudarCampoNivel(evento) {
-            const posicaoPropriedadeNivel = 2;
-            let erroNivel = Validacoes.validaCampoNivelPreenchido(evento)
-            mensagemDeErro[posicaoPropriedadeNivel] = (erroNivel) ?  erroNivel : stringVazia;
+            this._processarEvento(() => {
+                const posicaoPropriedadeNivel = 2;
+                let erroNivel = Validacoes.validaCampoNivelPreenchido(evento)
+                mensagemDeErro[posicaoPropriedadeNivel] = (erroNivel) ?  erroNivel : stringVazia;
+            })
         },
 
         aoDigitarEmCampoNivel(evento){
-            Validacoes.validaNivelAoEscrever(evento)
+            this._processarEvento(() => {
+                Validacoes.validaNivelAoEscrever(evento)
+            })
         },
 
         aoMudarCampoAltura(evento) {
-            const posicaoPropriedadeAltura = 3;
-            let erroAltura = Validacoes.validaCampoAlturaPreenchido(evento)
-            mensagemDeErro[posicaoPropriedadeAltura] = (erroAltura) ?  erroAltura : stringVazia;
+            this._processarEvento(() => {
+                const posicaoPropriedadeAltura = 3;
+                let erroAltura = Validacoes.validaCampoAlturaPreenchido(evento)
+                mensagemDeErro[posicaoPropriedadeAltura] = (erroAltura) ?  erroAltura : stringVazia;
+            })
         },
 
         aoMudarCampoDataDeCaptura(evento) {
-            const posicaoPropriedadeDataDeCaptura = 4;
-            let erroDataDeCaptura = Validacoes.validaCampoDataDeCapturaPreenchido(evento)
-            mensagemDeErro[posicaoPropriedadeDataDeCaptura] = (erroDataDeCaptura) ?  erroDataDeCaptura : stringVazia;
+            this._processarEvento(() => {
+                const posicaoPropriedadeDataDeCaptura = 4;
+                let erroDataDeCaptura = Validacoes.validaCampoDataDeCapturaPreenchido(evento)
+                mensagemDeErro[posicaoPropriedadeDataDeCaptura] = (erroDataDeCaptura) ?  erroDataDeCaptura : stringVazia;
+            })
         },
 
         aoMudarCampoTipoPrincipal(evento) {
-            const posicaoPropriedadeTipoPrincipal = 5;
-            let inputTipoSecundrio = this.byId(idInputTipoSecundario);
-            let erroTipoPrincipal = Validacoes.validaCampoTipoPrincipalPreenchido(evento, inputTipoSecundrio)
-            mensagemDeErro[posicaoPropriedadeTipoPrincipal] = (erroTipoPrincipal) ?  erroTipoPrincipal : stringVazia;
+            this._processarEvento(() => {
+                const posicaoPropriedadeTipoPrincipal = 5;
+                let inputTipoSecundrio = this.byId(idInputTipoSecundario);
+                let erroTipoPrincipal = Validacoes.validaCampoTipoPrincipalPreenchido(evento, inputTipoSecundrio)
+                mensagemDeErro[posicaoPropriedadeTipoPrincipal] = (erroTipoPrincipal) ?  erroTipoPrincipal : stringVazia;
+            })
         },
 
         aoMudarCampoTipoSecundario(evento) {
-            const posicaoPropriedadeTipoSecundario = 6;
-            let primeiroTipo = this.byId(idInputTipoPrincipal).getSelectedKey();
-            let erroTipoSecundario = Validacoes.validaCampoTipoSecundarioPreenchido(evento, primeiroTipo)
-            mensagemDeErro[posicaoPropriedadeTipoSecundario] = (erroTipoSecundario) ?  erroTipoSecundario : stringVazia;
+            this._processarEvento(() => {
+                const posicaoPropriedadeTipoSecundario = 6;
+                let primeiroTipo = this.byId(idInputTipoPrincipal).getSelectedKey();
+                let erroTipoSecundario = Validacoes.validaCampoTipoSecundarioPreenchido(evento, primeiroTipo)
+                mensagemDeErro[posicaoPropriedadeTipoSecundario] = (erroTipoSecundario) ?  erroTipoSecundario : stringVazia;
+            })
         }
     });
 })
