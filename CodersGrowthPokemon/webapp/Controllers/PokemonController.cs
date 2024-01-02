@@ -5,6 +5,7 @@ using Infraestrutura.Repositorios;
 using FluentValidation.Results;
 using Dominio.Validacoes;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Text.Json;
 
 namespace webapp.wwwroot.Controllers
 {
@@ -31,9 +32,10 @@ namespace webapp.wwwroot.Controllers
 
                 return Ok(pokemons);
                 
-            }catch(Exception)
+            }catch(Exception ex)
             {
-                return NotFound();
+                var erroJson = JsonSerializer.Serialize(ex.Message);
+                return NotFound(erroJson);
             }
         }
 
@@ -47,7 +49,8 @@ namespace webapp.wwwroot.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var erroJson = JsonSerializer.Serialize(ex.Message);
+                return BadRequest(erroJson);
             }
         }
 
@@ -67,9 +70,10 @@ namespace webapp.wwwroot.Controllers
                 string uri = $"/pokemons/{pokemon.Id}";
                 return Created(uri, pokemon);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(e.Message);
+                var erroJson = JsonSerializer.Serialize(ex.Message);
+                return BadRequest(erroJson);
             }
         }
 
@@ -91,12 +95,14 @@ namespace webapp.wwwroot.Controllers
                 _repositorio.Atualizar(pokemon);
                 return Ok(pokemon);
 
-            } catch(Exception e) when(e.Message.Equals("Id não encontrado"))
+            } catch(Exception ex) when(ex.Message.Equals("Id não encontrado"))
             {
-                return NotFound();
-            } catch(Exception e)
+                var erroJson = JsonSerializer.Serialize(ex.Message);
+                return NotFound(erroJson);
+            } catch(Exception ex)
             {
-                return BadRequest(e.Message);
+                var erroJson = JsonSerializer.Serialize(ex.Message);
+                return BadRequest(erroJson);
             }
         }
 
@@ -108,9 +114,10 @@ namespace webapp.wwwroot.Controllers
                 var pokemon = _repositorio.ObterPorId(id);
                 _repositorio.Remover(pokemon);
                 return Ok(pokemon);
-            } catch(Exception)
+            } catch(Exception ex)
             {
-                return BadRequest();
+                var erroJson = JsonSerializer.Serialize(ex.Message);
+                return BadRequest(erroJson);
             }
         }
     }

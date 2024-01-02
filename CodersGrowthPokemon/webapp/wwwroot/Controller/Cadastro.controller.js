@@ -178,8 +178,13 @@ sap.ui.define([
         },
 
         _carregarPokemon(indice) {
+            const paginaNaoEncontrada =  "notFound";
+            const roteador = this._retornaRoteador()
             RepositorioFetch.obterPokemonPorId(indice)
             .then(response => {
+                if(!response.id) {
+                    roteador.navTo(paginaNaoEncontrada, {})
+                } 
                 this.getView().setModel(new JSONModel(response), nomeModeloPokemon);
             })
         },

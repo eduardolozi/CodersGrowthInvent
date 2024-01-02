@@ -48,7 +48,10 @@
 				"viewType": "XML",
 				"path": "webapp.View",
 				"controlId": "app",
-				"controlAggregation": "pages"
+				"controlAggregation": "pages",
+				"bypassed": {
+					"target": "notFound"
+				 }
 			},
 			"routes": [
 				{
@@ -70,6 +73,11 @@
 					"pattern": "cadastro/:id:",
 					"name": "cadastro",
 					"target": "cadastro"
+				},
+				{
+					"pattern": "notFound",
+					"name": "notFound",
+					"target": "notFound"
 				}
 			],
 			"targets": {
@@ -84,6 +92,11 @@
 				"cadastro": {
 					"id":"cadastro",
 					"name": "Cadastro"
+				},
+				"notFound": {
+				   "id": "notFound",
+				   "name": "NotFound",
+				   "transition": "show"
 				}
 			}
 		}

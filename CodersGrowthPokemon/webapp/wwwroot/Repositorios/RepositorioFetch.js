@@ -23,7 +23,9 @@ sap.ui.define([
             const urlApi = `/pokemons/${indice}`;
 
             return fetch(urlApi)
-            .then(response => response.json())
+            .then(response => {
+                return response.json()
+            })
             .catch(erro => console.log(erro))
         },
 
