@@ -109,14 +109,14 @@ namespace Infraestrutura.Repositorios
         public List<Pokemon> ObterTodos(string? nome)
         {
             List<Pokemon> listaPokemon = new List<Pokemon>();
-            string textoComando = "SELECT * FROM pokemons";
+            string textoComando = (nome is null) ? "SELECT * FROM pokemons" : "SELECT * FROM pokemons WHERE nome LIKE '%' + @nome + '%'";
             using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
                     conexao.Open();
-                    if (nome is null) textoComando = "SELECT * FROM POKEMON WHERE nome LIKE '%@nome%'";
                     SqlCommand comando = new SqlCommand(textoComando, conexao);
+                    if (nome != null) comando.Parameters.AddWithValue("@nome", nome);
                     SqlDataReader dr = comando.ExecuteReader();
                     while (dr.Read())
                     {
