@@ -2,8 +2,9 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "../model/formatter",
-    "sap/m/MessageBox"
-], (Controller, JSONModel, formatter, MessageBox) => {
+    "sap/m/MessageBox",
+    "../Repositorios/RepositorioFetch"
+], (Controller, JSONModel, formatter, MessageBox, RepositorioFetch) => {
     "use strict"
     const nomeModeloPokemon = "detalhePokemon";
     const paginaDeListagem = "listagem";
@@ -37,29 +38,14 @@ sap.ui.define([
         },
 
         _carregarPokemon(indice) {
-            const rotaApi = `/pokemons/${indice}`;
-
-            fetch(rotaApi)
-            .then(response => {
-                return response.json()
-            })
-            .then(response => {
-                this.getView().setModel(new JSONModel(response), nomeModeloPokemon);
-            })
-            .catch(erro => {
-                console.log(erro);
-            })
+            RepositorioFetch.obterPokemonPorId(indice)
+                .then(response => {
+                    this.getView().setModel(new JSONModel(response), nomeModeloPokemon);
+                })
         },
 
         _removePokemon(indice) {
-            const rotaApi = `/pokemons/${indice}`;
-            const metodoDoFetch = "DELETE";
-
-            fetch(rotaApi, {
-                method: metodoDoFetch
-            })
-            .then(response => response.json)
-            .catch(erro => console.log(erro))
+            RepositorioFetch.removerPokemon(indice);
         },
 
         _processarEvento: function(action){

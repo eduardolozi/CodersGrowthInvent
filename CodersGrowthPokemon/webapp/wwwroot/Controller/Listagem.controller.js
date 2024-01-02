@@ -4,9 +4,11 @@ sap.ui.define([
     "../model/formatter",
     "sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
-    "../Repositorios/RepositorioFetch"
-], (Controller, JSONModel, formatter, Filter, FilterOperator, RepositorioFetch) => {
+    "../Repositorios/RepositorioFetch",
+    "sap/m/MessageBox"
+], (Controller, JSONModel, formatter, Filter, FilterOperator, RepositorioFetch, MessageBox) => {
     "use strict"
+
     const nomeModeloPokemons = "pokemons";
     let roteador;
 
@@ -25,28 +27,12 @@ sap.ui.define([
             return this.getOwnerComponent().getRouter();
         },
 
-        // _carregarPokemons() {
-        //     const urlApi = "/pokemons";
-
-        //     fetch(urlApi)
-        //         .then(response => {
-        //             return response.json();
-        //         })
-        //         .then(response => {
-        //             this.getView().setModel(new JSONModel(response), nomeModeloPokemons);
-        //         })
-        //         .catch(erro => {
-        //             console.log(erro);
-        //         });
-        // },
-        
-        // _obterPokemonPeloNome(nome) {
-        //     const urlApi = `/pokemons?nome=${nome}`
-
-        //     return fetch(urlApi)
-        //     .then(response => response.json())
-        //     .catch(erro => console.log(erro))
-        // },
+        _carregarPokemons() {
+            RepositorioFetch.obterTodosOsPokemons()
+                .then(response => {
+                    this.getView().setModel(new JSONModel(response), nomeModeloPokemons);
+                })
+        },
 
         aoFiltrarPokemons(evento) {
             this._processarEvento(() => {
@@ -60,7 +46,7 @@ sap.ui.define([
                 let pokemonsDaLista;
     
                 if (consulta) {
-                    this._obterPokemonPeloNome(consulta)
+                    RepositorioFetch.obterPokemonPorNome(consulta)
                         .then(pokemons => {
                             pokemons.forEach(() => {
                                 filtros.push(new Filter(campoNome, FilterOperator.Contains, consulta));
