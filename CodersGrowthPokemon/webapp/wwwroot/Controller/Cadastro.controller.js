@@ -268,7 +268,6 @@ sap.ui.define([
                             }
                             else {
                                 this._atualizarPokemon(evento)
-                                MessageBox.success(mensagemSucessoAoAtualizar)
                             }
                         } else {
                             mensagemDeErroNaTela = mensagemDeErro.filter((item) => {
@@ -282,10 +281,14 @@ sap.ui.define([
         },
 
         aoClicarNoBotaoDeCancelar() {
-            const mensagemDeCancelar = "mensagemAoClicarEmCancelar";
             const i18n = this._retornai18n();
-            const mensagemAoClicarEmCancelar = i18n.getText(mensagemDeCancelar);
-
+            const aoClicarEmCancelarNaAdicao = "mensagemAoClicarEmCancelarNaAdicao";
+            const mensagemAoClicarEmCancelarNaAdicao = i18n.getText(aoClicarEmCancelarNaAdicao);
+            const aoClicarEmCancelarNaAtualizacao = "mensagemAoClicarEmCancelarNaAtualizacao";
+            const mensagemAoClicarEmCancelarNaAtualizacao = i18n.getText(aoClicarEmCancelarNaAtualizacao);
+            const hash = this._retornaRoteador().getHashChanger().getHash();
+            const mensagemAoClicarEmCancelar = (hash === "cadastro") ?  mensagemAoClicarEmCancelarNaAdicao : mensagemAoClicarEmCancelarNaAtualizacao;
+            
             MessageBox.alert(mensagemAoClicarEmCancelar, {
                 actions: [sim, nao],
                 emphasizedAction: sim,

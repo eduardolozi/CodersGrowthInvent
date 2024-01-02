@@ -6,6 +6,7 @@ sap.ui.define([
 ], (Controller, JSONModel, formatter, MessageBox) => {
     "use strict"
     const nomeModeloPokemon = "detalhePokemon";
+    const paginaDeListagem = "listagem";
     let roteador;
 
     return Controller.extend("webapp.Controller.Detalhes", {
@@ -16,6 +17,11 @@ sap.ui.define([
             roteador = this._retornaRoteador();
 
 			roteador.getRoute(rotaDetalhes).attachPatternMatched(this.aoCoincidirRota, this);
+        },
+
+        _retornai18n() {
+            const modeloi18n = "i18n"
+            return this.getOwnerComponent().getModel(modeloi18n).getResourceBundle();
         },
 
         _retornaIdDoPokemon() {
@@ -64,7 +70,6 @@ sap.ui.define([
         },
 
         aoClicarBotaoVoltar() {
-            const paginaDeListagem = "listagem";
             
             roteador = this._retornaRoteador();
             roteador.navTo(paginaDeListagem, {}, true);
@@ -82,12 +87,14 @@ sap.ui.define([
         },   
 
         aoClicarBotaoRemover() {
+            const i18n = this._retornai18n();
             const nomeDoPokemon = this._retornaNomeDoPokemon();
-            const mensagemDeConfirmacao = `Deseja mesmo cancelar o pokemon ${nomeDoPokemon}`
+            const mensagemDeConfirmacao = `Deseja mesmo remover o pokemon ${nomeDoPokemon}`
             const idDoPokemon = this._retornaIdDoPokemon();
-            const nomePaginaListagem = "listagem";
             const sim = "Sim";
             const nao = "Não";
+            const sucessoAoRemover = "sucessoAoRemover";
+            const mensagemDeSucessoAoRemover = i18n.getText(sucessoAoRemover);
 
             MessageBox.information(mensagemDeConfirmacao, {
                 actions: [sim, nao],
@@ -95,8 +102,13 @@ sap.ui.define([
                 onClose: (acao) => {
                     if (acao === sim) {
                         this._removePokemon(idDoPokemon);
-                        roteador = this._retornaRoteador();
-                        roteador.navTo(nomePaginaListagem, {})
+                        MessageBox.success(mensagemDeSucessoAoRemover, {
+                            actions: [MessageBox.Action.OK],
+                            onClose: () => {
+                                roteador = this._retornaRoteador();
+                                roteador.navTo(paginaDeListagem, {});
+                            }
+                        })
                     } 
                 }
             });
