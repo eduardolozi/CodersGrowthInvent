@@ -47,10 +47,10 @@ sap.ui.define([
 
         
         onInit() {
-            const rota = this.getOwnerComponent().getRouter();
+            roteador = this._retornaRoteador()
             
             _i18n = this._retornai18n(),
-            rota.getRoute(nomeRotaCadastro).attachMatched(this._aoCoincidirRota, this);              
+            roteador.getRoute(nomeRotaCadastro).attachMatched(this._aoCoincidirRota, this);              
             this._injetaI18nNaValidcao();
             this._injetaI18nNaClasseDeMensagens(this._i18n)
             this._defineDatasLimitesDoCampoDeData()
