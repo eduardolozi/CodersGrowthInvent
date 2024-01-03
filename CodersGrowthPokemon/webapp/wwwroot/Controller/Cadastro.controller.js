@@ -56,8 +56,6 @@ sap.ui.define([
             this._defineDatasLimitesDoCampoDeData()
         },
 
-        
-
         _injetaI18nNaValidcao() {
             Validacoes.Validacoes(this._i18n)
         },

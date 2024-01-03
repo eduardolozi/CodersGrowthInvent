@@ -13,6 +13,7 @@ sap.ui.define([
     const valor = "value"
     const campoSemSelecionar = 0;
     const stringVazia = ""
+    const regexApenasEspacos = /^\s+$/
     let _i18n
     
     return {
@@ -21,6 +22,10 @@ sap.ui.define([
         Validacoes(i18n) {
             _i18n = i18n;
             this._injetaI18nNaClasseDeMensagens(_i18n)
+        },
+
+        _retornaValorDoCampo(evento) {
+            return evento.getSource().getValue();
         },
 
         _injetaI18nNaClasseDeMensagens(_i18n) {
@@ -55,9 +60,11 @@ sap.ui.define([
         validaCampoNomePreenchido(evento) {
             const mensagemDeErroNome = Mensagens._mensagemDeErroNomeTamanhoMinimo()
             const tamanhoMinimo = 3;
+            let nome = this._retornaValorDoCampo(evento)
+            nome = nome.trim()
 
             evento.getSource().setValueState(sucesso);
-            if(evento.getSource().getValue().length < tamanhoMinimo ) {
+            if(nome.length < tamanhoMinimo ) {
                 evento.getSource().setValueState(erro);
                 evento.getSource().setValueStateText(mensagemDeErroNome);
                 return(mensagemDeErroNome);
@@ -66,6 +73,7 @@ sap.ui.define([
 
         validaNomeAoEscrever(evento) {
             const regexNaoPermitido = /[\d!@?,"¨|´`<>/\\[\]{};#\$%\^\&*\)\(+=._-]/
+            
             let valorDigitado = evento.getParameter(valor);
             
             if(regexNaoPermitido.test(valorDigitado)){
@@ -77,9 +85,11 @@ sap.ui.define([
         validaCampoApelidoPreenchido(evento) {
             const mensagemDeErroApelido = Mensagens._mensagemDeErroApelidoTamanhoMinimo()
             const tamanhoDeApelidoMinimo = 1;
+            let apelido = this._retornaValorDoCampo(evento);
+            apelido = apelido.trim()
 
             evento.getSource().setValueState(sucesso);
-            if(evento.getSource().getValue().length < tamanhoDeApelidoMinimo) {
+            if(apelido.length < tamanhoDeApelidoMinimo) {
                 evento.getSource().setValueState(erro);
                 evento.getSource().setValueStateText(mensagemDeErroApelido);
                 return(mensagemDeErroApelido);
@@ -90,9 +100,10 @@ sap.ui.define([
             const mensagemDeErroNivel = Mensagens._mensagemDeErroNivelInvalido()
             const nivelMinimo = 1;
             const nivelMaximo = 100;
+            let nivel = this._retornaValorDoCampo(evento)
 
             evento.getSource().setValueState(sucesso);
-            if(evento.getSource().getValue() < nivelMinimo || evento.getSource().getValue() > nivelMaximo) {
+            if(nivel < nivelMinimo || nivel > nivelMaximo) {
                 evento.getSource().setValueState(erro);
                 evento.getSource().setValueStateText(mensagemDeErroNivel);
                 return(mensagemDeErroNivel)
@@ -113,10 +124,10 @@ sap.ui.define([
             const mensagemDeErroAltura = Mensagens._mensagemDeErroAlturaNumeroInvalido()
             const alturaMinima = 0;
             const alturaMaxima = 7;
-            let valor = parseFloat(evento.getSource().getValue())
+            let altura = parseFloat(this._retornaValorDoCampo(evento))
             
             evento.getSource().setValueState(sucesso);
-            if(valor <= alturaMinima || valor >= alturaMaxima) {
+            if(altura <= alturaMinima || altura >= alturaMaxima) {
                 evento.getSource().setValueState(erro);
                 evento.getSource().setValueStateText(mensagemDeErroAltura);
                 return(mensagemDeErroAltura)

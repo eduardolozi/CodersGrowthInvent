@@ -32,7 +32,7 @@
                             pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
                         }
                     }
-                }" placeholder="Data de captura" width="100%" displayFormat="dd/MM/YYYY" valueFormat="yyyy-MM-ddTHH:mm:ss.mmm" change=".aoMudarCampoDataDeCaptura"/>
+                }" placeholder="Data de captura" width="100%" displayFormat="dd/MM/yyyy" valueFormat="yyyy-MM-ddTHH:mm:ss.mmm" change=".aoMudarCampoDataDeCaptura"/>
 
                 <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaShiny}" required="true" labelFor="inputShiny" />
                 <CheckBox id="inputShiny" selected="{pokemon>/shiny}" text="Shiny"/>
