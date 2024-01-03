@@ -5,9 +5,8 @@ sap.ui.define([
     "sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
     "../Repositorios/PokemonRepository",
-    "sap/m/MessageBox", 
     "../Services/ProcessarEventos"
-], (BaseController, JSONModel, formatter, Filter, FilterOperator, PokemonRepository, MessageBox, ProcessarEventos) => {
+], (BaseController, JSONModel, formatter, Filter, FilterOperator, PokemonRepository, ProcessarEventos) => {
     "use strict"
 
     const nomeModeloPokemons = "pokemons";

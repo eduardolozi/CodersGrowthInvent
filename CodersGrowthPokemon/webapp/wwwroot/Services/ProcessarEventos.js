@@ -1,5 +1,6 @@
 sap.ui.define([
-], () => {
+    "sap/m/MessageBox"
+], (MessageBox) => {
 "use strict";
 
     return {

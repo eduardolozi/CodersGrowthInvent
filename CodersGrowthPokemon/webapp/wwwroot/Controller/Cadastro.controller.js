@@ -7,8 +7,9 @@ sap.ui.define([
     "../Services/Validacoes",
     "sap/ui/core/date/UI5Date",
     "../Repositorios/PokemonRepository", 
-    "../Services/ProcessarEventos"
-], (BaseController, formatter, History, MessageBox, JSONModel, Validacoes, UI5Date, PokemonRepository, ProcessarEventos) => {
+    "../Services/ProcessarEventos", 
+    "../Services/Mensagens"
+], (BaseController, formatter, History, MessageBox, JSONModel, Validacoes, UI5Date, PokemonRepository, ProcessarEventos, Mensagens) => {
     "use strict"
     const sim = "Sim";
     const nao = "Não";
@@ -31,33 +32,34 @@ sap.ui.define([
     const idInputTipoPrincipal = "inputTipoPrincipal";
     const idInputTipoSecundario = "inputTipoSecundario";
     const idInputFoto = "inputFoto";
-    const modeloi18n = "i18n"
     const stringVazia = "";
     const argumentos = "arguments";
     const mensagemDeErro = []
+    const nomeRotaCadastro = "cadastro";
     let roteador;
+    let _i18n;
 
 
     return BaseController.extend("webapp.Controller.Cadastro", {
         formatter: formatter,
         Validacoes: Validacoes,
+        Mensagens: Mensagens,
+
         
         onInit() {
-            const nomeRotaCadastro = "cadastro";
             const rota = this.getOwnerComponent().getRouter();
-
+            
+            _i18n = this._retornai18n(),
             rota.getRoute(nomeRotaCadastro).attachMatched(this._aoCoincidirRota, this);              
             this._injetaI18nNaValidcao();
+            this._injetaI18nNaClasseDeMensagens(this._i18n)
             this._defineDatasLimitesDoCampoDeData()
         },
 
-        _retornaModeloPokemon() {
-            return this.getView().getModel(nomeModeloPokemon);
-        },
+        
 
         _injetaI18nNaValidcao() {
-            const i18n = this._retornai18n()
-            Validacoes.Validacoes(i18n)
+            Validacoes.Validacoes(this._i18n)
         },
 
         _defineDatasLimitesDoCampoDeData() {
@@ -73,12 +75,14 @@ sap.ui.define([
 
         _verificaSeEhCadastroOuAtualizacao() {
             const idPokemon = this._retornaIdDoPokemon()
+
             return (idPokemon) ? idPokemon : undefined;
         },
 
         _limpaOsCampos() {
             const stringVazia = "";
             const statusDoInputRedefinido = "None";
+
             this.getView().byId(idInputNome).setValue(stringVazia)
             this.getView().byId(idInputNome).setValueState(statusDoInputRedefinido)
 
@@ -109,6 +113,7 @@ sap.ui.define([
 
         _insereCamposNoModeloPokemon() {
             const modeloPokemon = this._retornaModeloPokemon();
+
             return {
                 nome: modeloPokemon.getProperty(campoNome),
                 apelido: modeloPokemon.getProperty(campoApelido),
@@ -123,9 +128,7 @@ sap.ui.define([
         },
 
         _salvarPokemon() {
-            const i18n = this._retornai18n();
-            const sucessoAoSalvar = "sucessoAoSalvar"
-            const mensagemSucessoAoSalvar = i18n.getText(sucessoAoSalvar);
+            const mensagemSucessoAoSalvar = Mensagens._mensagemSucessoAoSalvar()
             const novoPokemon = this._insereCamposNoModeloPokemon()
 
             PokemonRepository.criarPokemon(novoPokemon)
@@ -144,9 +147,7 @@ sap.ui.define([
         },
 
         _atualizarPokemon() {
-            const i18n = this._retornai18n();
-            const sucessoAoAtualizar = "sucessoAoAtualizar"
-            const mensagemSucessoAoAtualizar = i18n.getText(sucessoAoAtualizar);
+            const mensagemSucessoAoAtualizar = Mensagens._mensagemSucessoAoAtualizar()
 
             const pokemonAtualizado = this._insereCamposNoModeloPokemon()
             pokemonAtualizado.id = this._retornaIdDoPokemon();
@@ -168,6 +169,7 @@ sap.ui.define([
         _carregarPokemon(indice) {
             const paginaNaoEncontrada =  "notFound";
             const roteador = this._retornaRoteador()
+
             PokemonRepository.obterPokemonPorId(indice)
             .then(response => {
                 if(!response.id) {
@@ -205,12 +207,9 @@ sap.ui.define([
 
         aoClicarNoBotaoDeSalvar(evento) {
             ProcessarEventos.processarEvento(() => {
-                const i18n = this._retornai18n();
-                const mensagemDeConfirmacao = "mensagemSalvar";
-                const mensagemAoClicarEmSalvar = i18n.getText(mensagemDeConfirmacao);
-                const mensagemPreencherCamposVazios = "mensagemPreencherCamposVazios"
-                const mensagemErroCamposVazios = i18n.getText(mensagemPreencherCamposVazios)
-                
+                const mensagemAoClicarEmSalvar = Mensagens._mensagemAoClicarEmSalvar()
+                const mensagemErroCamposVazios = Mensagens._mensagemErroCamposVazios()
+
                 const mensagemDeErroVazia = 0;
                 const quebraDeLinha = "\n";
                 let quantidadeDeErros = 0;
@@ -253,13 +252,10 @@ sap.ui.define([
 
         aoClicarNoBotaoDeCancelar() {
             ProcessarEventos.processarEvento(() => {
-                const i18n = this._retornai18n();
-                const aoClicarEmCancelarNaAdicao = "mensagemAoClicarEmCancelarNaAdicao";
-                const mensagemAoClicarEmCancelarNaAdicao = i18n.getText(aoClicarEmCancelarNaAdicao);
-                const aoClicarEmCancelarNaAtualizacao = "mensagemAoClicarEmCancelarNaAtualizacao";
-                const mensagemAoClicarEmCancelarNaAtualizacao = i18n.getText(aoClicarEmCancelarNaAtualizacao);
+                const mensagemAoClicarEmCancelarNaAdicao = Mensagens._mensagemAoClicarEmCancelarNaAdicao()
+                const mensagemAoClicarEmCancelarNaAtualizacao = Mensagens._mensagemAoClicarEmCancelarNaAtualizacao()
                 const hash = this._retornaRoteador().getHashChanger().getHash();
-                const mensagemAoClicarEmCancelar = (hash === "cadastro") ?  mensagemAoClicarEmCancelarNaAdicao : mensagemAoClicarEmCancelarNaAtualizacao;
+                const mensagemAoClicarEmCancelar = (hash === nomeRotaCadastro) ?  mensagemAoClicarEmCancelarNaAdicao : mensagemAoClicarEmCancelarNaAtualizacao;
                 
                 MessageBox.alert(mensagemAoClicarEmCancelar, {
                     actions: [sim, nao],

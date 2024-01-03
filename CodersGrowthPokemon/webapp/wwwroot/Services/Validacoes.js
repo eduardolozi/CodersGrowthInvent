@@ -1,5 +1,6 @@
 sap.ui.define([
-], () => {
+    "./Mensagens"
+], (Mensagens) => {
 "use strict";
     const idInputNome = "inputNome";
     const idInputApelido = "inputApelido";
@@ -12,16 +13,22 @@ sap.ui.define([
     const valor = "value"
     const campoSemSelecionar = 0;
     const stringVazia = ""
-    let _i18n; 
+    let _i18n
     
     return {
+        Mensagens: Mensagens,
+
         Validacoes(i18n) {
             _i18n = i18n;
+            this._injetaI18nNaClasseDeMensagens(_i18n)
+        },
+
+        _injetaI18nNaClasseDeMensagens(_i18n) {
+            Mensagens.Mensagens(_i18n);
         },
 
         verificaCamposVazios(view) {
-            const mensagemDeErroCampoVazio = "campoVazio"
-            const mensagemCampoVazio = _i18n.getText(mensagemDeErroCampoVazio)
+            const mensagemDeErroCamposVazios = Mensagens._mensagemErroCamposVazios();
             const maximoDeCamposObrigatoriosVazios = 0;
             let qtdCamposVazios = 0;
             let camposVazios = [
@@ -37,7 +44,7 @@ sap.ui.define([
                 if(!campo.getValue()) {
                     qtdCamposVazios++;
                     campo.setValueState(erro);
-                    campo.setValueStateText(mensagemCampoVazio);
+                    campo.setValueStateText(mensagemDeErroCamposVazios);
                 }
             });
 
@@ -46,15 +53,14 @@ sap.ui.define([
         },
 
         validaCampoNomePreenchido(evento) {
-            const mensagemNomeTamanhoMinimo = "campoNomeTamanhoMinimo"
+            const mensagemDeErroNome = Mensagens._mensagemDeErroNomeTamanhoMinimo()
             const tamanhoMinimo = 3;
-            const mensagemDeErro = _i18n.getText(mensagemNomeTamanhoMinimo);
 
             evento.getSource().setValueState(sucesso);
             if(evento.getSource().getValue().length < tamanhoMinimo ) {
                 evento.getSource().setValueState(erro);
-                evento.getSource().setValueStateText(mensagemDeErro);
-                return(mensagemDeErro);
+                evento.getSource().setValueStateText(mensagemDeErroNome);
+                return(mensagemDeErroNome);
             }
         },
 
@@ -69,29 +75,27 @@ sap.ui.define([
         }, 
 
         validaCampoApelidoPreenchido(evento) {
-            const mensagemApelidoTamanhoMinimo = "campoApelidoTamanhoMinimo"
-            const mensagemDeErro = _i18n.getText(mensagemApelidoTamanhoMinimo);
+            const mensagemDeErroApelido = Mensagens._mensagemDeErroApelidoTamanhoMinimo()
             const tamanhoDeApelidoMinimo = 1;
 
             evento.getSource().setValueState(sucesso);
             if(evento.getSource().getValue().length < tamanhoDeApelidoMinimo) {
                 evento.getSource().setValueState(erro);
-                evento.getSource().setValueStateText(mensagemDeErro);
-                return(mensagemDeErro);
+                evento.getSource().setValueStateText(mensagemDeErroApelido);
+                return(mensagemDeErroApelido);
             }
         },
 
         validaCampoNivelPreenchido(evento) {
+            const mensagemDeErroNivel = Mensagens._mensagemDeErroNivelInvalido()
             const nivelMinimo = 1;
             const nivelMaximo = 100;
-            const mensagemNivelNumeroInvalido = "campoNivelNumeroInvalido"
-            const mensagemDeErro = _i18n.getText(mensagemNivelNumeroInvalido)
 
             evento.getSource().setValueState(sucesso);
             if(evento.getSource().getValue() < nivelMinimo || evento.getSource().getValue() > nivelMaximo) {
                 evento.getSource().setValueState(erro);
-                evento.getSource().setValueStateText(mensagemDeErro);
-                return(mensagemDeErro)
+                evento.getSource().setValueStateText(mensagemDeErroNivel);
+                return(mensagemDeErroNivel)
             }
         },
 
@@ -106,87 +110,81 @@ sap.ui.define([
         },
 
         validaCampoAlturaPreenchido(evento) {
+            const mensagemDeErroAltura = Mensagens._mensagemDeErroAlturaNumeroInvalido()
             const alturaMinima = 0;
             const alturaMaxima = 7;
-            const mensagemAlturaNumeroInvalido = "campoAlturaNumeroInvalido";
-            const mensagemDeErro = _i18n.getText(mensagemAlturaNumeroInvalido)
             let valor = parseFloat(evento.getSource().getValue())
             
             evento.getSource().setValueState(sucesso);
             if(valor <= alturaMinima || valor >= alturaMaxima) {
                 evento.getSource().setValueState(erro);
-                evento.getSource().setValueStateText(mensagemDeErro);
-                return(mensagemDeErro)
+                evento.getSource().setValueStateText(mensagemDeErroAltura);
+                return(mensagemDeErroAltura)
             }
         },
 
         validaCampoDataDeCapturaPreenchido(evento) {
+            const mensagemDeErroDataCaptura = Mensagens._mensagemDeErroDaraCapturaInvalida()
             const valido = "valid"
             const valorValido = evento.getParameter(valido);
-            const mensagemDataCapturaInvalida = "campoDataDeCapturaInvalida";
-            const mensagemDeErro = _i18n.getText(mensagemDataCapturaInvalida);
 
             evento.getSource().setValueState(sucesso);
             if(!valorValido) {
                 evento.getSource().setValueState(erro);
-                evento.getSource().setValueStateText(mensagemDeErro);
-                return (mensagemDeErro)
+                evento.getSource().setValueStateText(mensagemDeErroDataCaptura);
+                return (mensagemDeErroDataCaptura)
             }
         },
 
         validaCampoTipoPrincipalPreenchido(evento, inputTipoSecundario) {
+            const mensagemDeErroTipoPrincipal = Mensagens._mensagemDeErroTipoPrincipalInvalido()
+            const mensagemDeErroTiposIguais = Mensagens._mensagemDeErroTiposRepetidos()
             const chaveSelecionada = evento.getSource().getSelectedKey();
             const chaveSelecionadaInt = (chaveSelecionada === stringVazia) ? campoSemSelecionar : parseInt(chaveSelecionada);
             const segundoTipo = parseInt(inputTipoSecundario.getSelectedKey());
             const primeiraChave = 1
             const ultimaChave = 17;
-            const mensagemTipoPrincipalInvalido = "campoTipoPrincipalChaveInvalida"
-            const mensagemErroTiposRepetidos = "mensagemTiposRepetidos"
-            const mensagemDeErro = _i18n.getText(mensagemTipoPrincipalInvalido)
-            const mensagemTiposRepetidos = _i18n.getText(mensagemErroTiposRepetidos)
 
             evento.getSource().setValueState(sucesso);
             if(chaveSelecionadaInt < primeiraChave || chaveSelecionadaInt > ultimaChave) {
                 evento.getSource().setValueState(erro);
-                evento.getSource().setValueStateText(mensagemDeErro);
-                return(mensagemDeErro) 
+                evento.getSource().setValueStateText(mensagemDeErroTipoPrincipal);
+                return(mensagemDeErroTipoPrincipal) 
             }
 
             if(!isNaN(segundoTipo) && chaveSelecionadaInt != segundoTipo) inputTipoSecundario.setValueState(sucesso);
             
             if(!isNaN(segundoTipo) && chaveSelecionadaInt === segundoTipo) {
                 inputTipoSecundario.setValueState(erro);
-                inputTipoSecundario.setValueStateText(mensagemTiposRepetidos);
+                inputTipoSecundario.setValueStateText(mensagemDeErroTiposIguais);
             }
 
         },
         
         validaCampoTipoSecundarioPreenchido(evento, chaveDoTipoPrincipal) {
+            const mensagemDeErroTipoSecundario = Mensagens._mensagemDeErroTipoSecundarioInvalido()
+            const mensagemDeErroTiposIguais = Mensagens._mensagemDeErroTiposRepetidos()
             const chaveSelecionada = evento.getSource().getSelectedKey()
             const primeiroTipo = parseInt(chaveDoTipoPrincipal)
             const chaveSelecionadaInt = (chaveSelecionada === stringVazia) ? campoSemSelecionar : parseInt(chaveSelecionada);
-            const mensagemTipoSecundarioInvalido = "campoTipoSecundarioChaveInvalida"
-            const mensagemDeErro = _i18n.getText(mensagemTipoSecundarioInvalido)
             const primeiraChave = 1
             const ultimaChave = 17;
-            const mensagemTipoSecundarioIgualAoPrincipal = "campoTipoSecundarioTiposRepetidos"
-            const mensagemTiposRepetidos = _i18n.getText(mensagemTipoSecundarioIgualAoPrincipal)
             const valorDoCampo = evento.getParameter(valor);
 
             evento.getSource().setValueState(sucesso);
             if(chaveSelecionadaInt < primeiraChave || chaveSelecionadaInt > ultimaChave) {                
                 if(valorDoCampo.length != campoSemSelecionar) {
                     evento.getSource().setValueState(erro)
-                    evento.getSource().setValueStateText(mensagemDeErro);
-                    return(mensagemDeErro)
+                    evento.getSource().setValueStateText(mensagemDeErroTipoSecundario);
+                    return(mensagemDeErroTipoSecundario)
                 }
                 else evento.getSource().setValueState(sucesso);
             }
             
             if (chaveSelecionadaInt === primeiroTipo) {
                 evento.getSource().setValueState(erro);
-                evento.getSource().setValueStateText(mensagemTiposRepetidos);
-                return(mensagemTiposRepetidos);
+                evento.getSource().setValueStateText(mensagemDeErroTiposIguais);
+                return(mensagemDeErroTiposIguais);
             }
         }
     }

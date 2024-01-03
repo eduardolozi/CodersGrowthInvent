@@ -4,22 +4,28 @@ sap.ui.define([
     "../model/formatter",
     "sap/m/MessageBox",
     "../Repositorios/PokemonRepository",
-    "../Services/ProcessarEventos"
-], (BaseController, JSONModel, formatter, MessageBox, PokemonRepository, ProcessarEventos) => {
+    "../Services/ProcessarEventos", 
+    "../Services/Mensagens"
+], (BaseController, JSONModel, formatter, MessageBox, PokemonRepository, ProcessarEventos, Mensagens) => {
     "use strict"
+
     const nomeModeloPokemon = "detalhePokemon";
     const paginaDeListagem = "listagem";
     let roteador;
+    let _i18n;
 
     return BaseController.extend("webapp.Controller.Detalhes", {
         formatter: formatter,
         BaseController: BaseController,
-
+        Mensagens: Mensagens,
+        
         onInit() {
             const rotaDetalhes = "detalhes";
+            
+            _i18n = this._retornai18n(),
             roteador = this._retornaRoteador();
-
 			roteador.getRoute(rotaDetalhes).attachPatternMatched(this.aoCoincidirRota, this);
+            this._injetaI18nNaClasseDeMensagens(this._i18n)
         },
 
         _retornaNomeDoPokemon() {
@@ -74,16 +80,13 @@ sap.ui.define([
 
         aoClicarBotaoRemover() {
             ProcessarEventos.processarEvento(() => {
-                const i18n = this._retornai18n();
-                const nomeDoPokemon = this._retornaNomeDoPokemon();
-                const mensagemDeConfirmacao = `Deseja mesmo remover o pokemon ${nomeDoPokemon}`
+                const mensagemConfirmacaoRemocao = Mensagens._mensagemDeConfirmacaoAoRemover()
+                const sim = Mensagens._sim();
+                const nao = Mensagens._nao();
+                const mensagemDeSucessoAoRemover = Mensagens._mensagemDeSucessoAoRemover();
                 const idDoPokemon = this._retornaIdDoPokemon();
-                const sim = "Sim";
-                const nao = "Não";
-                const sucessoAoRemover = "sucessoAoRemover";
-                const mensagemDeSucessoAoRemover = i18n.getText(sucessoAoRemover);
     
-                MessageBox.information(mensagemDeConfirmacao, {
+                MessageBox.information(mensagemConfirmacaoRemocao, {
                     actions: [sim, nao],
                     emphasizedAction: sim,
                     onClose: (acao) => {
