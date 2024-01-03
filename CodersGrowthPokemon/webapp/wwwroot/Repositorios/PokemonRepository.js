@@ -3,7 +3,7 @@ sap.ui.define([
 "use strict";
 
     return {
-        obterTodosOsPokemons(nome = null) {
+        obterTodosOsPokemons(nome = "") {
             const urlApi = `/pokemons?nome=${nome}`
 
             return fetch(urlApi)
