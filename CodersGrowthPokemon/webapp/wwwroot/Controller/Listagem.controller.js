@@ -1,5 +1,5 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "./BaseController",
     "sap/ui/model/json/JSONModel",
     "../model/formatter",
     "sap/ui/model/Filter",
@@ -7,13 +7,13 @@ sap.ui.define([
     "../Repositorios/PokemonRepository",
     "sap/m/MessageBox", 
     "../Services/ProcessarEventos"
-], (Controller, JSONModel, formatter, Filter, FilterOperator, PokemonRepository, MessageBox, ProcessarEventos) => {
+], (BaseController, JSONModel, formatter, Filter, FilterOperator, PokemonRepository, MessageBox, ProcessarEventos) => {
     "use strict"
 
     const nomeModeloPokemons = "pokemons";
     let roteador;
 
-    return Controller.extend("webapp.Controller.Listagem", {
+    return BaseController.extend("webapp.Controller.Listagem", {
         formatter: formatter,
 
         onInit() {
@@ -22,10 +22,6 @@ sap.ui.define([
             roteador = this._retornaRoteador();
             roteador.getRoute(paginaDeListagem).attachMatched(this._aoCoincidirRota, this); 
             
-        },
-
-        _retornaRoteador() {
-            return this.getOwnerComponent().getRouter();
         },
 
         _carregarPokemons() {

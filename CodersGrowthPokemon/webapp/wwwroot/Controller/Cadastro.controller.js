@@ -1,5 +1,5 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "./BaseController",
     "../model/formatter",
     "sap/ui/core/routing/History",
     "sap/m/MessageBox",
@@ -8,7 +8,7 @@ sap.ui.define([
     "sap/ui/core/date/UI5Date",
     "../Repositorios/PokemonRepository", 
     "../Services/ProcessarEventos"
-], (Controller, formatter, History, MessageBox, JSONModel, Validacoes, UI5Date, PokemonRepository, ProcessarEventos) => {
+], (BaseController, formatter, History, MessageBox, JSONModel, Validacoes, UI5Date, PokemonRepository, ProcessarEventos) => {
     "use strict"
     const sim = "Sim";
     const nao = "Não";
@@ -38,7 +38,7 @@ sap.ui.define([
     let roteador;
 
 
-    return Controller.extend("webapp.Controller.Cadastro", {
+    return BaseController.extend("webapp.Controller.Cadastro", {
         formatter: formatter,
         Validacoes: Validacoes,
         
@@ -53,19 +53,6 @@ sap.ui.define([
 
         _retornaModeloPokemon() {
             return this.getView().getModel(nomeModeloPokemon);
-        },
-
-        _retornai18n() {
-            return this.getOwnerComponent().getModel(modeloi18n).getResourceBundle();
-        },
-
-        _retornaRoteador() {
-            return this.getOwnerComponent().getRouter();
-        },
-
-        _retornaIdDoPokemon() {
-            const propriedadeId = "/id";
-            return this._retornaModeloPokemon().getProperty(propriedadeId);
         },
 
         _injetaI18nNaValidcao() {
