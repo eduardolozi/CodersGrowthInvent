@@ -2,30 +2,27 @@ sap.ui.define([
     "./BaseController",
     "sap/ui/model/json/JSONModel",
     "../model/formatter",
-    "sap/m/MessageBox",
     "../Repositorios/PokemonRepository",
     "../Services/ProcessarEventos", 
-    "../Services/Mensagens"
-], (BaseController, JSONModel, formatter, MessageBox, PokemonRepository, ProcessarEventos, Mensagens) => {
+    "../Services/Dialogos"
+], (BaseController, JSONModel, formatter, PokemonRepository, ProcessarEventos, Dialogos) => {
     "use strict"
 
     const nomeModeloPokemon = "detalhePokemon";
     const paginaDeListagem = "listagem";
+    let i18n;
     let roteador;
-    let _i18n;
 
     return BaseController.extend("webapp.Controller.Detalhes", {
         formatter: formatter,
+        PokemonRepository: PokemonRepository,
         BaseController: BaseController,
-        Mensagens: Mensagens,
         
         onInit() {
             const rotaDetalhes = "detalhes";
             
-            _i18n = this._retornai18n(),
             roteador = this._retornaRoteador();
 			roteador.getRoute(rotaDetalhes).attachPatternMatched(this.aoCoincidirRota, this);
-            this._injetaI18nNaClasseDeMensagens(this._i18n)
         },
 
         _retornaNomeDoPokemon() {
@@ -45,15 +42,12 @@ sap.ui.define([
                 })
         },
 
-        _removePokemon(indice) {
-            PokemonRepository.removerPokemon(indice);
-        },
-
         aoCoincidirRota(evento) {
             ProcessarEventos.processarEvento(() => {
                 const argumentos = "arguments";
                 let indice = window.decodeURIComponent(evento.getParameter(argumentos).detalhesPath)
-    
+                
+                i18n = this._retornai18n();
                 this._carregarPokemon(indice)
             })
         },
@@ -79,29 +73,26 @@ sap.ui.define([
         },   
 
         aoClicarBotaoRemover() {
-            ProcessarEventos.processarEvento(() => {
-                const mensagemConfirmacaoRemocao = Mensagens._mensagemDeConfirmacaoAoRemover()
-                const sim = Mensagens._sim();
-                const nao = Mensagens._nao();
-                const mensagemDeSucessoAoRemover = Mensagens._mensagemDeSucessoAoRemover();
-                const idDoPokemon = this._retornaIdDoPokemon();
-    
-                MessageBox.information(mensagemConfirmacaoRemocao, {
-                    actions: [sim, nao],
-                    emphasizedAction: sim,
-                    onClose: (acao) => {
-                        if (acao === sim) {
-                            this._removePokemon(idDoPokemon);
-                            MessageBox.success(mensagemDeSucessoAoRemover, {
-                                actions: [MessageBox.Action.OK],
-                                onClose: () => {
-                                    roteador = this._retornaRoteador();
-                                    roteador.navTo(paginaDeListagem, {});
-                                }
-                            })
-                        } 
+            ProcessarEventos.processarEvento(async () => {
+                const mensagemConfirmacaoDeRemocao = "cofirmacaoDeRemocao"
+                const mensagemSucessoDeRemocao = "sucessoAoRemover"
+                const textoDialogoConfirmacaoDeRemocao = i18n.getText(mensagemConfirmacaoDeRemocao);
+                const textoDialogoSucessoDeRemocao = i18n.getText(mensagemSucessoDeRemocao);
+                
+                
+                try {
+                    const dialogo = await Dialogos._exibirDialogoDeConfirmacao(textoDialogoConfirmacaoDeRemocao, i18n)
+                    const sim = "Sim";
+                    if(dialogo === sim) {
+                        const idDoPokemon = this._retornaIdDoPokemon(this.getView(), nomeModeloPokemon);
+                        PokemonRepository.removerPokemon(idDoPokemon);
+                        await Dialogos._exibirDialogoDeSucesso(textoDialogoSucessoDeRemocao);
+                        roteador = this._retornaRoteador();
+                        roteador.navTo(paginaDeListagem, {});
                     }
-                });
+                } catch(e) {
+                    console.log(e)
+                }
             })
         },
 

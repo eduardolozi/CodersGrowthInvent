@@ -1,6 +1,5 @@
 sap.ui.define([
-    "./Mensagens"
-], (Mensagens) => {
+], () => {
 "use strict";
     const idInputNome = "inputNome";
     const idInputApelido = "inputApelido";
@@ -13,27 +12,20 @@ sap.ui.define([
     const valor = "value"
     const campoSemSelecionar = 0;
     const stringVazia = ""
-    const regexApenasEspacos = /^\s+$/
     let _i18n
     
     return {
-        Mensagens: Mensagens,
-
         Validacoes(i18n) {
             _i18n = i18n;
-            this._injetaI18nNaClasseDeMensagens(_i18n)
         },
 
         _retornaValorDoCampo(evento) {
             return evento.getSource().getValue();
         },
 
-        _injetaI18nNaClasseDeMensagens(_i18n) {
-            Mensagens.Mensagens(_i18n);
-        },
-
         verificaCamposVazios(view) {
-            const mensagemDeErroCamposVazios = Mensagens._mensagemErroCamposVazios();
+            const erroCampoVazio = "mensagemPreencherCamposVazios";
+            const mensagemDeErroCamposVazios = _i18n.getText(erroCampoVazio)
             const maximoDeCamposObrigatoriosVazios = 0;
             let qtdCamposVazios = 0;
             let camposVazios = [
@@ -58,7 +50,8 @@ sap.ui.define([
         },
 
         validaCampoNomePreenchido(evento) {
-            const mensagemDeErroNome = Mensagens._mensagemDeErroNomeTamanhoMinimo()
+            const erroCampoNome = "campoNomeTamanhoMinimo"
+            const mensagemDeErroNome = _i18n.getText(erroCampoNome)
             const tamanhoMinimo = 3;
             let nome = this._retornaValorDoCampo(evento)
             nome = nome.trim()
@@ -83,7 +76,8 @@ sap.ui.define([
         }, 
 
         validaCampoApelidoPreenchido(evento) {
-            const mensagemDeErroApelido = Mensagens._mensagemDeErroApelidoTamanhoMinimo()
+            const erroCampoApelido = "campoApelidoTamanhoMinimo"
+            const mensagemDeErroApelido = _i18n.getText(erroCampoApelido)
             const tamanhoDeApelidoMinimo = 1;
             let apelido = this._retornaValorDoCampo(evento);
             apelido = apelido.trim()
@@ -97,7 +91,8 @@ sap.ui.define([
         },
 
         validaCampoNivelPreenchido(evento) {
-            const mensagemDeErroNivel = Mensagens._mensagemDeErroNivelInvalido()
+            const erroCampoNivel = "campoNivelNumeroInvalido"
+            const mensagemDeErroNivel = _i18n.getText(erroCampoNivel)
             const nivelMinimo = 1;
             const nivelMaximo = 100;
             let nivel = this._retornaValorDoCampo(evento)
@@ -121,7 +116,8 @@ sap.ui.define([
         },
 
         validaCampoAlturaPreenchido(evento) {
-            const mensagemDeErroAltura = Mensagens._mensagemDeErroAlturaNumeroInvalido()
+            const erroCampoAltura = "campoAlturaNumeroInvalido"
+            const mensagemDeErroAltura = _i18n.getText(erroCampoAltura)
             const alturaMinima = 0;
             const alturaMaxima = 7;
             let altura = parseFloat(this._retornaValorDoCampo(evento))
@@ -135,7 +131,8 @@ sap.ui.define([
         },
 
         validaCampoDataDeCapturaPreenchido(evento) {
-            const mensagemDeErroDataCaptura = Mensagens._mensagemDeErroDaraCapturaInvalida()
+            const erroCampoData = "campoDataDeCapturaInvalida"
+            const mensagemDeErroDataCaptura = _i18n.getText(erroCampoData)
             const valido = "valid"
             const valorValido = evento.getParameter(valido);
 
@@ -148,8 +145,10 @@ sap.ui.define([
         },
 
         validaCampoTipoPrincipalPreenchido(evento, inputTipoSecundario) {
-            const mensagemDeErroTipoPrincipal = Mensagens._mensagemDeErroTipoPrincipalInvalido()
-            const mensagemDeErroTiposIguais = Mensagens._mensagemDeErroTiposRepetidos()
+            const erroCampoTipoPrincipal = "campoTipoPrincipalChaveInvalida"
+            const erroTiposIguais = "campoTipoSecundarioTiposRepetidos"
+            const mensagemDeErroTipoPrincipal = _i18n.getText(erroCampoTipoPrincipal)
+            const mensagemDeErroTiposIguais = _i18n.getText(erroTiposIguais)
             const chaveSelecionada = evento.getSource().getSelectedKey();
             const chaveSelecionadaInt = (chaveSelecionada === stringVazia) ? campoSemSelecionar : parseInt(chaveSelecionada);
             const segundoTipo = parseInt(inputTipoSecundario.getSelectedKey());
@@ -173,8 +172,10 @@ sap.ui.define([
         },
         
         validaCampoTipoSecundarioPreenchido(evento, chaveDoTipoPrincipal) {
-            const mensagemDeErroTipoSecundario = Mensagens._mensagemDeErroTipoSecundarioInvalido()
-            const mensagemDeErroTiposIguais = Mensagens._mensagemDeErroTiposRepetidos()
+            const erroCampoTipoSecundario = "campoTipoSecundarioChaveInvalida"
+            const erroTiposIguais = "campoTipoSecundarioTiposRepetidos"
+            const mensagemDeErroTipoSecundario = _i18n.getText(erroCampoTipoSecundario)
+            const mensagemDeErroTiposIguais = _i18n.getText(erroTiposIguais)
             const chaveSelecionada = evento.getSource().getSelectedKey()
             const primeiroTipo = parseInt(chaveDoTipoPrincipal)
             const chaveSelecionadaInt = (chaveSelecionada === stringVazia) ? campoSemSelecionar : parseInt(chaveSelecionada);

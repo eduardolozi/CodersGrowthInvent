@@ -2,17 +2,14 @@ sap.ui.define([
     "./BaseController",
     "../model/formatter",
     "sap/ui/core/routing/History",
-    "sap/m/MessageBox",
     "sap/ui/model/json/JSONModel", 
     "../Services/Validacoes",
     "sap/ui/core/date/UI5Date",
     "../Repositorios/PokemonRepository", 
     "../Services/ProcessarEventos", 
-    "../Services/Mensagens"
-], (BaseController, formatter, History, MessageBox, JSONModel, Validacoes, UI5Date, PokemonRepository, ProcessarEventos, Mensagens) => {
+    "../Services/Dialogos"
+], (BaseController, formatter, History, JSONModel, Validacoes, UI5Date, PokemonRepository, ProcessarEventos, Dialogos) => {
     "use strict"
-    const sim = "Sim";
-    const nao = "Não";
     const nomeModeloPokemon = "pokemon";
     const campoNome = "/nome";
     const campoApelido = "/apelido";
@@ -37,27 +34,24 @@ sap.ui.define([
     const mensagemDeErro = []
     const nomeRotaCadastro = "cadastro";
     let roteador;
-    let _i18n;
+    let i18n;
 
 
     return BaseController.extend("webapp.Controller.Cadastro", {
         formatter: formatter,
-        Validacoes: Validacoes,
-        Mensagens: Mensagens,
+        Validacoes: Validacoes,     
 
-        
         onInit() {
             roteador = this._retornaRoteador()
-            
-            _i18n = this._retornai18n(),
-            roteador.getRoute(nomeRotaCadastro).attachMatched(this._aoCoincidirRota, this);              
+            roteador.getRoute(nomeRotaCadastro).attachMatched(this._aoCoincidirRota, this);    
+
+            i18n = this._retornai18n()
             this._injetaI18nNaValidcao();
-            this._injetaI18nNaClasseDeMensagens(this._i18n)
             this._defineDatasLimitesDoCampoDeData()
         },
 
         _injetaI18nNaValidcao() {
-            Validacoes.Validacoes(this._i18n)
+            Validacoes.Validacoes(i18n)
         },
 
         _defineDatasLimitesDoCampoDeData() {
@@ -72,7 +66,7 @@ sap.ui.define([
         },
 
         _verificaSeEhCadastroOuAtualizacao() {
-            const idPokemon = this._retornaIdDoPokemon()
+            const idPokemon = this._retornaIdDoPokemon(this.getView(), nomeModeloPokemon)
 
             return (idPokemon) ? idPokemon : undefined;
         },
@@ -110,7 +104,7 @@ sap.ui.define([
         },
 
         _insereCamposNoModeloPokemon() {
-            const modeloPokemon = this._retornaModeloPokemon();
+            const modeloPokemon = this._retornaModeloPokemon(this.getView(), nomeModeloPokemon);
 
             return {
                 nome: modeloPokemon.getProperty(campoNome),
@@ -126,41 +120,43 @@ sap.ui.define([
         },
 
         _salvarPokemon() {
-            const mensagemSucessoAoSalvar = Mensagens._mensagemSucessoAoSalvar()
+            const mensagemSucessoAoSalvar = "sucessoAoSalvar"
+            const textoDialogoSucessoAoSalvar = i18n.getText(mensagemSucessoAoSalvar)
             const novoPokemon = this._insereCamposNoModeloPokemon()
 
             PokemonRepository.criarPokemon(novoPokemon)
-            .then(response => {
+            .then(async response => {
                 const nomePaginaDeDetalhes = "detalhes";
                 const idPokemon = response.id;
-
-                MessageBox.success(mensagemSucessoAoSalvar, {
-                    actions: [MessageBox.Action.OK],
-                    onClose: () => {
-                        roteador = this._retornaRoteador();
-                        roteador.navTo(nomePaginaDeDetalhes, {detalhesPath: idPokemon});
-                    }
-                })
+                try {
+                    await Dialogos._exibirDialogoDeSucesso(textoDialogoSucessoAoSalvar)
+                    roteador = this._retornaRoteador();
+                    roteador.navTo(nomePaginaDeDetalhes, {detalhesPath: idPokemon});
+                } catch (e) {
+                    console.log(e);
+                }
             })
         },
 
         _atualizarPokemon() {
-            const mensagemSucessoAoAtualizar = Mensagens._mensagemSucessoAoAtualizar()
+            const mensagemSucessoAoAtualizar = "sucessoAoAtualizar"
+            const textoDialogoSucessoAoAtualizar = i18n.getText(mensagemSucessoAoAtualizar)
 
             const pokemonAtualizado = this._insereCamposNoModeloPokemon()
-            pokemonAtualizado.id = this._retornaIdDoPokemon();
+            pokemonAtualizado.id = this._retornaIdDoPokemon(this.getView(), nomeModeloPokemon);
 
             PokemonRepository.atualizarPokemon(pokemonAtualizado)
-            .then(() => {
+            .then(async () => {
                 const nomePaginaDeDetalhes = "detalhes";
 
-                MessageBox.success(mensagemSucessoAoAtualizar, {
-                    actions: [MessageBox.Action.OK],
-                    onClose: () => {
-                        roteador = this._retornaRoteador();
-                        roteador.navTo(nomePaginaDeDetalhes, {detalhesPath: pokemonAtualizado.id});
-                    }
-                })
+                try {
+                    await Dialogos._exibirDialogoDeSucesso(textoDialogoSucessoAoAtualizar)
+                    roteador = this._retornaRoteador();
+                    roteador.navTo(nomePaginaDeDetalhes, {detalhesPath: pokemonAtualizado.id});
+                } catch(e) {
+                    console.log(e)
+                }
+                
             })
         },
 
@@ -180,7 +176,8 @@ sap.ui.define([
         _aoCoincidirRota(evento) {
             ProcessarEventos.processarEvento(() => {
                 const idPokemon = evento.getParameter(argumentos).id;
-    
+
+                i18n = this._retornai18n(),
                 this._limpaOsCampos()
                 if(idPokemon != undefined) this._carregarPokemon(idPokemon)
                 else this.getView().setModel(new JSONModel({}), nomeModeloPokemon);
@@ -204,67 +201,75 @@ sap.ui.define([
         },
 
         aoClicarNoBotaoDeSalvar(evento) {
-            ProcessarEventos.processarEvento(() => {
-                const mensagemAoClicarEmSalvar = Mensagens._mensagemAoClicarEmSalvar()
-                const mensagemErroCamposVazios = Mensagens._mensagemErroCamposVazios()
-
+            ProcessarEventos.processarEvento(async () => {
+                const mensagemAoClicarEmSalvar = "mensagemSalvar"
+                const mensagemErroCamposVazios = "mensagemPreencherCamposVazios"
+                const textoDialogoConfirmarCadastro = i18n.getText(mensagemAoClicarEmSalvar)
+                const textoDialogoCamposVazios = i18n.getText(mensagemErroCamposVazios)
+                
                 const mensagemDeErroVazia = 0;
                 const quebraDeLinha = "\n";
                 let quantidadeDeErros = 0;
                 let mensagemDeErroNaTela;
                 let verificacaoDeAcao;
-                
-                MessageBox.information(mensagemAoClicarEmSalvar, {
-                    actions: [sim, nao],
-                    emphasizedAction: sim,
-                    onClose: (acao) => {
-                        if (acao === sim) {
-                            if(Validacoes.verificaCamposVazios(this.getView()) === true) {
-                                MessageBox.error(mensagemErroCamposVazios);
-                                return;
-                            };
-                            mensagemDeErro.map(mensagem => {
-                                if(mensagem !== stringVazia)  quantidadeDeErros++;
-                            })
-                            const verificacaoDeErros = quantidadeDeErros;
-                            if(verificacaoDeErros === mensagemDeErroVazia) {
-                                verificacaoDeAcao = this._verificaSeEhCadastroOuAtualizacao()
-                                if(verificacaoDeAcao === undefined) {
-                                    
-                                    this._salvarPokemon(evento);
-                                }
-                                else {
-                                    this._atualizarPokemon(evento)
-                                }
-                            } else {
-                                mensagemDeErroNaTela = mensagemDeErro.filter((item) => {
-                                    if(item!= undefined) return item;
-                                })
-                                MessageBox.error(mensagemDeErroNaTela.join(quebraDeLinha))
+
+                try {
+                    const sim = "Sim"
+                    const dialogo = await Dialogos._exibirDialogoDeConfirmacao(textoDialogoConfirmarCadastro, i18n)
+                    if(dialogo === sim) {
+                        if(Validacoes.verificaCamposVazios(this.getView()) === true) {
+                            await Dialogos._exibirDialogoDeErro(textoDialogoCamposVazios);
+                            return;
+                        };
+
+                        mensagemDeErro.map(mensagem => {
+                            if(mensagem !== stringVazia)  quantidadeDeErros++;
+                        })
+
+                        const verificacaoDeErros = quantidadeDeErros;
+                        if(verificacaoDeErros === mensagemDeErroVazia) {
+                            verificacaoDeAcao = this._verificaSeEhCadastroOuAtualizacao()
+
+                            if(verificacaoDeAcao === undefined) {
+                                
+                                this._salvarPokemon(evento);
+                            }
+                            else {
+                                this._atualizarPokemon(evento)
                             }
                         } 
+                        else {
+                            mensagemDeErroNaTela = mensagemDeErro.filter((item) => {
+                                if(item!= undefined) return item;
+                            })
+                            await Dialogos._exibirDialogoDeErro(mensagemDeErroNaTela.join(quebraDeLinha))
+                        }
                     }
-                });
+                } catch(e) {
+                    console.log(e)
+                }
             })
         },
 
         aoClicarNoBotaoDeCancelar() {
-            ProcessarEventos.processarEvento(() => {
-                const mensagemAoClicarEmCancelarNaAdicao = Mensagens._mensagemAoClicarEmCancelarNaAdicao()
-                const mensagemAoClicarEmCancelarNaAtualizacao = Mensagens._mensagemAoClicarEmCancelarNaAtualizacao()
+            ProcessarEventos.processarEvento(async () => {
+                const mensagemAoClicarEmCancelarNaAdicao = "mensagemAoClicarEmCancelarNaAdicao"
+                const mensagemAoClicarEmCancelarNaAtualizacao = "mensagemAoClicarEmCancelarNaAtualizacao"
+                const textoDialogoCancelarAdicao = i18n.getText(mensagemAoClicarEmCancelarNaAdicao)
+                const textoDialogoCancelarAtualizacao = i18n.getText(mensagemAoClicarEmCancelarNaAtualizacao)
                 const hash = this._retornaRoteador().getHashChanger().getHash();
-                const mensagemAoClicarEmCancelar = (hash === nomeRotaCadastro) ?  mensagemAoClicarEmCancelarNaAdicao : mensagemAoClicarEmCancelarNaAtualizacao;
-                
-                MessageBox.alert(mensagemAoClicarEmCancelar, {
-                    actions: [sim, nao],
-                    emphasizedAction: sim,
-                    onClose: (acao) => {
-                        if (acao === sim) {
-                            this.aoClicarNoBotaoDeVoltar();
-                            this._limpaOsCampos()
-                        } 
+                const mensagemAoClicarEmCancelar = (hash === nomeRotaCadastro) ?  textoDialogoCancelarAdicao : textoDialogoCancelarAtualizacao;
+                const sim = "Sim"
+
+                try {
+                    const dialog = await Dialogos._exibirDialogoDeConfirmacao(mensagemAoClicarEmCancelar, i18n)
+                    if(dialog === sim) {
+                        this.aoClicarNoBotaoDeVoltar();
+                        this._limpaOsCampos()
                     }
-                });
+                } catch(e){
+                    console.log(e)
+                }
             })
         },
 
