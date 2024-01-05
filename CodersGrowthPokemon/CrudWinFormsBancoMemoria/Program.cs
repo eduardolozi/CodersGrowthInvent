@@ -15,7 +15,7 @@ namespace CrudWinFormsBancoMemoria
         {
             try
             {
-                BancoDeDados.ConfiguracaoDaMigracao();
+                ConfiguraMigracao.ConfiguracaoDaMigracao();
             } catch (Exception ex)
             {
                 ex.ToString(); 

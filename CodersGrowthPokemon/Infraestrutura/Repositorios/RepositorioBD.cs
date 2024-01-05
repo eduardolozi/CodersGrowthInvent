@@ -49,7 +49,7 @@ namespace Infraestrutura.Repositorios
             }
         }
 
-        public int Criar(Pokemon novoPokemon)
+        public void Criar(Pokemon novoPokemon)
         {
             string textoComando = "INSERT INTO pokemons (nome, apelido, nivel, altura, shiny, data_de_captura, tipo_principal, tipo_secundario, foto)" +
                                   "OUTPUT INSERTED.ID" +
@@ -70,15 +70,13 @@ namespace Infraestrutura.Repositorios
                     comando.Parameters.Add("@tipoSecundario", SqlDbType.VarChar).Value = (novoPokemon.TipoSecundario == null) ? DBNull.Value : novoPokemon.TipoSecundario.ToString();
                     if (novoPokemon.Foto == null) comando.Parameters.Add(@"foto", SqlDbType.VarChar).Value = DBNull.Value;
                     else comando.Parameters.Add("@foto", SqlDbType.VarChar).Value = novoPokemon.Foto;
-                    comando.ExecuteNonQuery();
+                    novoPokemon.Id = Convert.ToInt32(comando.ExecuteScalar());
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_CRIACAO);
                 }
                 finally { conexao.Close(); }
-
-                return 1;
             }
         }
 
@@ -103,7 +101,6 @@ namespace Infraestrutura.Repositorios
                 }
                 finally { conexao.Close(); }
             }
-            return null;
         }
 
         public List<Pokemon> ObterTodos(string? nome)

@@ -35,10 +35,10 @@ namespace CrudWinFormsBancoMemoria.Models
         public DateTime DataDeCaptura { get; set; }
 
         [Column("tipo_principal"), NotNull]
-        public TipoPokemon TipoPrincipal { get; set; }
+        public TipoPokemonEnum TipoPrincipal { get; set; }
 
         [Column("tipo_secundario"), Nullable]
-        public TipoPokemon? TipoSecundario { get; set; }
+        public TipoPokemonEnum? TipoSecundario { get; set; }
 
         [Column("foto"), Nullable]
         public string? Foto { get; set; }

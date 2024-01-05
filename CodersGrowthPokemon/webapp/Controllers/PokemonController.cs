@@ -13,12 +13,12 @@ namespace webapp.wwwroot.Controllers
     [ApiController]
     public class PokemonController : ControllerBase
     {
-        private IRepositorio _repositorio;
-        private PokemonValidator _validacao;
+        private readonly IRepositorio _repositorio;
+        private readonly PokemonValidator _validacao;
 
         public PokemonController(IRepositorio repositorio, PokemonValidator validacao) {
-            this._repositorio = repositorio;
-            this._validacao = validacao;
+            _repositorio = repositorio;
+            _validacao = validacao;
         }
 
         [HttpGet]
@@ -26,12 +26,9 @@ namespace webapp.wwwroot.Controllers
         {
             try
             {
-                List<Pokemon> pokemons;
-                if (string.IsNullOrEmpty(nome))  _repositorio.ObterTodos(null);
-                pokemons = _repositorio.ObterTodos(nome);
+                List<Pokemon> pokemons = (string.IsNullOrEmpty(nome)) ? _repositorio.ObterTodos(null) : _repositorio.ObterTodos(nome);
 
                 return Ok(pokemons);
-                
             }catch(Exception ex)
             {
                 var erroJson = JsonSerializer.Serialize(ex.Message);
@@ -65,8 +62,7 @@ namespace webapp.wwwroot.Controllers
                     var mensagemDeErro = resultado.ToString();
                     throw new Exception(mensagemDeErro);
                 }
-                var idPokemon = _repositorio.Criar(pokemon);
-                pokemon.Id = idPokemon;
+                _repositorio.Criar(pokemon);
                 string uri = $"/pokemons/{pokemon.Id}";
                 return Created(uri, pokemon);
             }
@@ -80,9 +76,11 @@ namespace webapp.wwwroot.Controllers
         [HttpPut("{id}")]
         public IActionResult Atualizar([FromRoute]int id,[FromBody] Pokemon pokemon)
         {
+            const string MENSAGEM_DE_ERRO_ATUALIZAR = "Pokémon não encontrado pelo id";
+
             try
             {
-                if (_repositorio.ObterPorId(id) == null) throw new Exception("Id não encontrado");
+                if (_repositorio.ObterPorId(id) == null) throw new Exception(MENSAGEM_DE_ERRO_ATUALIZAR);
                 pokemon.Id = id;
             
                 ValidationResult resultado = _validacao.Validate(pokemon);
@@ -95,7 +93,7 @@ namespace webapp.wwwroot.Controllers
                 _repositorio.Atualizar(pokemon);
                 return Ok(pokemon);
 
-            } catch(Exception ex) when(ex.Message.Equals("Id não encontrado"))
+            } catch(Exception ex) when(ex.Message.Equals(MENSAGEM_DE_ERRO_ATUALIZAR))
             {
                 var erroJson = JsonSerializer.Serialize(ex.Message);
                 return NotFound(erroJson);

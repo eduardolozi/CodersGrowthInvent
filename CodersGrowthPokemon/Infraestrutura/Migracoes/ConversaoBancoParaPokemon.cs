@@ -36,9 +36,9 @@ namespace CrudWinFormsBancoMemoria
             return Convert.ToDateTime(valor);
         }
 
-        private TipoPokemon ConverteValorParaTipoPokemon(object valor)
+        private TipoPokemonEnum ConverteValorParaTipoPokemon(object valor)
         {
-            return Enum.Parse<TipoPokemon>(valor.ToString());
+            return Enum.Parse<TipoPokemonEnum>(valor.ToString());
         }
         public Pokemon AtribuiLinhaAoPokemon(SqlDataReader dr, Pokemon pokemon)
         {

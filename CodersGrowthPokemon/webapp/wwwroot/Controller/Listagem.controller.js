@@ -25,38 +25,22 @@ sap.ui.define([
 
         _carregarPokemons() {
             PokemonRepository.obterTodosOsPokemons()
-                .then(response => {
+            .then(response => {
                     this.getView().setModel(new JSONModel(response), nomeModeloPokemons);
                 })
         },
 
         aoFiltrarPokemons(evento) {
             ProcessarEventos.processarEvento(() => {
-                const idListaDePokemons = "listaDePokemons";
-                const itensDaLista = "items";
-                const campoNome = "nome";
                 const parametroParaConsulta = "query";
-                const filtros = [];
                 const consulta = evento.getParameter(parametroParaConsulta);
-                let listaDePokemons;
-                let pokemonsDaLista;
-    
-                if (consulta) {
+
+                if(consulta) {
                     PokemonRepository.obterTodosOsPokemons(consulta)
-                        .then(pokemons => {
-                            pokemons.forEach(() => {
-                                filtros.push(new Filter(campoNome, FilterOperator.Contains, consulta));
-                            })
-                            listaDePokemons = this.byId(idListaDePokemons);
-                            pokemonsDaLista = listaDePokemons.getBinding(itensDaLista);
-                            pokemonsDaLista.filter(filtros);
-                        })
-                }
-                else {
-                    listaDePokemons = this.byId(idListaDePokemons);
-                    pokemonsDaLista = listaDePokemons.getBinding(itensDaLista);
-                    pokemonsDaLista.filter(filtros);
-                }
+                        .then (pokemons => this.getView().setModel(new JSONModel(pokemons), nomeModeloPokemons));
+                        return
+                } 
+                this._carregarPokemons();
             })
         },
 

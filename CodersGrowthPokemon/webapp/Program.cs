@@ -7,7 +7,7 @@ using Microsoft.Extensions.FileProviders;
 
 try
 {
-    BancoDeDados.ConfiguracaoDaMigracao();
+    ConfiguraMigracao.ConfiguracaoDaMigracao();
 }
 catch (Exception ex)
 {

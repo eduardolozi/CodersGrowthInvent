@@ -40,8 +40,8 @@ namespace Infraestrutura.Repositorios
                 using (var db = CriaConexao())
                 {
                     return (from p in db.GetTable<Pokemon>()
-                            where p.Id == id
-                            select p).First();
+                                     where p.Id == id
+                                     select p).First();
                 }
             }
             catch (Exception)
@@ -65,7 +65,7 @@ namespace Infraestrutura.Repositorios
             }
         }
 
-        public int Criar(Pokemon novoPokemon)
+        public void Criar(Pokemon novoPokemon)
         {
             try
             {
@@ -73,14 +73,14 @@ namespace Infraestrutura.Repositorios
                 {
                     db.Insert(novoPokemon);
                 }
+                novoPokemon.Id = (from p in ObterTodos(null)
+                                where p.Nome == novoPokemon.Nome
+                                select p.Id).Last();
             }
             catch (Exception)
             {
                 throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_CRIACAO);
             }
-                    return (from p in ObterTodos(null)
-                            where p.Nome == novoPokemon.Nome
-                            select p.Id).Last();
         }
 
         public void Atualizar(Pokemon pokemon)

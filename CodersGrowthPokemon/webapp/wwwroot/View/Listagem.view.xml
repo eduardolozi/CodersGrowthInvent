@@ -9,7 +9,7 @@
                         <Title text="{i18n>titulo}"/>
                         <ToolbarSeparator/>
                         <ToolbarSpacer/>
-                        <SearchField width="30%" search=".aoFiltrarPokemons"/>
+                        <SearchField width="30%" search=".aoFiltrarPokemons" placeholder="{i18n>textoBarraDePesquisa}"/>
                         <Button type="Emphasized" icon="sap-icon://add" text="{i18n>textoBotaoAdicionar}" press="aoClicarNoBotaoAdicionar"/>
                     </Toolbar>
                 </headerToolbar>
