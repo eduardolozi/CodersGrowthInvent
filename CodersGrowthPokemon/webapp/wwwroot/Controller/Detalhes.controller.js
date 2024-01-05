@@ -45,7 +45,7 @@ sap.ui.define([
         aoCoincidirRota(evento) {
             ProcessarEventos.processarEvento(() => {
                 const argumentos = "arguments";
-                let indice = window.decodeURIComponent(evento.getParameter(argumentos).detalhesPath)
+                let indice = evento.getParameter(argumentos).detalhesPath
                 
                 i18n = this._retornai18n();
                 this._carregarPokemon(indice)
@@ -67,7 +67,7 @@ sap.ui.define([
                 
                 roteador = this._retornaRoteador();
                 roteador.navTo(nomePaginaDeCadastro, {
-                    id: window.encodeURIComponent(parametroId)
+                    id: parametroId
                 })
             })
         },   

@@ -71,10 +71,11 @@ sap.ui.define([
                 const nomeParametroId = "id";
                 const nomePaginaDeDetalhes = "detalhes";
                 const items = evento.getSource();
+                const idDoPokemonClicado = items.getBindingContext(nomeModeloPokemons).getProperty(nomeParametroId);
                 roteador = this._retornaRoteador();
     
                 roteador.navTo(nomePaginaDeDetalhes, {
-                    detalhesPath: window.encodeURIComponent(items.getBindingContext(nomeModeloPokemons).getProperty(nomeParametroId))
+                    detalhesPath: idDoPokemonClicado
                 })
             })
         },
