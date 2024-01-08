@@ -24,8 +24,13 @@ sap.ui.define([
         },
 
         verificaCamposVazios(view) {
-            const erroCampoVazio = "mensagemPreencherCamposVazios";
-            const mensagemDeErroCamposVazios = _i18n.getText(erroCampoVazio)
+            const mensagemNomeVazio = "campoNomeVazio";
+            const mensagemApelidoVazio = "campoApelidoVazio";
+            const mensagemNivelVazio = "campoNivelVazio";
+            const mensagemAlturaVazia = "campoAlturaVazio";
+            const mensagemDataDeCapturaVazia = "campoDataDeCapturaVazio";
+            const mensagemTipoPrincipaVazio = "campoTipoPrincipalVazio";
+
             const maximoDeCamposObrigatoriosVazios = 0;
             let qtdCamposVazios = 0;
             let camposVazios = [
@@ -36,14 +41,22 @@ sap.ui.define([
                 view.byId(idInputDataDeCaptura),
                 view.byId(idInputTipoPrincipal)
             ]
-            
-            camposVazios.map((campo) => {
-                if(!campo.getValue()) {
-                    qtdCamposVazios++;
-                    campo.setValueState(erro);
-                    campo.setValueStateText(mensagemDeErroCamposVazios);
-                }
-            });
+            let mensagemCamposVazios = [
+            _i18n.getText(mensagemNomeVazio),
+            _i18n.getText(mensagemApelidoVazio),
+            _i18n.getText(mensagemNivelVazio),
+            _i18n.getText(mensagemAlturaVazia),
+            _i18n.getText(mensagemDataDeCapturaVazia),
+            _i18n.getText(mensagemTipoPrincipaVazio),
+            ];
+
+            camposVazios.map((campo, indice) => {
+            if (!campo.getValue()) {
+                qtdCamposVazios++;
+                campo.setValueState(erro);
+                campo.setValueStateText(mensagemCamposVazios[indice])
+            }
+            })
 
             if(qtdCamposVazios > maximoDeCamposObrigatoriosVazios) return true;
             return false;
@@ -95,8 +108,16 @@ sap.ui.define([
             const mensagemDeErroNivel = _i18n.getText(erroCampoNivel)
             const nivelMinimo = 1;
             const nivelMaximo = 100;
+            const mensagemNivelVazio = "campoNivelVazio";
+            const mensagemDeErroNivelVazio = _i18n.getText(mensagemNivelVazio)
             let nivel = this._retornaValorDoCampo(evento)
-
+            
+            if (!nivel) {
+            evento.getSource().setValueState(erro);
+            evento.getSource().setValueStateText(mensagemDeErroNivelVazio);
+            return;
+            }
+            
             evento.getSource().setValueState(sucesso);
             if(nivel < nivelMinimo || nivel > nivelMaximo) {
                 evento.getSource().setValueState(erro);
@@ -120,7 +141,15 @@ sap.ui.define([
             const mensagemDeErroAltura = _i18n.getText(erroCampoAltura)
             const alturaMinima = 0;
             const alturaMaxima = 7;
+            const mensagemAlturaVazia = "campoAlturaVazio";
+            const mensagemDeErroAlturaVazia = _i18n.getText(mensagemAlturaVazia)
             let altura = parseFloat(this._retornaValorDoCampo(evento))
+
+            if (!altura) {
+                evento.getSource().setValueState(erro);
+                evento.getSource().setValueStateText(mensagemDeErroAlturaVazia);
+                return;
+            }
             
             evento.getSource().setValueState(sucesso);
             if(altura <= alturaMinima || altura >= alturaMaxima) {

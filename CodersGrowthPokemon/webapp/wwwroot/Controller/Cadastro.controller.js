@@ -105,7 +105,7 @@ sap.ui.define([
 
         _insereCamposNoModeloPokemon() {
             const modeloPokemon = this._retornaModeloPokemon(this.getView(), nomeModeloPokemon);
-
+ 
             return {
                 nome: modeloPokemon.getProperty(campoNome),
                 apelido: modeloPokemon.getProperty(campoApelido),
@@ -113,9 +113,9 @@ sap.ui.define([
                 altura: parseFloat(modeloPokemon.getProperty(campoAltura)),
                 dataDeCaptura: modeloPokemon.getProperty(campoDataDeCaptura),
                 tipoPrincipal: parseInt(modeloPokemon.getProperty(campoTipoPrincipal)),
-                tipoSecundario: (modeloPokemon.getProperty(campoTipoSecundario) === undefined) ? null : parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario)),
-                shiny: (modeloPokemon.getProperty(campoShiny) === false) ? false : true,
-                foto: (modeloPokemon.getProperty(campoFoto) === undefined) ? null : this.getView().byId(idInputFoto).getValue()
+                tipoSecundario: (!modeloPokemon.getProperty(campoTipoSecundario)) ? null : parseInt(this.getView().getModel(nomeModeloPokemon).getProperty(campoTipoSecundario)),
+                shiny: (!modeloPokemon.getProperty(campoShiny)) ? false : true,
+                foto: (!modeloPokemon.getProperty(campoFoto)) ? null : this.getView().byId(idInputFoto).getValue()
             }
         },
 
@@ -200,56 +200,65 @@ sap.ui.define([
             })
         },
 
-        aoClicarNoBotaoDeSalvar(evento) {
-            ProcessarEventos.processarEvento(async () => {
-                const mensagemAoClicarEmSalvar = "mensagemSalvar"
-                const mensagemErroCamposVazios = "mensagemPreencherCamposVazios"
-                const textoDialogoConfirmarCadastro = i18n.getText(mensagemAoClicarEmSalvar)
-                const textoDialogoCamposVazios = i18n.getText(mensagemErroCamposVazios)
-                
-                const mensagemDeErroVazia = 0;
-                const quebraDeLinha = "\n";
-                let quantidadeDeErros = 0;
-                let mensagemDeErroNaTela;
-                let verificacaoDeAcao;
-
-                try {
+        _retornaQuantidadeDeCamposComErro() {
+            let quantidadeDeErros = 0;
+     
+            mensagemDeErro.map((mensagem) => {
+              if (mensagem !== stringVazia) quantidadeDeErros++;
+            });
+            return quantidadeDeErros;
+          },
+     
+          _retornaMensagensDeErroDosCamposPreenchidos() {
+            return mensagemDeErro.filter((item) => {
+                    if (item) return item;
+                  });
+          },
+     
+          _criaMensagemDeErro() {
+            const mensagemErroCamposVazios = "mensagemPreencherCamposVazios"
+            const erroDeCamposVazios = i18n.getText(mensagemErroCamposVazios)
+            const errosDeCamposPreenchidos = this._retornaMensagensDeErroDosCamposPreenchidos()
+            const quebraDeLinha = "\n";
+     
+            return Validacoes.verificaCamposVazios(this.getView())
+                    ? `${erroDeCamposVazios} ${quebraDeLinha} ${errosDeCamposPreenchidos.join(quebraDeLinha)}`
+                    : `${errosDeCamposPreenchidos.join(quebraDeLinha)}`
+          },
+     
+          aoClicarNoBotaoDeSalvar(evento) {
+              ProcessarEventos.processarEvento(async () => {
+                  const mensagemAoClicarEmSalvar = "mensagemSalvar"
+                  const textoDialogoConfirmarCadastro = i18n.getText(mensagemAoClicarEmSalvar)
+                 
+                  const mensagemDeErroVazia = 0;
+                  let quantidadeDeErros = 0;
+                //   let errosDeCamposPreenchidos;
+                  let verificacaoDeAcao;
+     
+                  try {
                     const sim = "Sim"
                     const dialogo = await Dialogos._exibirDialogoDeConfirmacao(textoDialogoConfirmarCadastro, i18n)
-                    if(dialogo === sim) {
-                        if(Validacoes.verificaCamposVazios(this.getView()) === true) {
-                            await Dialogos._exibirDialogoDeErro(textoDialogoCamposVazios);
-                            return;
-                        };
-
-                        mensagemDeErro.map(mensagem => {
-                            if(mensagem !== stringVazia)  quantidadeDeErros++;
-                        })
-
-                        const verificacaoDeErros = quantidadeDeErros;
-                        if(verificacaoDeErros === mensagemDeErroVazia) {
-                            verificacaoDeAcao = this._verificaSeEhCadastroOuAtualizacao()
-
-                            if(verificacaoDeAcao === undefined) {
-                                
-                                this._salvarPokemon(evento);
-                            }
-                            else {
-                                this._atualizarPokemon(evento)
-                            }
-                        } 
-                        else {
-                            mensagemDeErroNaTela = mensagemDeErro.filter((item) => {
-                                if(item!= undefined) return item;
-                            })
-                            await Dialogos._exibirDialogoDeErro(mensagemDeErroNaTela.join(quebraDeLinha))
-                        }
+     
+                    if (dialogo === sim) {
+                      const camposVazios = Validacoes.verificaCamposVazios(this.getView())
+                      quantidadeDeErros = this._retornaQuantidadeDeCamposComErro()
+     
+                      if (quantidadeDeErros > mensagemDeErroVazia || camposVazios){
+                        const erro = this._criaMensagemDeErro()
+                        await Dialogos._exibirDialogoDeErro(erro);
+                        return;
+                      }
+     
+                      verificacaoDeAcao = this._verificaSeEhCadastroOuAtualizacao()
+                      if(!verificacaoDeAcao) this._salvarPokemon(evento);
+                      else this._atualizarPokemon(evento)
                     }
-                } catch(e) {
-                    console.log(e)
-                }
-            })
-        },
+                  } catch(e) {
+                      console.log(e)
+                  }
+              })
+          },
 
         aoClicarNoBotaoDeCancelar() {
             ProcessarEventos.processarEvento(async () => {
