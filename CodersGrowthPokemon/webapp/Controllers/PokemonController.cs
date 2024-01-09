@@ -6,6 +6,7 @@ using FluentValidation.Results;
 using Dominio.Validacoes;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Text.Json;
+using FluentValidation;
 
 namespace webapp.wwwroot.Controllers
 {
@@ -56,12 +57,7 @@ namespace webapp.wwwroot.Controllers
         {
             try
             {
-                ValidationResult resultado = _validacao.Validate(pokemon);
-                if (!resultado.IsValid)
-                {
-                    var mensagemDeErro = resultado.ToString();
-                    throw new Exception(mensagemDeErro);
-                }
+                ExtensaoFluentValidation.ValidateAndThrowArgumentsException(_validacao, pokemon);
                 _repositorio.Criar(pokemon);
                 string uri = $"/pokemons/{pokemon.Id}";
                 return Created(uri, pokemon);
@@ -76,19 +72,14 @@ namespace webapp.wwwroot.Controllers
         [HttpPut("{id}")]
         public IActionResult Atualizar([FromRoute]int id,[FromBody] Pokemon pokemon)
         {
-            const string MENSAGEM_DE_ERRO_ATUALIZAR = "Pokémon não encontrado pelo id";
+            const string MENSAGEM_DE_ERRO_ATUALIZAR = "Pokemon não encontrado pelo id";
 
             try
             {
                 if (_repositorio.ObterPorId(id) == null) throw new Exception(MENSAGEM_DE_ERRO_ATUALIZAR);
                 pokemon.Id = id;
             
-                ValidationResult resultado = _validacao.Validate(pokemon);
-                if (!resultado.IsValid)
-                {
-                    var mensagemDeErro = resultado.ToString();
-                    throw new Exception(mensagemDeErro);
-                }
+                ExtensaoFluentValidation.ValidateAndThrowArgumentsException(_validacao, pokemon);
 
                 _repositorio.Atualizar(pokemon);
                 return Ok(pokemon);

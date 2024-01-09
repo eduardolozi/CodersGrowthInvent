@@ -40,8 +40,10 @@ namespace Infraestrutura.Repositorios
 
         public void Atualizar(Pokemon pokemon)
         {
-            int index = listaDePokemons.FindIndex(p => p.Equals(pokemon));
-            listaDePokemons[index] = pokemon;
+            var idDoPokemon = listaDePokemons.IndexOf((from p in listaDePokemons
+                                                        where p.Id == pokemon.Id
+                                                        select p).First());
+            listaDePokemons[idDoPokemon] = pokemon;
         }
     }
 }

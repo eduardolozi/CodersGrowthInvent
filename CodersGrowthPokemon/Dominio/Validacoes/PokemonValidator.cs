@@ -2,6 +2,7 @@
 using Dominio.Enums;
 using Dominio.Validacoes;
 using FluentValidation;
+using FluentValidation.Results;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -50,7 +51,7 @@ namespace Dominio.Validacoes{
 
             RuleFor(p => p.DataDeCaptura)
                 .GreaterThanOrEqualTo(DataMinima).WithMessage(MensagensDeValidacao.VALOR_DATA_MENOR)
-                .LessThanOrEqualTo(DateTime.Now).WithMessage(MensagensDeValidacao.ValorDataMaior);
+                .LessThanOrEqualTo(DateTime.Now.AddDays(1)).WithMessage(MensagensDeValidacao.ValorDataMaior);
 
             RuleFor(p => p.TipoPrincipal)
                 .NotEqual(Enum.Parse<TipoPokemonEnum>(TIPO_INVALIDO)).WithMessage(MensagensDeValidacao.CAMPO_TIPO_PRINCIPAL_VAZIO);

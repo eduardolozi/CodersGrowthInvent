@@ -21,6 +21,12 @@ sap.ui.define([
             const cabecalhoImagem = "data:image/png;base64,";
             const urlImagemIndefinida = "https://imgur.com/M2gmRB7.gif"
             return (foto ? (cabecalhoImagem + foto) : urlImagemIndefinida)
+        }, 
+
+        formataAltura(altura) {
+            const metros = "m";
+            const alturaFormatada = `${altura}${metros}`.replace(".", ",");
+            return alturaFormatada;
         }
     }
 })

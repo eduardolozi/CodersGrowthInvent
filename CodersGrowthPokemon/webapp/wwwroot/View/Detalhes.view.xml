@@ -11,47 +11,55 @@
                 <ToolbarSpacer/>
                 <Title text="{i18n>tituloDetalhes}" level="H2"/>
                 <ToolbarSpacer/>
-                <Button icon="sap-icon://edit" type="Transparent" press="aoClicarBotaoEditar" ariaLabelledBy="editButtonLabel"/>
-                <Button icon="sap-icon://delete" type="Transparent" press="aoClicarBotaoRemover" ariaLabelledBy="deleteButtonLabel"/>
+                <Button id="botaoVerCard" type="Emphasized" press="aoClicarBotaoVerCard" text="{i18n>verCard}"/>
+                <Button icon="sap-icon://edit" text="Editar" type="Emphasized" ariaLabelledBy="editButtonLabel" press="aoClicarBotaoEditar" />
+                <Button icon="sap-icon://delete" text="Remover"  type="Emphasized" ariaLabelledBy="deleteButtonLabel" press="aoClicarBotaoRemover"/>
             </Toolbar>
         </customHeader>
-
-
         <VBox class="sapUiLargeMarginBegin sapUiLargeMarginTop">
-            <Title text="{detalhePokemon>/nome}" level="H3"/>
-            <FlexBox class="sapUiTinyMarginTop">
-                <Image src="{
-                    path: 'detalhePokemon>/foto',
-                    formatter: '.formatter.formataImagem' 
-                }" width="80px" height="80px"/>
-            </FlexBox>
-            <FlexBox direction="Column">
-                <Label design="Bold" text="{i18n>colunaApelido} : {detalhePokemon>/apelido}" />
-                <Label design="Bold" text="{i18n>colunaNivel} : {detalhePokemon>/nivel}" />
-                <Label design="Bold" text="{i18n>colunaTipoPrincipal} : {
-                        path: 'detalhePokemon>/tipoPrincipal',
-                        formatter: '.formatter.formataTipo'
-                    }" />
-                <Label design="Bold" text="{i18n>colunaTipoSecundario} : {
-                        path: 'detalhePokemon>/tipoSecundario',
-                        formatter: '.formatter.formataTipo'
-                    }" />
-                <Label design="Bold" text="{i18n>colunaShiny} : {
-                        path: 'detalhePokemon>/shiny',
-                        formatter: '.formatter.formataShiny'
-                    }" />
-                <Label design="Bold" text="{i18n>colunaAltura}: {detalhePokemon>/altura}m" />
-                <Label design="Bold" text="{i18n>colunaDataCaptura}: {
-                        path: 'detalhePokemon>/dataDeCaptura',
-                        type: 'sap.ui.model.type.Date',
-                        formatOptions: {
-                            style: 'short',
-                            source: {
-                                pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
-                            }
-                        }
-                    }"/>
-                <Button id="botaoVerCard" class="sapUiTinyMarginTop" type="Emphasized" press="aoClicarBotaoVerCard" text="{i18n>verCard}"/>
+            <!-- <Title text="{detalhePokemon>/nome}" level="H3"/> -->
+            <FlexBox alignItems="Center">
+                <FlexBox class="sapUiSmallMarginEnd">
+                    <Image src="{
+                        path: 'detalhePokemon>/foto',
+                        formatter: '.formatter.formataImagem' 
+                    }" width="80px" height="80px"/>
+                </FlexBox>
+                <FlexBox>
+                    <FlexBox direction="Column" class="sapUiTinyMarginBegin sapUiSmallMarginEnd">
+                        
+                        <Label design="Bold" text="{i18n>colunaNome} : {detalhePokemon>/nome}" />
+                        <Label design="Bold" text="{i18n>colunaApelido} : {detalhePokemon>/apelido}" />
+                        <Label design="Bold" text="{i18n>colunaNivel} : {detalhePokemon>/nivel}" />
+                        <Label design="Bold" text="{i18n>colunaAltura}: {detalhePokemon>/altura}m" />
+                        
+                        
+                    </FlexBox>
+                    <FlexBox direction="Column" class="sapUiSmallMarginBegin">
+                        <Label design="Bold" text="{i18n>colunaTipoPrincipal} : {
+                            path: 'detalhePokemon>/tipoPrincipal',
+                            formatter: '.formatter.formataTipo'
+                        }" />
+                        <Label design="Bold" text="{i18n>colunaTipoSecundario} : {
+                            path: 'detalhePokemon>/tipoSecundario',
+                            formatter: '.formatter.formataTipo'
+                        }" />
+                        <Label design="Bold" text="{i18n>colunaDataCaptura}: {
+                                path: 'detalhePokemon>/dataDeCaptura',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: {
+                                    style: 'short',
+                                    source: {
+                                        pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
+                                    }
+                                }
+                            }"/>
+                        <Label design="Bold" text="{i18n>colunaShiny} : {
+                            path: 'detalhePokemon>/shiny',
+                            formatter: '.formatter.formataShiny'
+                        }" />
+                    </FlexBox>
+                </FlexBox>
             </FlexBox>
         </VBox>
     </Page>

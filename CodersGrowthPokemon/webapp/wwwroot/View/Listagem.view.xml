@@ -10,7 +10,7 @@
                         <ToolbarSeparator/>
                         <ToolbarSpacer/>
                         <SearchField width="30%" search=".aoFiltrarPokemons" placeholder="{i18n>textoBarraDePesquisa}"/>
-                        <Button type="Emphasized" icon="sap-icon://add" text="{i18n>textoBotaoAdicionar}" press="aoClicarNoBotaoAdicionar"/>
+                        <Button type="Emphasized" icon="sap-icon://add" press="aoClicarNoBotaoAdicionar" placeholder="Adicionar"/>
                     </Toolbar>
                 </headerToolbar>
                 <columns>
@@ -54,7 +54,11 @@
                             <Text text="{pokemons>nome}"/>
                             <Text text="{pokemons>apelido}"/>
                             <Text text="{pokemons>nivel}"/>
-                            <Text text="{pokemons>altura}"/>
+                            <!-- <Text text="{pokemons>altura}"/> -->
+                            <Text text="{
+                                path: 'pokemons>altura',
+                                formatter: '.formatter.formataAltura'
+                            }"/>
                             <Text text="{
                                 path: 'pokemons>shiny',
                                 formatter: '.formatter.formataShiny'

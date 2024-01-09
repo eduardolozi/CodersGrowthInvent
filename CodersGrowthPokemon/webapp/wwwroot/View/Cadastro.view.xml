@@ -5,7 +5,18 @@
     xmlns:l="sap.ui.layout"
     displayBlock="true"
     xmlns:mvc="sap.ui.core.mvc">
-    <Page title="{i18n>tituloCadastro}" titleAlignment="Center" showNavButton="true" navButtonPress=".aoClicarNoBotaoDeVoltar">
+    <Page>
+        <customHeader>
+            <Toolbar>
+                <Button type="Back" press=".aoClicarNoBotaoDeVoltar" />
+                <ToolbarSpacer/>
+                <Title text="{i18n>tituloDetalhes}" level="H2"/>
+                <ToolbarSpacer/>
+                <Button text="{i18n>botaoCancelar}" press=".aoClicarNoBotaoDeCancelar" placeholder="Cancelar"/>
+                <Button type="Emphasized" text="{i18n>botaoSalvar}" press=".aoClicarNoBotaoDeSalvar" placeholder="Salvar"/>
+            </Toolbar>
+        </customHeader>
+
         <FlexBox direction="Row" class="sapUiLargeMarginTop sapUiLargeMarginBegin">
             <FlexBox direction="Column" class="sapUiLargeMarginEnd">
                 <Label design="Bold" text="{i18n>colunaNome}" required="true" labelFor="inputNome"/>
@@ -23,22 +34,9 @@
 						<MaskInputRule/>
 					</rules>
                 </MaskInput>
-    
-                <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaDataCaptura}" required="true" labelFor="inputDataCaptura" />
-                <DatePicker id="inputDataCaptura" value="{path: 'pokemon>/dataDeCaptura',
-                    type: 'sap.ui.model.type.Date',
-                    formatOptions: {
-                        source: {
-                            pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
-                        }
-                    }
-                }" placeholder="Data de captura" width="100%" displayFormat="dd/MM/yyyy" valueFormat="yyyy-MM-ddTHH:mm:ss.mmm" change=".aoMudarCampoDataDeCaptura"/>
-
-                <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaShiny}" required="true" labelFor="inputShiny" />
-                <CheckBox id="inputShiny" selected="{pokemon>/shiny}" text="Shiny"/>
             </FlexBox>
 
-            <FlexBox direction="Column">
+            <FlexBox direction="Column" class="sapUiLargeMarginBegin sapUiLargeMarginEnd">
                 <Label design="Bold" text="{i18n>colunaTipoPrincipal}" required="true" labelFor="inputTipoPrincpial" />
                 <ComboBox id="inputTipoPrincipal" placeholder="Tipo principal" width="100%" items="{tiposDeDados>/TiposDosPokemons}" selectedKey="{pokemon>/tipoPrincipal}" change=".aoMudarCampoTipoPrincipal">
                     <core:ListItem key="{tiposDeDados>indice}" text="{tiposDeDados>nome}"/>
@@ -48,8 +46,23 @@
                 <ComboBox id="inputTipoSecundario" placeholder="Tipo secundário" width="100%" items="{tiposDeDados>/TiposDosPokemons}" selectedKey="{pokemon>/tipoSecundario}" change=".aoMudarCampoTipoSecundario">
                     <core:ListItem key="{tiposDeDados>indice}" text="{tiposDeDados>nome}"/>
                 </ComboBox>
-    
-                <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaFoto}" labelFor="inputFoto" />
+
+                <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaDataCaptura}" required="true" labelFor="inputDataCaptura" />
+                <DatePicker id="inputDataCaptura" value="{path: 'pokemon>/dataDeCaptura',
+                    type: 'sap.ui.model.type.Date',
+                    formatOptions: {
+                        source: {
+                            pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
+                        }
+                    }
+                }" placeholder="Data de captura" width="100%" displayFormat="dd/MM/yyyy" valueFormat="yyyy-MM-ddTHH:mm:ss.mmm" change=".aoMudarCampoDataDeCaptura"/>
+                
+                <Label class="sapUiSmallMarginTop" design="Bold" text="{i18n>colunaShiny}" required="true" labelFor="inputShiny" />
+                <CheckBox id="inputShiny" selected="{pokemon>/shiny}" text="Shiny"/>
+            </FlexBox>
+            
+            <FlexBox direction="Column" class="sapUiLargeMarginBegin">
+                <Label design="Bold" text="{i18n>colunaFoto}" labelFor="inputFoto" />
                 <FlexBox direction="ColumnReverse">
                     <u:FileUploader 
                     id="inputFoto"
@@ -68,14 +81,5 @@
                 </FlexBox>
             </FlexBox>
         </FlexBox>
-        
-        <footer>
-            <Toolbar>
-                <ToolbarSpacer/>
-                <Button type="Accept" text="{i18n>botaoSalvar}" press=".aoClicarNoBotaoDeSalvar"/>
-                <Button type="Reject" text="{i18n>botaoCancelar}" press=".aoClicarNoBotaoDeCancelar"/>
-            </Toolbar>
-        </footer>
-
     </Page>
 </mvc:View>
