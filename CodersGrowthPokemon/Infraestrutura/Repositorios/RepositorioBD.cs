@@ -1,5 +1,5 @@
-﻿using CrudWinFormsBancoMemoria;
-using CrudWinFormsBancoMemoria.Models;
+﻿using CrudWinFormsBancoMemoria.Models;
+using Infraestrutura.Conversores;
 using Infraestrutura.MensagensDeErro;
 using Microsoft.Data.SqlClient;
 using System.Configuration;

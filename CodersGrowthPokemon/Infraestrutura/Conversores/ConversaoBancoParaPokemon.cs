@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrudWinFormsBancoMemoria
+namespace Infraestrutura.Conversores
 {
     public class ConversaoBancoParaPokemon
     {

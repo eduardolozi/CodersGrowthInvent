@@ -1,6 +1,7 @@
 using CrudWinFormsBancoMemoria;
 using CrudWinFormsBancoMemoria.Models;
 using Dominio.Validacoes;
+using Infraestrutura.Conversores;
 using Infraestrutura.Repositorios;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.FileProviders;

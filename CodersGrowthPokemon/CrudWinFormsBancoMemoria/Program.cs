@@ -1,3 +1,4 @@
+using Infraestrutura.Conversores;
 using Infraestrutura.Repositorios;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
