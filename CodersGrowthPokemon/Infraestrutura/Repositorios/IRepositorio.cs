@@ -9,7 +9,7 @@ namespace Infraestrutura.Repositorios
 {
     public interface IRepositorio
     {
-        public List<Pokemon> ObterTodos();
+        public List<Pokemon> ObterTodos(string? nome);
         public Pokemon ObterPorId(int id);
         public void Remover(Pokemon pokemon);
         public void Criar(Pokemon novoPokemon);

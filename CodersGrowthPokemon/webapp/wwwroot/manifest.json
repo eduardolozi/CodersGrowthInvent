@@ -1,0 +1,104 @@
+{
+	"_version": "1.58.0",
+	"sap.app": {
+		"id": "webapp",
+		"i18n": "i18n/i18n.properties",
+		"type": "application"
+		
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "webapp.View.Listagem",
+			"type": "XML",
+			"id": "app"
+		},
+		"dependencies": {
+			"minUI5Version": "1.108.0",
+			"libs": {
+			  "sap.ui.core": {},
+			  "sap.m": {}
+			}
+		},
+		"models": {
+			"i18n": {
+			  "type": "sap.ui.model.resource.ResourceModel",
+			  "settings": {
+				"bundleName": "webapp.i18n.i18n",
+				"supportedLocales": [""],
+            	"fallbackLocale": ""
+			  }
+			},
+			"tiposDeDados": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "ModelosJSON/TiposDeDados.json"
+			}
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"type": "View",
+				"viewType": "XML",
+				"path": "webapp.View",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"bypassed": {
+					"target": "notFound"
+				 }
+			},
+			"routes": [
+				{
+					"pattern": "",
+					"name": "listagem",
+					"target": "listagem"
+				},
+				{
+					"pattern": "detalhes/{detalhesPath}",
+					"name": "detalhes",
+					"target": "detalhes"
+				},
+				{
+					"pattern": "cadastro",
+					"name": "cadastro",
+					"target": "cadastro"
+				},
+				{
+					"pattern": "cadastro/:id:",
+					"name": "cadastro",
+					"target": "cadastro"
+				},
+				{
+					"pattern": "notFound",
+					"name": "notFound",
+					"target": "notFound"
+				}
+			],
+			"targets": {
+				"listagem": {
+					"id": "listagem",
+					"name": "Listagem"
+				},
+				"detalhes": {
+					"id":"detalhes",
+					"name": "Detalhes"
+				},
+				"cadastro": {
+					"id":"cadastro",
+					"name": "Cadastro"
+				},
+				"notFound": {
+				   "id": "notFound",
+				   "name": "NotFound",
+				   "transition": "show"
+				}
+			}
+		}
+	}
+}

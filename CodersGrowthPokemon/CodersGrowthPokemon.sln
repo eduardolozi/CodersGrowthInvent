@@ -5,9 +5,15 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterfaceForms", "CrudWinFormsBancoMemoria\InterfaceForms.csproj", "{4729A215-356D-4536-9F30-3CE238485BDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dominio", "Dominio\Dominio.csproj", "{E744EE45-F2ED-40C8-B731-BCEDC46F3817}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dominio", "Dominio\Dominio.csproj", "{E744EE45-F2ED-40C8-B731-BCEDC46F3817}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infraestrutura", "Infraestrutura\Infraestrutura.csproj", "{31D04459-4733-4D8B-B49D-00F861A77B0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infraestrutura", "Infraestrutura\Infraestrutura.csproj", "{31D04459-4733-4D8B-B49D-00F861A77B0B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webapp", "webapp\webapp.csproj", "{523471DE-1A3A-4169-A728-23CA27A231F6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{31D04459-4733-4D8B-B49D-00F861A77B0B} = {31D04459-4733-4D8B-B49D-00F861A77B0B}
+		{E744EE45-F2ED-40C8-B731-BCEDC46F3817} = {E744EE45-F2ED-40C8-B731-BCEDC46F3817}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +33,10 @@ Global
 		{31D04459-4733-4D8B-B49D-00F861A77B0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31D04459-4733-4D8B-B49D-00F861A77B0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31D04459-4733-4D8B-B49D-00F861A77B0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{523471DE-1A3A-4169-A728-23CA27A231F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{523471DE-1A3A-4169-A728-23CA27A231F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{523471DE-1A3A-4169-A728-23CA27A231F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{523471DE-1A3A-4169-A728-23CA27A231F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace CrudWinFormsBancoMemoria.Migracoes
 {
-    [Migration(20231120080600)]
-    public class AddPokemonTable : Migration
+    [Migration(20231206101000)]
+    public class _20231206101000_AddPokemonTable : Migration
     {
         public override void Up()
         {
@@ -22,7 +22,8 @@ namespace CrudWinFormsBancoMemoria.Migracoes
                 .WithColumn("data_de_captura").AsDateTime().NotNullable()
                 .WithColumn("tipo_principal").AsString().NotNullable()
                 .WithColumn("tipo_secundario").AsString().Nullable()
-                .WithColumn("foto").AsCustom("VARCHAR(MAX)").Nullable();        }
+                .WithColumn("foto").AsCustom("VARCHAR(MAX)").Nullable();        
+        }
 
         public override void Down()
         {

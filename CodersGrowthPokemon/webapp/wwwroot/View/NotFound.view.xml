@@ -1,0 +1,11 @@
+<mvc:View
+	controllerName="webapp.Controller.NotFound"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc">
+	<MessagePage
+		title="{i18n>tituloNotFound}"
+		text="{i18n>textoPaginaNotFound}"
+		description="{i18n>descricaoPaginaNotFound}"
+		showNavButton="true"
+		navButtonPress=".aoClicarNoBotaoDeVoltar"/>
+</mvc:View>

@@ -33,11 +33,11 @@ namespace CrudWinFormsBancoMemoria
 
             comboBoxTipoPrincipal.Items.Insert(NENHUM_TIPO_SELECIONADO, TEXTO_PADRAO_COMBO_BOX);
             comboBoxTipoPrincipal.SelectedIndex = NENHUM_TIPO_SELECIONADO;
-            comboBoxTipoPrincipal.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
+            comboBoxTipoPrincipal.Items.AddRange(Enum.GetValues(typeof(TipoPokemonEnum)).Cast<Object>().ToArray());
 
             comboBoxTipoSecundario.Items.Insert(NENHUM_TIPO_SELECIONADO, TEXTO_PADRAO_COMBO_BOX);
             comboBoxTipoSecundario.SelectedIndex = NENHUM_TIPO_SELECIONADO;
-            comboBoxTipoSecundario.Items.AddRange(Enum.GetValues(typeof(TipoPokemon)).Cast<Object>().ToArray());
+            comboBoxTipoSecundario.Items.AddRange(Enum.GetValues(typeof(TipoPokemonEnum)).Cast<Object>().ToArray());
 
             if (pokemon != null)
             { 
@@ -78,8 +78,8 @@ namespace CrudWinFormsBancoMemoria
             pokemon.Nivel = (txtNivel.Text == CAMPO_VAZIO) ? CAMPO_NUMERICO_VAZIO : Convert.ToInt32(txtNivel.Text);
             pokemon.Altura = (txtAltura.Text == CAMPO_VAZIO) ? CAMPO_NUMERICO_VAZIO : Convert.ToDecimal(txtAltura.Text, new CultureInfo("en-US"));
             pokemon.DataDeCaptura = dataPickerCaptura.Value;
-            pokemon.TipoPrincipal = (comboBoxTipoPrincipal.Text == TEXTO_PADRAO_COMBO_BOX) ? pokemon.TipoPrincipal = TIPO_PRINCIPAL_NAO_SELECIONADO : Enum.Parse<TipoPokemon>(comboBoxTipoPrincipal.Text);
-            pokemon.TipoSecundario = (comboBoxTipoSecundario.Text == TEXTO_PADRAO_COMBO_BOX) ? null : Enum.Parse<TipoPokemon>(comboBoxTipoSecundario.Text);
+            pokemon.TipoPrincipal = (comboBoxTipoPrincipal.Text == TEXTO_PADRAO_COMBO_BOX) ? pokemon.TipoPrincipal = TIPO_PRINCIPAL_NAO_SELECIONADO : Enum.Parse<TipoPokemonEnum>(comboBoxTipoPrincipal.Text);
+            pokemon.TipoSecundario = (comboBoxTipoSecundario.Text == TEXTO_PADRAO_COMBO_BOX) ? null : Enum.Parse<TipoPokemonEnum>(comboBoxTipoSecundario.Text);
             pokemon.Shiny = checkBoxShiny.Checked;
         }
 

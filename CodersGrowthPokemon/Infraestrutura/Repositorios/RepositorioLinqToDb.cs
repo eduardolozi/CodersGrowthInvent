@@ -14,16 +14,20 @@ namespace Infraestrutura.Repositorios
             return new DataContext(new DataOptions().UseSqlServer(StringDeConexao));
         }
 
-        public List<Pokemon> ObterTodos()
+        public List<Pokemon> ObterTodos(string? nome)
         {
             try
             {
                 using (var db = CriaConexao())
                 {
-                    return db.GetTable<Pokemon>().ToList();
+                    if(string.IsNullOrEmpty(nome)) return db.GetTable<Pokemon>().ToList();
+                    return (from p in db.GetTable<Pokemon>()
+                            where p.Nome.ToLower().Contains(nome.ToLower())
+                            select p).ToList();
+
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_OBTER_TODOS);
             }
@@ -35,14 +39,14 @@ namespace Infraestrutura.Repositorios
             {
                 using (var db = CriaConexao())
                 {
-                    return (from p in ObterTodos()
-                            where p.Id == id
-                            select p).First();
+                    return (from p in db.GetTable<Pokemon>()
+                                     where p.Id == id
+                                     select p).First();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_OBTER_POR_ID);
+                throw new Exception(string.Format(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_OBTER_POR_ID, id));
             }
         }
 
@@ -55,7 +59,7 @@ namespace Infraestrutura.Repositorios
                     db.Delete(pokemon);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_REMOCAO);
             }
@@ -69,8 +73,11 @@ namespace Infraestrutura.Repositorios
                 {
                     db.Insert(novoPokemon);
                 }
+                novoPokemon.Id = (from p in ObterTodos(null)
+                                where p.Nome == novoPokemon.Nome
+                                select p.Id).Last();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_CRIACAO);
             }
@@ -85,7 +92,7 @@ namespace Infraestrutura.Repositorios
                     db.Update(pokemon);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_ATUALIZACAO);
             }

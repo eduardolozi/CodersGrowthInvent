@@ -1,10 +1,7 @@
-using CrudWinFormsBancoMemoria.Migracoes;
-using FluentMigrator.Runner;
-using Infraestrutura.MensagensDeErro;
+using Infraestrutura.Conversores;
 using Infraestrutura.Repositorios;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Configuration;
 
 namespace CrudWinFormsBancoMemoria
 {
@@ -15,7 +12,7 @@ namespace CrudWinFormsBancoMemoria
         {
             try
             {
-                BancoDeDados.ConfiguracaoDaMigracao();
+                ConfiguraMigracao.ConfiguracaoDaMigracao();
             } catch (Exception ex)
             {
                 ex.ToString(); 
