@@ -5,6 +5,8 @@ using Infraestrutura.Repositorios;
 using FluentValidation.Results;
 using Dominio.Validacoes;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Text.Json;
+using FluentValidation;
 
 namespace webapp.wwwroot.Controllers
 {
@@ -12,12 +14,12 @@ namespace webapp.wwwroot.Controllers
     [ApiController]
     public class PokemonController : ControllerBase
     {
-        private IRepositorio _repositorio;
-        private PokemonValidator _validacao;
+        private readonly IRepositorio _repositorio;
+        private readonly PokemonValidator _validacao;
 
         public PokemonController(IRepositorio repositorio, PokemonValidator validacao) {
-            this._repositorio = repositorio;
-            this._validacao = validacao;
+            _repositorio = repositorio;
+            _validacao = validacao;
         }
 
         [HttpGet]
@@ -25,15 +27,13 @@ namespace webapp.wwwroot.Controllers
         {
             try
             {
-                List<Pokemon> pokemons;
-                if (string.IsNullOrEmpty(nome))  _repositorio.ObterTodos(null);
-                pokemons = _repositorio.ObterTodos(nome);
+                List<Pokemon> pokemons = (string.IsNullOrEmpty(nome)) ? _repositorio.ObterTodos(null) : _repositorio.ObterTodos(nome);
 
                 return Ok(pokemons);
-                
-            }catch(Exception)
+            }catch(Exception ex)
             {
-                return NotFound();
+                var erroJson = JsonSerializer.Serialize(ex.Message);
+                return NotFound(erroJson);
             }
         }
 
@@ -47,7 +47,8 @@ namespace webapp.wwwroot.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var erroJson = JsonSerializer.Serialize(ex.Message);
+                return BadRequest(erroJson);
             }
         }
 
@@ -56,47 +57,41 @@ namespace webapp.wwwroot.Controllers
         {
             try
             {
-                ValidationResult resultado = _validacao.Validate(pokemon);
-                if (!resultado.IsValid)
-                {
-                    var mensagemDeErro = resultado.ToString();
-                    throw new Exception(mensagemDeErro);
-                }
-                var idPokemon = _repositorio.Criar(pokemon);
-                pokemon.Id = idPokemon;
+                ExtensaoFluentValidation.ValidateAndThrowArgumentsException(_validacao, pokemon);
+                _repositorio.Criar(pokemon);
                 string uri = $"/pokemons/{pokemon.Id}";
                 return Created(uri, pokemon);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(e.Message);
+                var erroJson = JsonSerializer.Serialize(ex.Message);
+                return BadRequest(erroJson);
             }
         }
 
         [HttpPut("{id}")]
         public IActionResult Atualizar([FromRoute]int id,[FromBody] Pokemon pokemon)
         {
+            const string MENSAGEM_DE_ERRO_ATUALIZAR = "Pokemon não encontrado pelo id";
+
             try
             {
-                if (_repositorio.ObterPorId(id) == null) throw new Exception("Id não encontrado");
+                if (_repositorio.ObterPorId(id) == null) throw new Exception(MENSAGEM_DE_ERRO_ATUALIZAR);
                 pokemon.Id = id;
             
-                ValidationResult resultado = _validacao.Validate(pokemon);
-                if (!resultado.IsValid)
-                {
-                    var mensagemDeErro = resultado.ToString();
-                    throw new Exception(mensagemDeErro);
-                }
+                ExtensaoFluentValidation.ValidateAndThrowArgumentsException(_validacao, pokemon);
 
                 _repositorio.Atualizar(pokemon);
                 return Ok(pokemon);
 
-            } catch(Exception e) when(e.Message.Equals("Id não encontrado"))
+            } catch(Exception ex) when(ex.Message.Equals(MENSAGEM_DE_ERRO_ATUALIZAR))
             {
-                return NotFound();
-            } catch(Exception e)
+                var erroJson = JsonSerializer.Serialize(ex.Message);
+                return NotFound(erroJson);
+            } catch(Exception ex)
             {
-                return BadRequest(e.Message);
+                var erroJson = JsonSerializer.Serialize(ex.Message);
+                return BadRequest(erroJson);
             }
         }
 
@@ -108,9 +103,10 @@ namespace webapp.wwwroot.Controllers
                 var pokemon = _repositorio.ObterPorId(id);
                 _repositorio.Remover(pokemon);
                 return Ok(pokemon);
-            } catch(Exception)
+            } catch(Exception ex)
             {
-                return BadRequest();
+                var erroJson = JsonSerializer.Serialize(ex.Message);
+                return BadRequest(erroJson);
             }
         }
     }

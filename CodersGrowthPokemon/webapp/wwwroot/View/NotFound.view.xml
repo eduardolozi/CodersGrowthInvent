@@ -7,5 +7,5 @@
 		text="{i18n>textoPaginaNotFound}"
 		description="{i18n>descricaoPaginaNotFound}"
 		showNavButton="true"
-		navButtonPress=".onNavBack"/>
+		navButtonPress=".aoClicarNoBotaoDeVoltar"/>
 </mvc:View>

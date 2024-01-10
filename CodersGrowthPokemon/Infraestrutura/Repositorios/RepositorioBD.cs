@@ -1,5 +1,5 @@
-﻿using CrudWinFormsBancoMemoria;
-using CrudWinFormsBancoMemoria.Models;
+﻿using CrudWinFormsBancoMemoria.Models;
+using Infraestrutura.Conversores;
 using Infraestrutura.MensagensDeErro;
 using Microsoft.Data.SqlClient;
 using System.Configuration;
@@ -49,36 +49,38 @@ namespace Infraestrutura.Repositorios
             }
         }
 
-        public int Criar(Pokemon novoPokemon)
+        public void Criar(Pokemon novoPokemon)
         {
-            string textoComando = "INSERT INTO pokemons (nome, apelido, nivel, altura, shiny, data_de_captura, tipo_principal, tipo_secundario, foto)" +
-                                  "OUTPUT INSERTED.ID" +
+            string textoComando = "INSERT INTO pokemons (nome, apelido, nivel, altura, shiny, data_de_captura, tipo_principal, tipo_secundario, foto) " +
+                                  "OUTPUT INSERTED.ID " +
                                   "VALUES (@nome, @apelido, @nivel, @altura, @shiny, @dataCaptura, @tipoPrincipal, @tipoSecundario, @foto)";
             using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
                     conexao.Open();
-                    SqlCommand comando = new SqlCommand(textoComando, conexao);
-                    comando.Parameters.AddWithValue("@nome", novoPokemon.Nome);
-                    comando.Parameters.AddWithValue("apelido", novoPokemon.Apelido);
-                    comando.Parameters.AddWithValue("@nivel", novoPokemon.Nivel);
-                    comando.Parameters.AddWithValue("@altura", novoPokemon.Altura);
-                    comando.Parameters.AddWithValue("@shiny", novoPokemon.Shiny);
-                    comando.Parameters.AddWithValue("@dataCaptura", novoPokemon.DataDeCaptura);
-                    comando.Parameters.AddWithValue("@tipoPrincipal", novoPokemon.TipoPrincipal.ToString());
-                    comando.Parameters.Add("@tipoSecundario", SqlDbType.VarChar).Value = (novoPokemon.TipoSecundario == null) ? DBNull.Value : novoPokemon.TipoSecundario.ToString();
-                    if (novoPokemon.Foto == null) comando.Parameters.Add(@"foto", SqlDbType.VarChar).Value = DBNull.Value;
-                    else comando.Parameters.Add("@foto", SqlDbType.VarChar).Value = novoPokemon.Foto;
-                    comando.ExecuteNonQuery();
+                    using(SqlCommand comando = new SqlCommand(textoComando, conexao))
+                    {
+                        comando.Parameters.AddWithValue("@nome", novoPokemon.Nome);
+                        comando.Parameters.AddWithValue("apelido", novoPokemon.Apelido);
+                        comando.Parameters.AddWithValue("@nivel", novoPokemon.Nivel);
+                        comando.Parameters.AddWithValue("@altura", novoPokemon.Altura);
+                        comando.Parameters.AddWithValue("@shiny", novoPokemon.Shiny);
+                        comando.Parameters.AddWithValue("@dataCaptura", novoPokemon.DataDeCaptura);
+                        comando.Parameters.AddWithValue("@tipoPrincipal", novoPokemon.TipoPrincipal.ToString());
+                        comando.Parameters.Add("@tipoSecundario", SqlDbType.VarChar).Value = (novoPokemon.TipoSecundario == null) ? DBNull.Value : novoPokemon.TipoSecundario.ToString();
+                        if (novoPokemon.Foto == null) comando.Parameters.Add(@"foto", SqlDbType.VarChar).Value = DBNull.Value;
+                        else comando.Parameters.Add("@foto", SqlDbType.VarChar).Value = novoPokemon.Foto;
+
+                        int indice = Convert.ToInt32(comando.ExecuteScalar());
+                        novoPokemon.Id = indice;
+                    }
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(MensagensDeErroRepositorio.MENSAGEM_DE_ERRO_CRIACAO);
                 }
                 finally { conexao.Close(); }
-
-                return 1;
             }
         }
 
@@ -103,20 +105,19 @@ namespace Infraestrutura.Repositorios
                 }
                 finally { conexao.Close(); }
             }
-            return null;
         }
 
         public List<Pokemon> ObterTodos(string? nome)
         {
             List<Pokemon> listaPokemon = new List<Pokemon>();
-            string textoComando = "SELECT * FROM pokemons";
+            string textoComando = (nome is null) ? "SELECT * FROM pokemons" : "SELECT * FROM pokemons WHERE nome LIKE '%' + @nome + '%'";
             using (SqlConnection conexao = new SqlConnection(StringDeConexao))
             {
                 try
                 {
                     conexao.Open();
-                    if (nome is null) textoComando = "SELECT * FROM POKEMON WHERE nome LIKE '%@nome%'";
                     SqlCommand comando = new SqlCommand(textoComando, conexao);
+                    if (nome != null) comando.Parameters.AddWithValue("@nome", nome);
                     SqlDataReader dr = comando.ExecuteReader();
                     while (dr.Read())
                     {

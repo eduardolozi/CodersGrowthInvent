@@ -2,7 +2,7 @@
 
 namespace Dominio.Enums
 {
-    public enum TipoPokemon
+    public enum TipoPokemonEnum
     {
         [MapValue(Value = "Agua")]
         Agua = 1,

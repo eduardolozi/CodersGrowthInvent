@@ -17,11 +17,18 @@ namespace CrudWinFormsBancoMemoria
 
             try
             {
-                pokemonDataGriedView.DataSource = (_repositorio is Repositorio) ? null : _repositorio.ObterTodos();
-            }catch(Exception ex)
+                pokemonDataGriedView.DataSource = (_repositorio is Repositorio) ? null : _repositorio.ObterTodos(null);
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void FormataDisplayDaData(object sender, EventArgs e)
+        {
+            const int COLUNA_DE_DATA = 6;
+            pokemonDataGriedView.Columns[COLUNA_DE_DATA].DefaultCellStyle.Format = "dd/MM/yyyy";
         }
 
         private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
@@ -39,11 +46,12 @@ namespace CrudWinFormsBancoMemoria
                     MessageBox.Show(ADICAO_BEM_SUCEDIDA);
                     AtualizandoDataGridView();
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            
+
         }
 
         public void AtualizandoDataGridView()
@@ -51,8 +59,9 @@ namespace CrudWinFormsBancoMemoria
             try
             {
                 pokemonDataGriedView.DataSource = null;
-                pokemonDataGriedView.DataSource = _repositorio.ObterTodos();
-            } catch(Exception ex)
+                pokemonDataGriedView.DataSource = _repositorio.ObterTodos(null);
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -132,7 +141,8 @@ namespace CrudWinFormsBancoMemoria
                     MessageBox.Show(MAIS_DE_UMA_LINHA_SELECIONADA);
                 }
                 else MessageBox.Show(NENHUMA_LINHA_SELECIONADA);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -165,7 +175,8 @@ namespace CrudWinFormsBancoMemoria
                     MessageBox.Show(MAIS_DE_UMA_LINHA_SELECIONADA);
                 }
                 else MessageBox.Show(NENHUMA_LINHA_SELECIONADA);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }

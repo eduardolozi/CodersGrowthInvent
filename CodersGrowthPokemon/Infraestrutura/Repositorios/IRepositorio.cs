@@ -12,7 +12,7 @@ namespace Infraestrutura.Repositorios
         public List<Pokemon> ObterTodos(string? nome);
         public Pokemon ObterPorId(int id);
         public void Remover(Pokemon pokemon);
-        public int Criar(Pokemon novoPokemon);
+        public void Criar(Pokemon novoPokemon);
         public void Atualizar(Pokemon pokemon);
     }
 }
